@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>The One-Stop Knowledge Portal</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A personalized platform to explore learning resources and achieve your ambitions.">
+    <meta name="keywords" content="learning, resources, education, personalized, knowledge portal">
+    <meta name="author" content="Your Name">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#007bff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Knowledge Portal">
+    <meta name="application-name" content="Knowledge Portal">
+    
+    <!-- Icons -->
+    <link rel="icon" href="https://example.com/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://example.com/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="https://example.com/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://example.com/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://example.com/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://example.com/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://example.com/apple-touch-icon.png">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileColor" content="#007bff">
+    <meta name="msapplication-TileImage" content="https://example.com/tile-icon.png">
+    <meta name="msapplication-config" content="https://example.com/browserconfig.xml">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="https://example.com/manifest.json">
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/v4-shims.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+        }
+        h1, h2 {
+            color: #0056b3;
+        }
+        .btn-primary {
+            background-color: #1a73e8;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #155ab6;
+        }
+    </style>
+
+    <script>
+        // Function to handle screen transitions
+        function showScreen(id) {
+            const screens = document.querySelectorAll('div[id$="-screen"]');
+            screens.forEach(div => div.style.display = "none");
+            document.getElementById(id).style.display = "block";
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            showScreen('welcome-screen'); // Show welcome screen on load
+        });
+    </script>
+    <script>
+    // Function to handle screen transitions
+    function showScreen(id) {
+    const screens = document.querySelectorAll('div[id$="-screen"]');
+    screens.forEach(div => div.style.display = "none");
+    document.getElementById(id).style.display = "block";
+}
+    </script>
+
+
+
+</head>
+<body class="bg-light">
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="container py-5" style="display:block;">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h1 class="mb-4">Welcome to The One-Stop Knowledge Portal</h1>
+                <p class="lead mb-4">Your personalized platform to explore learning resources and achieve your ambitions.</p>
+                <button class="btn btn-primary btn-lg" onclick="showScreen('user-info-screen')">Get Started</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Info Screen -->
+    <div id="user-info-screen" class="container py-5" style="display:none;">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="mb-3">Tell Us About You</h2>
+                <p class="mb-4">Please fill in your details to personalize your experience.</p>
+                <form>
+                    <div class="mb-3">
+                        <label for="userName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="userName" placeholder="Enter your name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="userAge" class="form-label">Age</label>
+                        <input type="number" class="form-control" id="userAge" placeholder="Enter your age">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Education Level</label>
+                        <select class="form-select" id="educationLevel">
+                            <option selected disabled>Select one</option>
+                            <option>High School</option>
+                            <option>Undergraduate</option>
+                            <option>Graduate</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="storeUserData()">Next</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambition Choice Screen -->
+    <div id="ambition-choice-screen" class="container py-5" style="display:none;">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h2 class="mb-3" id="personal-greeting">What's Your Learning Path?</h2>
+                <p class="mb-4">Choose how you'd like to explore resources.</p>
+                <div class="d-grid gap-3 col-6 mx-auto">
+                    <button class="btn btn-success btn-lg" onclick="showScreen('academic-subject-screen')">I Have an Ambition</button>
+                    <button class="btn btn-outline-primary btn-lg" onclick="showScreen('explore-screen')">Explore My Options</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Academic Subject Screen -->
+    <div id="academic-subject-screen" class="container py-5" style="display:none;">
+        <h2 class="mb-3 text-center">Choose a Subject</h2>
+        <p class="mb-4 text-center">Select a subject to see tailored resources. (Only Computer Science is functional.)</p>
+        <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+            <div class="col">
+                <div class="card h-100 border-primary">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Computer Science</h5>
+                        <p class="card-text">Programming, algorithms, and more.</p>
+                        <button class="btn btn-primary" onclick="showScreen('subject-detail-screen')">Select</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Mathematics</h5>
+                        <p class="card-text">Coming soon...</p>
+                        <button class="btn btn-secondary" disabled>Coming Soon</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Physics</h5>
+                        <p class="card-text">Coming soon...</p>
+                        <button class="btn btn-secondary" disabled>Coming Soon</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-secondary" onclick="showScreen('ambition-choice-screen')">Back</button>
+        </div>
+    </div>
+
+    <!-- Subject Detail Screen -->
+    <div id="subject-detail-screen" class="container py-5" style="display:none;">
+        <h2 class="mb-3 text-center">Computer Science Resources</h2>
+        <p class="mb-4 text-center">Dive into different aspects of Computer Science.</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="nav nav-tabs mb-3">
+                    <button class="nav-link" type="button" disabled>Exams</button>
+                    <button class="nav-link" type="button" disabled>Theory</button>
+                    <button class="nav-link active" type="button">Projects</button>
+                </div>
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Projects</h5>
+                        <p class="card-text">Start with a hands-on project to apply your knowledge.</p>
+                        <button class="btn btn-primary" onclick="showScreen('project-detail-screen')">View Project</button>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-secondary" onclick="showScreen('academic-subject-screen')">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Detail Screen -->
+    <div id="project-detail-screen" class="container py-5" style="display:none;">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="mb-3">Sample Project: Build a Calculator</h2>
+                <p class="mb-4">Apply your programming skills by building a simple calculator app. This project will help you practice variables, functions, and user input/output.</p>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Project Steps</h5>
+                        <ol>
+                            <li>Design a user interface for the calculator.</li>
+                            <li>Implement basic operations: add, subtract, multiply, divide.</li>
+                            <li>Test your calculator with different inputs.</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-outline-secondary" onclick="showScreen('subject-detail-screen')">Back</button>
+                    <button class="btn btn-primary" onclick="showScreen('explore-screen')">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Explore Screen -->
+    <div id="explore-screen" class="container py-5" style="display:none;">
+        <h2 class="mb-3 text-center">Explore More Resources</h2>
+        <p class="mb-4 text-center">Discover quizzes, books, and articles to deepen your knowledge.</p>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Quiz</h5>
+                        <p class="card-text">Test your knowledge with interactive quizzes. (Coming soon)</p>
+                        <button class="btn btn-secondary" disabled>Start Quiz</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Books</h5>
+                        <p class="card-text">Browse recommended books for your subject. (Coming soon)</p>
+                        <button class="btn btn-secondary" disabled>View Books</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Articles</h5>
+                        <p class="card-text">Read articles and guides to expand your understanding. (Coming soon)</p>
+                        <button class="btn btn-secondary" disabled>Read Articles</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-secondary" onclick="showScreen('welcome-screen')">Back to Home</button>
+        </div>
+    </div>
+
+    <!-- SPA Navigation Script -->
+    <script>
+        function showScreen(id) {
+            const screens = document.querySelectorAll('div[id$="-screen"]');
+            screens.forEach(div => div.style.display = "none");
+            document.getElementById(id).style.display = "block";
+        }
+    </script>
+    <script>
+        function storeUserData() {
+            const name = document.getElementById('userName').value;
+            const age = document.getElementById('userAge').value;
+            const educationLevel = document.getElementById('educationLevel').value;
+
+            if (name && age && educationLevel) {
+                localStorage.setItem('userName', name);
+                localStorage.setItem('userAge', age);
+                localStorage.setItem('educationLevel', educationLevel);
+                showScreen('ambition-choice-screen');
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+    </script>
+    <script>
+        // Display user's name on the ambition-choice-screen
+        document.addEventListener("DOMContentLoaded", function() {
+            const userName = localStorage.getItem('userName');
+            if (userName) {
+                const greeting = document.getElementById('personal-greeting');
+                if (greeting) {
+                    greeting.textContent = `Welcome, ${userName}! What's Your Learning Path?`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
