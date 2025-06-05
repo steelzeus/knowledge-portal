@@ -474,8 +474,21 @@ function goToQuizForge() {
     import('./js/quizUI.js').then(m => m.initQuizForge());
 }
 
+// Add navigation to Roadmap from subject detail screen
+function goToRoadmap() {
+    showScreen('roadmap-screen');
+    import('./js/roadmapUI.js').then(m => {
+        // Example: load user progress from localStorage or default
+        const userProgress = JSON.parse(localStorage.getItem('curriculumFlow.progress') || '{}');
+        m.renderRoadmap('Computer Science', userProgress);
+    });
+}
+
 // Add button handler for Project Mentor System
 window.goToProjectMentorSystem = goToProjectMentorSystem;
 
 // Add button handler for QuizForge
 window.goToQuizForge = goToQuizForge;
+
+// Add button handler for Roadmap
+window.goToRoadmap = goToRoadmap;

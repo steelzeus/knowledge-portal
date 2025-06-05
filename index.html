@@ -180,6 +180,13 @@
                         <button class="btn btn-primary" onclick="goToQuizForge()">QuizForge</button>
                     </div>
                 </div>
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Visual Roadmap</h5>
+                        <p class="card-text">See your personalized learning journey.</p>
+                        <button class="btn btn-primary" onclick="goToRoadmap()">Curriculum Map</button>
+                    </div>
+                </div>
                 <div class="text-center mt-4">
                     <button class="btn btn-outline-secondary" onclick="showScreen('academic-subject-screen')">Back</button>
                 </div>
@@ -292,12 +299,38 @@
       </div>
     </div>
 
+    <!-- Visual Curriculum Map (Roadmap) UI -->
+    <div id="roadmap-screen" class="container py-5" style="display:none;">
+      <h2 class="mb-3 text-center">Your Learning Roadmap</h2>
+      <div class="row">
+        <div class="col-md-9">
+          <div id="roadmap-container" style="min-height:350px;"></div>
+        </div>
+        <div class="col-md-3">
+          <div id="roadmap-sidebar" class="border rounded p-3 bg-light"></div>
+          <div class="mt-3">
+            <b>XP:</b> <span id="roadmap-xp">0</span><br>
+            <b>Streak:</b> <span id="roadmap-streak">0</span><br>
+            <b>Milestones:</b> <span id="roadmap-milestones"></span>
+          </div>
+          <div class="mt-3">
+            <b>Suggested Next Topics:</b>
+            <ul id="roadmap-suggestions"></ul>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 text-center">
+        <button class="btn btn-outline-secondary" onclick="showScreen('subject-detail-screen')">Back</button>
+      </div>
+    </div>
+
     <!-- Modular JS Scripts -->
     <script src="js/screens.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/events.js"></script>
     <script type="module" src="js/projectTrackerUI.js"></script>
     <script type="module" src="js/quizUI.js"></script>
+    <script type="module" src="js/roadmapUI.js"></script>
 
 </body>
 </html>
