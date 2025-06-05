@@ -514,3 +514,10 @@ window.goToRoadmap = goToRoadmap;
 
 // Add button handler for Feed
 window.goToFeed = goToFeed;
+
+document.addEventListener('DOMContentLoaded', () => {
+  import('./js/mentorChatUI.js').then(m => {
+    m.setupMentorChatUI();
+    m.animateAvatar();
+  });
+});
