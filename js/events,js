@@ -1,0 +1,507 @@
+// ============================================
+// USER INTERACTION EVENT HANDLERS
+// ============================================
+
+/**
+ * Handles user data form submission and validation
+ */
+function handleUserDataSubmission() {
+    if (saveUserInfo()) {
+        showScreen('ambition-choice-screen');
+    }
+}
+
+/**
+ * Handles legacy user data storage (redirects to new handler)
+ */
+function handleLegacyUserDataStorage() {
+    if (saveUserInfo()) {
+        showScreen('ambition-choice-screen');
+    }
+}
+
+/**
+ * Handles displaying user information in UI
+ */
+function handleShowUserInfo() {
+    showUserInfo();
+}
+
+/**
+ * Handles ambition choice confirmation
+ */
+function handleAmbitionConfirmation() {
+    confirmAmbitionChoice();
+}
+
+/**
+ * Handles application startup flow
+ */
+function handleGetStarted() {
+    getStarted();
+}
+
+/**
+ * Handles complete user data reset
+ */
+function handleUserDataReset() {
+    resetUserData();
+}
+
+/**
+ * Handles navigation back to welcome screen
+ */
+function handleBackToWelcome() {
+    backToWelcome();
+}
+
+/**
+ * Handles theme toggle functionality
+ */
+function handleThemeToggle() {
+    toggleTheme();
+}
+
+// ============================================
+// NAVIGATION EVENT HANDLERS
+// ============================================
+
+/**
+ * Handles screen navigation with data attributes
+ */
+function handleScreenNavigation(screenId) {
+    showScreen(screenId);
+}
+
+/**
+ * Handles element toggle operations
+ */
+function handleElementToggle(elementId) {
+    toggleElement(elementId);
+}
+
+/**
+ * Handles element close operations
+ */
+function handleElementClose(elementId) {
+    closeElement(elementId);
+}
+
+// ============================================
+// FORM EVENT HANDLERS
+// ============================================
+
+/**
+ * Handles form input validation in real-time
+ */
+function handleFormInputValidation(event) {
+    const input = event.target;
+    const value = input.value.trim();
+    
+    switch(input.id) {
+        case 'userName':
+            validateName(input, value);
+            break;
+        case 'userAge':
+            validateAge(input, value);
+            break;
+        case 'educationLevel':
+            validateEducationLevel(input, value);
+            break;
+    }
+}
+
+/**
+ * Validates name input
+ */
+function validateName(input, value) {
+    const isValid = value.length >= 2;
+    input.classList.toggle('invalid', !isValid);
+    input.classList.toggle('valid', isValid);
+}
+
+/**
+ * Validates age input
+ */
+function validateAge(input, value) {
+    const age = parseInt(value);
+    const isValid = !isNaN(age) && age >= 1 && age <= 120;
+    input.classList.toggle('invalid', !isValid);
+    input.classList.toggle('valid', isValid);
+}
+
+/**
+ * Validates education level selection
+ */
+function validateEducationLevel(input, value) {
+    const isValid = value !== '';
+    input.classList.toggle('invalid', !isValid);
+    input.classList.toggle('valid', isValid);
+}
+
+/**
+ * Handles form submission prevention for validation
+ */
+function handleFormSubmissionPrevention(event) {
+    event.preventDefault();
+    handleUserDataSubmission();
+}
+
+// ============================================
+// KEYBOARD EVENT HANDLERS
+// ============================================
+
+/**
+ * Handles keyboard shortcuts and accessibility
+ */
+function handleKeyboardEvents(event) {
+    switch(event.key) {
+        case 'Escape':
+            handleEscapeKey();
+            break;
+        case 'Enter':
+            handleEnterKey(event);
+            break;
+        case 'Tab':
+            handleTabKey(event);
+            break;
+    }
+}
+
+/**
+ * Handles Escape key press (close modals, go back)
+ */
+function handleEscapeKey() {
+    // Close any open modals or overlays
+    const openElements = document.querySelectorAll('[style*="display: block"]');
+    openElements.forEach(element => {
+        if (element.classList.contains('modal') || element.classList.contains('overlay')) {
+            element.style.display = 'none';
+        }
+    });
+}
+
+/**
+ * Handles Enter key press in forms
+ */
+function handleEnterKey(event) {
+    if (event.target.tagName === 'INPUT' && event.target.type !== 'textarea') {
+        const form = event.target.closest('form');
+        if (form) {
+            event.preventDefault();
+            handleFormSubmissionPrevention(event);
+        }
+    }
+}
+
+/**
+ * Handles Tab key for accessibility navigation
+ */
+function handleTabKey(event) {
+    // Custom tab handling for better accessibility
+    const focusableElements = document.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    
+    const focusableArray = Array.from(focusableElements);
+    const currentIndex = focusableArray.indexOf(document.activeElement);
+    
+    if (event.shiftKey) {
+        // Shift + Tab (backward)
+        if (currentIndex === 0) {
+            event.preventDefault();
+            focusableArray[focusableArray.length - 1].focus();
+        }
+    } else {
+        // Tab (forward)
+        if (currentIndex === focusableArray.length - 1) {
+            event.preventDefault();
+            focusableArray[0].focus();
+        }
+    }
+}
+
+// ============================================
+// WINDOW/DOCUMENT EVENT HANDLERS
+// ============================================
+
+/**
+ * Handles window resize events
+ */
+function handleWindowResize() {
+    // Responsive adjustments
+    const isMobile = window.innerWidth <= 768;
+    document.body.classList.toggle('mobile-view', isMobile);
+    document.body.classList.toggle('desktop-view', !isMobile);
+}
+
+/**
+ * Handles window beforeunload (page refresh/close warning)
+ */
+function handleBeforeUnload(event) {
+    const hasUnsavedData = checkForUnsavedData();
+    
+    if (hasUnsavedData) {
+        const message = "You have unsaved changes. Are you sure you want to leave?";
+        event.returnValue = message;
+        return message;
+    }
+}
+
+/**
+ * Checks if there's unsaved data in forms
+ */
+function checkForUnsavedData() {
+    const inputs = document.querySelectorAll('input, select, textarea');
+    const userInfo = JSON.parse(localStorage.getItem("userInfo") || '{}');
+    
+    for (let input of inputs) {
+        if (input.value && input.value !== (userInfo[input.id] || '')) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Handles page visibility change (tab switching)
+ */
+function handleVisibilityChange() {
+    if (document.hidden) {
+        console.log('Page hidden - pausing timers/animations');
+        // Pause any running timers or animations
+    } else {
+        console.log('Page visible - resuming timers/animations');
+        // Resume timers or animations
+    }
+}
+
+// ============================================
+// ERROR EVENT HANDLERS
+// ============================================
+
+/**
+ * Handles global JavaScript errors
+ */
+function handleGlobalError(event) {
+    console.error('Global error caught:', event.error);
+    
+    // Show user-friendly error message
+    showErrorMessage('Something went wrong. Please try refreshing the page.');
+    
+    // Log error details for debugging
+    logError({
+        message: event.error?.message,
+        stack: event.error?.stack,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        timestamp: new Date().toISOString()
+    });
+}
+
+/**
+ * Handles unhandled promise rejections
+ */
+function handleUnhandledRejection(event) {
+    console.error('Unhandled promise rejection:', event.reason);
+    
+    // Prevent default browser behavior
+    event.preventDefault();
+    
+    // Show user-friendly error message
+    showErrorMessage('An error occurred while processing your request.');
+    
+    // Log error details
+    logError({
+        type: 'unhandledRejection',
+        reason: event.reason,
+        timestamp: new Date().toISOString()
+    });
+}
+
+/**
+ * Shows error message to user
+ */
+function showErrorMessage(message) {
+    // Create or update error display element
+    let errorElement = document.getElementById('error-display');
+    if (!errorElement) {
+        errorElement = document.createElement('div');
+        errorElement.id = 'error-display';
+        errorElement.className = 'error-message';
+        document.body.appendChild(errorElement);
+    }
+    
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        errorElement.style.display = 'none';
+    }, 5000);
+}
+
+/**
+ * Logs error details for debugging
+ */
+function logError(errorDetails) {
+    // In production, you might send this to an error tracking service
+    console.group('Error Details');
+    console.error(errorDetails);
+    console.groupEnd();
+    
+    // Store in localStorage for debugging (limit to last 10 errors)
+    try {
+        const errors = JSON.parse(localStorage.getItem('errorLog') || '[]');
+        errors.unshift(errorDetails);
+        if (errors.length > 10) errors.pop();
+        localStorage.setItem('errorLog', JSON.stringify(errors));
+    } catch (e) {
+        console.warn('Could not store error in localStorage:', e);
+    }
+}
+
+// ============================================
+// EVENT DELEGATION HANDLER
+// ============================================
+
+/**
+ * Main event delegation handler for data attributes
+ */
+function handleDelegatedEvents(event) {
+    const target = event.target;
+    
+    // Handle toggle operations
+    if (target.dataset.toggle) {
+        event.preventDefault();
+        handleElementToggle(target.dataset.toggle);
+    }
+    
+    // Handle close operations
+    if (target.dataset.close) {
+        event.preventDefault();
+        handleElementClose(target.dataset.close);
+    }
+    
+    // Handle screen navigation
+    if (target.dataset.screen) {
+        event.preventDefault();
+        handleScreenNavigation(target.dataset.screen);
+    }
+    
+    // Handle custom actions
+    if (target.dataset.action) {
+        event.preventDefault();
+        handleCustomAction(target.dataset.action, target);
+    }
+}
+
+/**
+ * Handles custom actions defined in data attributes
+ */
+function handleCustomAction(action, element) {
+    switch(action) {
+        case 'save-user-data':
+            handleUserDataSubmission();
+            break;
+        case 'reset-data':
+            handleUserDataReset();
+            break;
+        case 'toggle-theme':
+            handleThemeToggle();
+            break;
+        case 'show-user-info':
+            handleShowUserInfo();
+            break;
+        default:
+            console.warn(`Unknown action: ${action}`);
+    }
+}
+
+// ============================================
+// EVENT HANDLER REGISTRATION
+// ============================================
+
+/**
+ * Registers all event handlers
+ */
+function registerEventHandlers() {
+    // Document-level event handlers
+    document.addEventListener('click', handleDelegatedEvents);
+    document.addEventListener('keydown', handleKeyboardEvents);
+    document.addEventListener('input', handleFormInputValidation);
+    document.addEventListener('submit', handleFormSubmissionPrevention);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Window-level event handlers
+    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('error', handleGlobalError);
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+    
+    // Specific element event handlers
+    const elementHandlers = [
+        { id: "saveUserInfoButton", event: "click", handler: handleUserDataSubmission },
+        { id: "store-user-data-button", event: "click", handler: handleLegacyUserDataStorage },
+        { id: "showUserInfoButton", event: "click", handler: handleShowUserInfo },
+        { id: "confirm-ambition-button", event: "click", handler: handleAmbitionConfirmation },
+        { id: "get-started-button", event: "click", handler: handleGetStarted },
+        { id: "reset-user-data-button", event: "click", handler: handleUserDataReset },
+        { id: "back-to-welcome-button", event: "click", handler: handleBackToWelcome },
+        { id: "theme-button", event: "click", handler: handleThemeToggle }
+    ];
+    
+    elementHandlers.forEach(({ id, event, handler }) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener(event, handler);
+        } else {
+            console.warn(`Element with ID "${id}" not found during registration`);
+        }
+    });
+}
+
+/**
+ * Removes all event handlers (cleanup function)
+ */
+function unregisterEventHandlers() {
+    // Remove document-level handlers
+    document.removeEventListener('click', handleDelegatedEvents);
+    document.removeEventListener('keydown', handleKeyboardEvents);
+    document.removeEventListener('input', handleFormInputValidation);
+    document.removeEventListener('submit', handleFormSubmissionPrevention);
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Remove window-level handlers
+    window.removeEventListener('resize', handleWindowResize);
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+    window.removeEventListener('error', handleGlobalError);
+    window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+}
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
+/**
+ * Initialize event handlers
+ */
+function initializeEventHandlers() {
+    console.log("Registering event handlers...");
+    registerEventHandlers();
+    
+    // Initial window resize to set mobile/desktop classes
+    handleWindowResize();
+    
+    console.log("Event handlers registered successfully");
+}
+
+// Export for use in main application
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        initializeEventHandlers,
+        unregisterEventHandlers,
+        registerEventHandlers
+    };
+}

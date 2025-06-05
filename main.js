@@ -394,3 +394,70 @@ function init() {
 
 // Initialize when DOM is loaded
 document.addEventListener("DOMContentLoaded", init);
+
+
+
+
+
+function saveUserInfo() {
+  const name = document.getElementById("userName").value;
+  const age = document.getElementById("userAge").value;
+  const level = document.getElementById("educationLevel").value;
+  localStorage.setItem("userInfo", JSON.stringify({ name, age, level }));
+}
+function loadUserInfo() {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (userInfo) {
+    document.getElementById("userName").value = userInfo.name;
+    document.getElementById("userAge").value = userInfo.age;
+    document.getElementById("educationLevel").value = userInfo.level;
+  }
+}
+function showUserInfo() {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if (userInfo) {
+    document.getElementById("displayName").textContent = `Name: ${userInfo.name}`;
+    document.getElementById("displayAge").textContent = `Age: ${userInfo.age}`;
+    document.getElementById("displayLevel").textContent = `Education Level: ${userInfo.level}`;
+  } else {
+    alert("No user information found.");
+  }
+}
+function saveUserInfo() {
+    const name = document.getElementById("userName").value.trim();
+    const age = document.getElementById("userAge").value.trim();
+    const level = document.getElementById("educationLevel").value;
+
+        if (!name || !age || !level) {
+                alert("Please fill out all fields!");
+                return;
+            }
+    }
+
+    function showWelcomeMessage() {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo && userInfo.name) {
+        document.getElementById("userGreetingName").textContent = userInfo.name;
+    }
+}
+function showScreen(id) {
+    const screens = document.querySelectorAll('div[id$="-screen"]');
+    screens.forEach(div => div.style.display = "none");
+    document.getElementById(id).style.display = "block";
+
+    // Custom behavior for ambition-choice-screen
+    if (id === "ambition-choice-screen") {
+        showWelcomeMessage();
+    }
+}
+function init() {
+    loadUserInfo();
+    showScreen('user-data-input-screen');
+    
+    // Set up event listeners
+    document.getElementById("saveUserInfoButton").addEventListener("click", saveUserInfo);
+    document.getElementById("showUserInfoButton").addEventListener("click", showUserInfo);
+    
+    // Show the initial screen
+    showScreen('user-data-input-screen');
+}
