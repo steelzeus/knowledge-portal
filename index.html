@@ -66,7 +66,7 @@
             <div class="col-md-8 text-center">
                 <h1 class="mb-4">Welcome to The One-Stop Knowledge Portal</h1>
                 <p class="lead mb-4">Your personalized platform to explore learning resources and achieve your ambitions.</p>
-                <button class="btn btn-primary btn-lg" onclick="showScreen('user-info-screen')">Get Started</button>
+                <button class="btn btn-primary btn-lg" id="get-started-button">Get Started</button>
             </div>
         </div>
     </div>
@@ -358,6 +358,73 @@
     <script type="module" src="js/roadmapUI.js"></script>
     <script type="module" src="js/feedUI.js"></script>
     <script type="module" src="js/mentor.js"></script>
+    <script>
+      // Universal showScreen function for navigation
+      function showScreen(screenId) {
+        // Hide all screens
+        document.querySelectorAll('[id$="-screen"]').forEach(div => div.style.display = 'none');
+        // Show the target screen
+        const target = document.getElementById(screenId);
+        if (target) target.style.display = 'block';
+        window.scrollTo(0, 0);
+      }
+      // Wire up all navigation buttons after DOM loads
+      document.addEventListener('DOMContentLoaded', function() {
+        // Welcome screen: Get Started
+        const btn = document.getElementById('get-started-button');
+        if (btn) btn.onclick = function() { showScreen('user-info-screen'); };
+        // User Info: Next
+        const nextBtn = document.getElementById('user-info-next-btn');
+        if (nextBtn) nextBtn.onclick = function() {
+          const name = document.getElementById('userName').value.trim();
+          const age = document.getElementById('userAge').value.trim();
+          const educationLevel = document.getElementById('educationLevel').value;
+          if (name && age && educationLevel && educationLevel !== 'Select one') {
+            localStorage.setItem('userName', name);
+            localStorage.setItem('userAge', age);
+            localStorage.setItem('educationLevel', educationLevel);
+            showScreen('ambition-choice-screen');
+            const greeting = document.getElementById('personal-greeting');
+            if (greeting) greeting.textContent = `Welcome, ${name}! What's Your Learning Path?`;
+          } else {
+            alert('Please fill in all fields.');
+          }
+        };
+        // Ambition Choice: Log out
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) logoutBtn.onclick = function() {
+          localStorage.clear();
+          showScreen('welcome-screen');
+        };
+        // All Back buttons
+        document.querySelectorAll('button[onclick*="showScreen("]').forEach(b => {
+          b.onclick = function() {
+            const match = b.getAttribute('onclick').match(/showScreen\('([^']+)'\)/);
+            if (match) showScreen(match[1]);
+          };
+        });
+        // Project Mentor System
+        window.goToProjectMentorSystem = function() { showScreen('project-dashboard-screen'); };
+        // QuizForge
+        window.goToQuizForge = function() { showScreen('quizforge-screen'); };
+        // Roadmap
+        window.goToRoadmap = function() { showScreen('roadmap-screen'); };
+        // Feed
+        window.goToFeed = function() { showScreen('feed-screen'); };
+        // Mentor Chat Icon (FAB) and Chat Window
+        const mentorFab = document.getElementById('mentor-fab');
+        const mentorAvatar = document.getElementById('mentor-avatar');
+        if (mentorFab && mentorAvatar) {
+          mentorFab.onclick = function() {
+            mentorAvatar.style.display = 'block';
+          };
+          // Optional: hide chat on ESC or clicking outside
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') mentorAvatar.style.display = 'none';
+          });
+        }
+      });
+    </script>
 
 </body>
 </html>
