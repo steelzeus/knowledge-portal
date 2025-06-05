@@ -468,5 +468,14 @@ function goToProjectMentorSystem() {
     import('./js/projectTrackerUI.js').then(m => m.initProjectMentorSystem());
 }
 
+// Add navigation to QuizForge from subject detail screen
+function goToQuizForge() {
+    showScreen('quizforge-screen');
+    import('./js/quizUI.js').then(m => m.initQuizForge());
+}
+
 // Add button handler for Project Mentor System
 window.goToProjectMentorSystem = goToProjectMentorSystem;
+
+// Add button handler for QuizForge
+window.goToQuizForge = goToQuizForge;
