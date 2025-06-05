@@ -461,3 +461,12 @@ function init() {
     // Show the initial screen
     showScreen('user-data-input-screen');
 }
+
+// Add navigation to Project Mentor System from subject detail screen
+function goToProjectMentorSystem() {
+    showScreen('project-dashboard-screen');
+    import('./js/projectTrackerUI.js').then(m => m.initProjectMentorSystem());
+}
+
+// Add button handler for Project Mentor System
+window.goToProjectMentorSystem = goToProjectMentorSystem;

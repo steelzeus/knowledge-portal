@@ -170,7 +170,7 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">Projects</h5>
                         <p class="card-text">Start with a hands-on project to apply your knowledge.</p>
-                        <button class="btn btn-primary" onclick="showScreen('project-detail-screen')">View Project</button>
+                        <button class="btn btn-primary" onclick="goToProjectMentorSystem()">Project Mentor System</button>
                     </div>
                 </div>
                 <div class="text-center mt-4">
@@ -242,10 +242,23 @@
         </div>
     </div>
 
+    <!-- Project Mentor System Dashboard -->
+    <div id="project-dashboard-screen" class="container py-5" style="display:none;">
+        <h2 class="mb-3 text-center">Project Mentor System</h2>
+        <div class="mb-3 text-end">
+            <button class="btn btn-success" onclick="startNewProject()">Start New Project</button>
+        </div>
+        <div id="project-dashboard"></div>
+        <div class="mt-4 text-center">
+            <button class="btn btn-outline-secondary" onclick="showScreen('subject-detail-screen')">Back</button>
+        </div>
+    </div>
+
     <!-- Modular JS Scripts -->
     <script src="js/screens.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/events.js"></script>
+    <script type="module" src="js/projectTrackerUI.js"></script>
 
 </body>
 </html>
