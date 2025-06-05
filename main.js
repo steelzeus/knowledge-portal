@@ -484,6 +484,25 @@ function goToRoadmap() {
     });
 }
 
+// Add navigation to Feed from welcome screen
+function goToFeed() {
+    showScreen('feed-screen');
+    import('./js/feedUI.js').then(m => {
+        // Example user object (should be built from real user data)
+        const user = {
+            userId: localStorage.getItem('userName') || 'user1',
+            subject: 'Computer Science',
+            recentActivity: JSON.parse(localStorage.getItem('recentActivity') || '[]'),
+            quizPerformance: JSON.parse(localStorage.getItem('quizPerformance') || '{"functions":"weak","loops":"strong"}'),
+            roadmapStatus: JSON.parse(localStorage.getItem('roadmapStatus') || '[]'),
+            timeAvailable: '15',
+            XP: parseInt(localStorage.getItem('quizForge.xp') || '0', 10),
+            preferredFormat: localStorage.getItem('preferredFormat') || 'video'
+        };
+        m.renderFeed(user);
+    });
+}
+
 // Add button handler for Project Mentor System
 window.goToProjectMentorSystem = goToProjectMentorSystem;
 
@@ -492,3 +511,6 @@ window.goToQuizForge = goToQuizForge;
 
 // Add button handler for Roadmap
 window.goToRoadmap = goToRoadmap;
+
+// Add button handler for Feed
+window.goToFeed = goToFeed;

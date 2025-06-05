@@ -324,6 +324,15 @@
       </div>
     </div>
 
+    <!-- Personalized AI Learning Feed -->
+    <div id="feed-screen" class="container py-5" style="display:none; max-width:700px;">
+      <h2 class="mb-3 text-center">Your Personalized Learning Feed</h2>
+      <div id="feed-container" class="overflow-auto" style="max-height:70vh;"></div>
+      <div class="mt-4 text-center">
+        <button class="btn btn-outline-secondary" onclick="showScreen('welcome-screen')">Back</button>
+      </div>
+    </div>
+
     <!-- Modular JS Scripts -->
     <script src="js/screens.js"></script>
     <script src="js/storage.js"></script>
@@ -331,6 +340,7 @@
     <script type="module" src="js/projectTrackerUI.js"></script>
     <script type="module" src="js/quizUI.js"></script>
     <script type="module" src="js/roadmapUI.js"></script>
+    <script type="module" src="js/feedUI.js"></script>
 
 </body>
 </html>
