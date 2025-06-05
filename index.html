@@ -57,32 +57,6 @@
             background-color: #155ab6;
         }
     </style>
-
-<h2 class="mb-3">Welcome back, <span id="userGreetingName">Learner</span>!</h2>
-
-
-    <script>
-        // Function to handle screen transitions
-        function showScreen(id) {
-            const screens = document.querySelectorAll('div[id$="-screen"]');
-            screens.forEach(div => div.style.display = "none");
-            document.getElementById(id).style.display = "block";
-        }
-        document.addEventListener("DOMContentLoaded", function() {
-            showScreen('welcome-screen'); // Show welcome screen on load
-        });
-    </script>
-    <script>
-    // Function to handle screen transitions
-    function showScreen(id) {
-    const screens = document.querySelectorAll('div[id$="-screen"]');
-    screens.forEach(div => div.style.display = "none");
-    document.getElementById(id).style.display = "block";
-}
-    </script>
-
-
-
 </head>
 <body class="bg-light">
 
@@ -103,7 +77,7 @@
             <div class="col-md-6">
                 <h2 class="mb-3">Tell Us About You</h2>
                 <p class="mb-4">Please fill in your details to personalize your experience.</p>
-                <form>
+                <form id="user-info-form">
                     <div class="mb-3">
                         <label for="userName" class="form-label">Name</label>
                         <input type="text" class="form-control" id="userName" placeholder="Enter your name">
@@ -122,7 +96,7 @@
                             <option>Other</option>
                         </select>
                     </div>
-                    <button type="button" class="btn btn-primary" onclick="storeUserData()">Next</button>
+                    <button type="button" class="btn btn-primary" id="user-info-next-btn">Next</button>
                 </form>
             </div>
         </div>
@@ -138,6 +112,7 @@
                     <button class="btn btn-success btn-lg" onclick="showScreen('academic-subject-screen')">I Have an Ambition</button>
                     <button class="btn btn-outline-primary btn-lg" onclick="showScreen('explore-screen')">Explore My Options</button>
                 </div>
+                <button class="btn btn-link mt-3" id="logout-btn">Log out</button>
             </div>
         </div>
     </div>
@@ -267,48 +242,10 @@
         </div>
     </div>
 
-    <!-- SPA Navigation Script -->
-    <script>
-        function showScreen(id) {
-            const screens = document.querySelectorAll('div[id$="-screen"]');
-            screens.forEach(div => div.style.display = "none");
-            document.getElementById(id).style.display = "block";
-        }
-    </script>
-    <script>
-        function storeUserData() {
-            const name = document.getElementById('userName').value;
-            const age = document.getElementById('userAge').value;
-            const educationLevel = document.getElementById('educationLevel').value;
-
-            if (name && age && educationLevel) {
-                localStorage.setItem('userName', name);
-                localStorage.setItem('userAge', age);
-                localStorage.setItem('educationLevel', educationLevel);
-                showScreen('ambition-choice-screen');
-            } else {
-                alert("Please fill in all fields.");
-            }
-        }
-    </script>
-    <script>
-        // Display user's name on the ambition-choice-screen
-        document.addEventListener("DOMContentLoaded", function() {
-            const userName = localStorage.getItem('userName');
-            if (userName) {
-                const greeting = document.getElementById('personal-greeting');
-                if (greeting) {
-                    greeting.textContent = `Welcome, ${userName}! What's Your Learning Path?`;
-                }
-            }
-        });
-    </script>
-<button type="button" class="btn btn-primary" onclick="saveUserInfo(); showScreen('ambition-choice-screen')">Next</button>
-
-<!-- Modular JS Scripts -->
-<script src="js/screens.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/events.js"></script>
+    <!-- Modular JS Scripts -->
+    <script src="js/screens.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/events.js"></script>
 
 </body>
 </html>

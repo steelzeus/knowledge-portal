@@ -1,0 +1,19 @@
+{
+  "backend developer": {
+    "Intro to Web": ["HTML", "CSS", "JavaScript Basics"],
+    "Servers & APIs": ["Node.js", "Express", "REST APIs"],
+    "Databases": ["MongoDB", "PostgreSQL"],
+    "Advanced Topics": ["Authentication", "Security", "DevOps Basics"]
+  },
+  "jee prep": {
+    "Physics": ["Mechanics", "Thermodynamics", "Electromagnetism"],
+    "Math": ["Algebra", "Calculus", "Probability"],
+    "Chemistry": ["Physical", "Organic", "Inorganic"]
+  },
+  "ml from scratch": {
+    "Math Foundations": ["Linear Algebra", "Probability & Stats", "Calculus Basics"],
+    "Programming": ["Python Basics", "Numpy & Pandas", "Data Visualization"],
+    "ML Core": ["Supervised Learning", "Unsupervised Learning", "Model Evaluation"],
+    "Projects": ["Regression Project", "Classification Project"]
+  }
+}

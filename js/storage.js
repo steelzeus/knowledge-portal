@@ -6,41 +6,18 @@
 // USER DATA STORAGE
 // ============================================
 
-// Main function to save user information
-function saveUserInfo() {
-    const name = document.getElementById("userName")?.value.trim();
-    const age = document.getElementById("userAge")?.value.trim();
-    const level = document.getElementById("educationLevel")?.value;
-
-    // Validation before storing
-    if (!name || !age || !level) {
-        alert("Please fill out all fields!");
-        return false;
-    }
-
-    // Age validation
-    const ageNum = parseInt(age);
-    if (isNaN(ageNum) || ageNum < 1 || ageNum > 120) {
-        alert("Please enter a valid age between 1 and 120!");
-        return false;
-    }
-
-    // Create user info object
-    const userInfo = { 
-        name: name, 
-        age: ageNum, 
-        level: level,
-        timestamp: new Date().toISOString() // Track when data was saved
-    };
-    
-    // Store in localStorage
-    try {
-        localStorage.setItem("userInfo", JSON.stringify(userInfo));
-        console.log("User info saved:", userInfo);
+// Save user info to localStorage
+export function saveUserInfo() {
+    const name = document.getElementById('userName').value.trim();
+    const age = document.getElementById('userAge').value.trim();
+    const educationLevel = document.getElementById('educationLevel').value;
+    if (name && age && educationLevel && educationLevel !== 'Select one') {
+        localStorage.setItem('userName', name);
+        localStorage.setItem('userAge', age);
+        localStorage.setItem('educationLevel', educationLevel);
         return true;
-    } catch (error) {
-        console.error("Error saving user info:", error);
-        alert("Error saving user information. Please try again.");
+    } else {
+        alert('Please fill in all fields.');
         return false;
     }
 }
