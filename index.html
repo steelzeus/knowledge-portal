@@ -358,6 +358,7 @@
     <script type="module" src="js/roadmapUI.js"></script>
     <script type="module" src="js/feedUI.js"></script>
     <script type="module" src="js/mentor.js"></script>
+    <script type="module" src="js/subjectRouter.js"></script>
     <script>
       // Universal showScreen function for navigation
       function showScreen(screenId) {
@@ -411,6 +412,8 @@
         window.goToRoadmap = function() { showScreen('roadmap-screen'); };
         // Feed
         window.goToFeed = function() { showScreen('feed-screen'); };
+        // Modular Subject Architecture
+        window.goToModularSubjects = function() { showScreen('modular-subject-screen'); };
         // Mentor Chat Icon (FAB) and Chat Window
         const mentorFab = document.getElementById('mentor-fab');
         const mentorAvatar = document.getElementById('mentor-avatar');
@@ -422,6 +425,32 @@
           document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') mentorAvatar.style.display = 'none';
           });
+        }
+      });
+    </script>
+
+    <!-- Modular Subject Architecture -->
+    <div id="modular-subject-screen" class="container py-5" style="display:none;">
+      <h2 class="mb-3 text-center">Subjects</h2>
+      <div id="subject-list" class="mb-4 d-flex flex-wrap justify-content-center"></div>
+      <div class="card">
+        <div class="card-header bg-light">
+          <span id="subject-section-title" class="fw-bold"></span>
+          <nav class="nav nav-tabs mt-3" id="subject-tabs"></nav>
+        </div>
+        <div class="card-body" id="subject-section-content"></div>
+      </div>
+      <div class="text-center mt-4">
+        <button class="btn btn-outline-secondary" onclick="showScreen('welcome-screen')">Back to Home</button>
+      </div>
+    </div>
+    <script type="module">
+      import { renderSubjectList, showSubject } from './js/subjectRouter.js';
+      document.addEventListener('DOMContentLoaded', () => {
+        if (document.getElementById('modular-subject-screen')) {
+          renderSubjectList();
+          // Optionally show first subject by default
+          showSubject('cs');
         }
       });
     </script>
