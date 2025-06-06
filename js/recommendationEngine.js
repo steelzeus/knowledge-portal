@@ -2,48 +2,7 @@
 // Content recommendation engine for learning portal
 // No DOM, ES6 module, localStorage for persistence, upgradeable to cloud
 
-// =====================
-// Dummy Content Database
-// =====================
-let CONTENT_DB = [];
-
-/**
- * Loads a local dummy dataset of content items into memory.
- * Each item: { id, title, type, tags, difficulty, popularity, duration }
- */
-export function initContentDatabase() {
-    CONTENT_DB = [
-        // Computer Science
-        { id: 'cs_proj_1', title: 'Build a Calculator', type: 'project', tags: ['beginner','javascript','logic'], difficulty: 1, popularity: 85, duration: 30 },
-        { id: 'cs_vid_1', title: 'Intro to Programming', type: 'video', tags: ['beginner','cs','basics'], difficulty: 1, popularity: 90, duration: 15 },
-        { id: 'cs_read_1', title: 'Variables and Data Types', type: 'reading', tags: ['beginner','cs','variables'], difficulty: 1, popularity: 80, duration: 10 },
-        { id: 'cs_quiz_1', title: 'Quiz: Programming Basics', type: 'quiz', tags: ['beginner','quiz','cs'], difficulty: 1, popularity: 70, duration: 10 },
-        { id: 'cs_proj_2', title: 'Build a To-Do List', type: 'project', tags: ['intermediate','javascript','dom'], difficulty: 2, popularity: 75, duration: 45 },
-        { id: 'cs_vid_2', title: 'Functions in JS', type: 'video', tags: ['intermediate','functions','javascript'], difficulty: 2, popularity: 80, duration: 20 },
-        { id: 'cs_read_2', title: 'Control Flow', type: 'reading', tags: ['intermediate','logic','cs'], difficulty: 2, popularity: 70, duration: 15 },
-        { id: 'cs_quiz_2', title: 'Quiz: Functions', type: 'quiz', tags: ['intermediate','quiz','functions'], difficulty: 2, popularity: 65, duration: 10 },
-        { id: 'cs_proj_3', title: 'Build a Weather App', type: 'project', tags: ['advanced','api','javascript'], difficulty: 3, popularity: 60, duration: 60 },
-        { id: 'cs_vid_3', title: 'OOP in JS', type: 'video', tags: ['advanced','oop','javascript'], difficulty: 3, popularity: 70, duration: 25 },
-        // Mathematics
-        { id: 'math_vid_1', title: 'Algebra Basics', type: 'video', tags: ['beginner','math','algebra'], difficulty: 1, popularity: 85, duration: 20 },
-        { id: 'math_read_1', title: 'Numbers and Operations', type: 'reading', tags: ['beginner','math','numbers'], difficulty: 1, popularity: 80, duration: 10 },
-        { id: 'math_quiz_1', title: 'Quiz: Algebra', type: 'quiz', tags: ['beginner','quiz','algebra'], difficulty: 1, popularity: 75, duration: 10 },
-        { id: 'math_proj_1', title: 'Graph Plotter', type: 'project', tags: ['intermediate','math','graph'], difficulty: 2, popularity: 70, duration: 40 },
-        { id: 'math_vid_2', title: 'Calculus Intro', type: 'video', tags: ['advanced','math','calculus'], difficulty: 3, popularity: 65, duration: 30 },
-        { id: 'math_read_2', title: 'Trigonometry', type: 'reading', tags: ['intermediate','math','trig'], difficulty: 2, popularity: 60, duration: 15 },
-        { id: 'math_quiz_2', title: 'Quiz: Trigonometry', type: 'quiz', tags: ['intermediate','quiz','trig'], difficulty: 2, popularity: 55, duration: 10 },
-        { id: 'math_proj_2', title: 'Math Game', type: 'project', tags: ['advanced','math','game'], difficulty: 3, popularity: 50, duration: 50 },
-        // Physics
-        { id: 'phy_vid_1', title: 'Newton’s Laws', type: 'video', tags: ['beginner','physics','motion'], difficulty: 1, popularity: 80, duration: 20 },
-        { id: 'phy_read_1', title: 'Energy and Work', type: 'reading', tags: ['beginner','physics','energy'], difficulty: 1, popularity: 75, duration: 10 },
-        { id: 'phy_quiz_1', title: 'Quiz: Motion', type: 'quiz', tags: ['beginner','quiz','motion'], difficulty: 1, popularity: 70, duration: 10 },
-        { id: 'phy_proj_1', title: 'Pendulum Simulator', type: 'project', tags: ['intermediate','physics','sim'], difficulty: 2, popularity: 65, duration: 45 },
-        { id: 'phy_vid_2', title: 'Thermodynamics', type: 'video', tags: ['advanced','physics','thermo'], difficulty: 3, popularity: 60, duration: 25 },
-        { id: 'phy_read_2', title: 'Waves', type: 'reading', tags: ['intermediate','physics','waves'], difficulty: 2, popularity: 55, duration: 15 },
-        { id: 'phy_quiz_2', title: 'Quiz: Thermo', type: 'quiz', tags: ['advanced','quiz','thermo'], difficulty: 3, popularity: 50, duration: 10 },
-        { id: 'phy_proj_2', title: 'Build a Simple Motor', type: 'project', tags: ['advanced','physics','motor'], difficulty: 3, popularity: 45, duration: 60 }
-    ];
-}
+import { subjects as SUBJECTS } from './subjectConfig.js';
 
 // =====================
 // Simulated User Profiles
@@ -129,37 +88,165 @@ export function scoreContent(user, content, history = {}) {
 }
 
 /**
- * Recommend top N content items for a user
- * @param {string} userId
- * @param {number} limit
- * @returns {Array} recommended content
+ * Get user profile from localStorage (or defaults)
+ * @returns {object} profile
  */
-export function recommendContent(userId, limit = 5) {
-    const user = getUserProfile(userId);
-    if (!user) return [];
-    // Load completed from localStorage if present
-    const completed = JSON.parse(localStorage.getItem(`completed_${userId}`)) || user.completed || [];
-    // Build history for diversity
-    const history = { typeCounts: {} };
-    completed.forEach(cid => {
-        const c = CONTENT_DB.find(x => x.id === cid);
-        if (c) history.typeCounts[c.type] = (history.typeCounts[c.type] || 0) + 1;
+function getUserProfile() {
+  return {
+    name: localStorage.getItem('userName') || '',
+    age: localStorage.getItem('userAge') || '',
+    educationLevel: localStorage.getItem('educationLevel') || '',
+    ambitions: JSON.parse(localStorage.getItem('userAmbitions') || '[]'),
+    subjects: JSON.parse(localStorage.getItem('userSubjects') || '[]'),
+  };
+}
+
+/**
+ * Get user interaction history from localStorage
+ * @returns {object} history
+ */
+function getUserHistory() {
+  return JSON.parse(localStorage.getItem('userHistory') || '{}');
+}
+
+/**
+ * Add or update a user interaction in localStorage
+ * @param {string} type - interaction type (e.g., 'resourceClick')
+ * @param {string} id - resource or content ID
+ */
+export function addUserInteraction(type, id) {
+  const history = getUserHistory();
+  if (!history[type]) history[type] = {};
+  history[type][id] = (history[type][id] || 0) + 1;
+  localStorage.setItem('userHistory', JSON.stringify(history));
+}
+
+/**
+ * Get recommended resources based on user profile and history
+ * @returns {Array} recommended resources
+ */
+export function getRecommendedResources() {
+  const profile = getUserProfile();
+  const history = getUserHistory();
+  let recs = [];
+  // Content-based: recommend resources from selected subjects/ambitions
+  profile.subjects.forEach(subjId => {
+    const subj = SUBJECTS.find(s => s.id === subjId);
+    if (subj && subj.sections) {
+      subj.sections.forEach(sectionName => {
+        // Dummy resource structure for demo
+        recs.push({
+          id: `${subj.id}_${sectionName}`,
+          title: `${sectionName} in ${subj.name}`,
+          type: sectionName,
+          subject: subj.name,
+          section: sectionName,
+          description: `Explore ${sectionName} resources in ${subj.name}.`,
+          reason: `Because you selected ${subj.name}`
+        });
+      });
+    }
+  });
+  // Trending: most clicked by user
+  let trending = [];
+  if (history['resourceClick']) {
+    trending = Object.entries(history['resourceClick'])
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([id]) => {
+        for (const subj of SUBJECTS) {
+          for (const sectionName of subj.sections) {
+            if (`${subj.id}_${sectionName}` === id) {
+              return {
+                id,
+                title: `${sectionName} in ${subj.name}`,
+                type: sectionName,
+                subject: subj.name,
+                section: sectionName,
+                description: `Explore ${sectionName} resources in ${subj.name}.`,
+                reason: 'Trending Project'
+              };
+            }
+          }
+        }
+        return null;
+      })
+      .filter(Boolean);
+  }
+  // Remove duplicates
+  const seen = new Set();
+  recs = recs.filter(r => {
+    if (seen.has(r.id)) return false;
+    seen.add(r.id);
+    return true;
+  });
+  // Add trending
+  recs = recs.concat(trending.filter(r => !seen.has(r.id)));
+  return recs;
+}
+
+/**
+ * Render recommendations to the page
+ * @param {string} containerId - HTML element ID to contain recommendations
+ */
+export function renderRecommendations(containerId = 'recommendation-container') {
+  const recs = getRecommendedResources();
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  if (!recs.length) {
+    container.innerHTML = '<div class="alert alert-info">No recommendations yet. Start exploring subjects!</div>';
+    return;
+  }
+  // Group by reason
+  const groups = {};
+  recs.forEach(r => {
+    if (!groups[r.reason]) groups[r.reason] = [];
+    groups[r.reason].push(r);
+  });
+  Object.entries(groups).forEach(([reason, group]) => {
+    const section = document.createElement('div');
+    section.className = 'mb-4';
+    section.innerHTML = `<h4 class="mb-3">${reason}</h4><div class="row g-3"></div>`;
+    const row = section.querySelector('.row');
+    group.forEach(resource => {
+      const card = document.createElement('div');
+      card.className = 'col-md-6 col-lg-4';
+      card.innerHTML = `
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fa fa-book fa-2x me-2 text-primary"></i>
+              <h5 class="card-title mb-0">${resource.title}</h5>
+            </div>
+            <div class="mb-2"><span class="badge bg-secondary">${resource.type}</span> <span class="badge bg-info">${resource.subject}</span></div>
+            <p class="card-text">${resource.description || ''}</p>
+            <div class="progress mb-2" style="height:8px;">
+              <div class="progress-bar" role="progressbar" style="width:0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <button class="btn btn-primary btn-sm" data-resource-id="${resource.id}">Go to Resource</button>
+          </div>
+        </div>
+      `;
+      row.appendChild(card);
     });
-    // Filter out completed
-    const candidates = CONTENT_DB.filter(c => !completed.includes(c.id));
-    // Score and sort
-    const scored = candidates.map(c => ({ ...c, score: scoreContent(user, c, history) }));
-    scored.sort((a,b) => b.score - a.score);
-    // Time fit: filter to those <= availableTime, but always return at least 1
-    const timeFit = scored.filter(c => c.duration <= user.availableTime);
-    return (timeFit.length ? timeFit : scored).slice(0, limit);
+    container.appendChild(section);
+  });
+  // CTA button handlers
+  container.querySelectorAll('button[data-resource-id]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const id = btn.getAttribute('data-resource-id');
+      addUserInteraction('resourceClick', id);
+      // Optionally, navigate to resource (modular subject UI)
+      // You can call showScreen('modular-subject-screen') and load the resource
+    });
+  });
 }
 
 // =====================
 // Test Cases (console)
 // =====================
 if (typeof window !== 'undefined') {
-    initContentDatabase();
     console.log('User1 recommendations:', recommendContent('user1'));
     console.log('User2 recommendations:', recommendContent('user2'));
     console.log('User3 recommendations:', recommendContent('user3'));

@@ -36,95 +36,292 @@
     <!-- Manifest -->
     <link rel="manifest" href="https://example.com/manifest.json">
     
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/v4-shims.min.css">
-
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS Animation -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <!-- Custom Theme CSS -->
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-        }
-        h1, h2 {
-            color: #0056b3;
-        }
-        .btn-primary {
-            background-color: #1a73e8;
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color: #155ab6;
-        }
+      :root {
+        --primary: #0a2342;
+        --accent: #00ff99;
+        --bg: #f8fafd;
+        --card-bg: #fff;
+        --dark-bg: #181c24;
+        --header-height: 64px;
+        --radius: 1.5rem;
+        --shadow: 0 4px 24px rgba(10,35,66,0.08);
+        --font-main: 'Poppins', 'Segoe UI', Arial, sans-serif;
+      }
+      html, body {
+        font-family: var(--font-main);
+        background: var(--bg);
+        color: var(--primary);
+        min-height: 100vh;
+      }
+      .glow-btn {
+        background: linear-gradient(90deg, #00ff99 0%, #00cfff 100%);
+        color: #fff;
+        box-shadow: 0 0 16px #00ff99cc, 0 2px 8px #0a234233;
+        border: none;
+        border-radius: var(--radius);
+        font-weight: 700;
+        font-size: 1.2rem;
+        transition: box-shadow 0.2s, transform 0.2s;
+      }
+      .glow-btn:hover, .glow-btn:focus {
+        box-shadow: 0 0 32px #00ff99cc, 0 4px 16px #0a234266;
+        transform: translateY(-2px) scale(1.03);
+      }
+      .card {
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: none;
+        background: var(--card-bg);
+        transition: box-shadow 0.2s, transform 0.2s;
+      }
+      .card:hover {
+        box-shadow: 0 8px 32px #00ff9933, 0 2px 8px #0a234233;
+        transform: translateY(-2px) scale(1.01);
+      }
+      .btn, .form-control, .form-select {
+        border-radius: var(--radius);
+      }
+      .btn-primary, .btn-outline-primary {
+        background: var(--primary);
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        transition: background 0.2s, color 0.2s;
+      }
+      .btn-primary:hover, .btn-outline-primary:hover {
+        background: var(--accent);
+        color: var(--primary);
+      }
+      .btn-outline-primary {
+        background: #fff !important;
+        color: #0a2342 !important;
+        border: 2px solid #00cfff !important;
+        font-weight: 700;
+        box-shadow: 0 2px 8px #00cfff33;
+      }
+      .btn-outline-primary:hover, .btn-outline-primary:focus {
+        background: #00cfff !important;
+        color: #fff !important;
+        border-color: #00cfff !important;
+      }
+      .btn-success {
+        background: #00ff99 !important;
+        color: #0a2342 !important;
+        border: 2px solid #00ff99 !important;
+        font-weight: 700;
+        box-shadow: 0 2px 8px #00ff9933;
+      }
+      .btn-success:hover, .btn-success:focus {
+        background: #0a2342 !important;
+        color: #fff !important;
+        border-color: #0a2342 !important;
+      }
+      .subject-icon {
+        font-size: 2.5rem;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+        filter: drop-shadow(0 0 6px #00ff9955);
+      }
+      .navbar {
+        background: var(--primary);
+        color: #fff;
+        height: var(--header-height);
+        box-shadow: 0 2px 12px #0a234233;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: #00ff99 !important;
+        letter-spacing: 1px;
+      }
+      .profile-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #fff;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        box-shadow: 0 2px 8px #0a234233;
+      }
+      .dark-mode {
+        background: var(--dark-bg) !important;
+        color: #fff !important;
+      }
+      .dark-mode .card {
+        background: #23283a;
+        color: #fff;
+      }
+      .dark-mode .navbar {
+        background: #181c24;
+        color: #fff;
+      }
+      .dark-mode .btn-primary, .dark-mode .btn-outline-primary {
+        background: #00ff99;
+        color: #181c24;
+      }
+      .dark-mode .glow-btn {
+        background: linear-gradient(90deg, #00ff99 0%, #00cfff 100%);
+        color: #181c24;
+      }
+      .transition-fade {
+        opacity: 1;
+        transition: opacity 0.5s;
+      }
+      .transition-fade.hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+      /* Header/Navbar styles */
+      .navbar {
+        padding: 0.5rem 1rem;
+      }
+      .navbar-brand img {
+        filter: drop-shadow(0 0 6px #00ff99);
+      }
+      /* Welcome Screen */
+      #welcome-screen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 4rem 1rem;
+        background: linear-gradient(135deg, #007bff 0%, #00cfff 100%);
+        color: #fff;
+      }
+      #welcome-screen h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+      #welcome-screen p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+      }
+      /* AOS Animation */
+      [data-aos] {
+        opacity: 0;
+        transition-property: opacity, transform;
+      }
+      [data-aos].aos-animate {
+        opacity: 1;
+      }
+      [data-aos="fade-up"].aos-animate {
+        transform: translateY(0);
+      }
+      [data-aos="fade-up"] {
+        transform: translateY(20px);
+      }
+      /* Responsive tweaks */
+      @media (max-width: 768px) {
+        .navbar-brand { font-size: 1.1rem; }
+        .profile-icon { width: 32px; height: 32px; font-size: 1rem; }
+        .card { margin-bottom: 1rem; }
+        #welcome-screen h1 { font-size: 2rem; }
+        #welcome-screen p { font-size: 1rem; }
+      }
+      #ambition-choice-screen .d-grid {
+        background: #fff;
+        border-radius: 1.5rem;
+        padding: 2rem 1rem;
+        box-shadow: 0 4px 24px #00cfff22;
+      }
     </style>
 </head>
 <body class="bg-light">
+  <!-- Header/Navbar -->
+  <nav class="fixed-top shadow-sm navbar navbar-expand-lg">
+    <div class="px-4 container-fluid">
+      <a class="d-flex align-items-center navbar-brand" href="#">
+        <img src="assets/images/icons/logo.png" alt="Logo" style="height:36px;width:36px;margin-right:10px;filter:drop-shadow(0 0 6px #00ff99);">
+        Knowledge Portal
+      </a>
+      <div class="d-flex align-items-center ms-auto">
+        <button id="theme-toggle" class="me-3 btn-outline-primary btn" aria-label="Toggle dark mode"><i class="fa fa-moon"></i></button>
+        <div class="ms-2 profile-icon" title="Profile"><i class="fa fa-user"></i></div>
+      </div>
+    </div>
+  </nav>
+  <div style="height:var(--header-height);"></div>
 
     <!-- Welcome Screen -->
-    <div id="welcome-screen" class="container py-5" style="display:block;">
-        <div class="row justify-content-center">
-            <div class="col-md-8 text-center">
-                <h1 class="mb-4">Welcome to The One-Stop Knowledge Portal</h1>
-                <p class="lead mb-4">Your personalized platform to explore learning resources and achieve your ambitions.</p>
-                <button class="btn btn-primary btn-lg" id="get-started-button">Get Started</button>
-            </div>
+    <div id="welcome-screen" class="py-5 transition-fade container" style="display:block;max-width:900px;">
+      <div class="align-items-center justify-content-center row" style="min-height:60vh;">
+        <div class="text-center col-lg-7" data-aos="fade-up">
+          <h1 class="mb-4 fw-bold" style="font-size:2.5rem;">Welcome to <span style="color:var(--accent)">The One-Stop Knowledge Portal</span></h1>
+          <p class="mb-4 lead">Your personalized platform to explore learning resources and achieve your ambitions.</p>
+          <button class="mt-2 px-5 py-3 glow-btn btn-lg" id="get-started-button">Get Started</button>
         </div>
+      </div>
     </div>
 
     <!-- User Info Screen -->
-    <div id="user-info-screen" class="container py-5" style="display:none;">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h2 class="mb-3">Tell Us About You</h2>
-                <p class="mb-4">Please fill in your details to personalize your experience.</p>
-                <form id="user-info-form">
-                    <div class="mb-3">
-                        <label for="userName" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="userName" placeholder="Enter your name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="userAge" class="form-label">Age</label>
-                        <input type="number" class="form-control" id="userAge" placeholder="Enter your age">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Education Level</label>
-                        <select class="form-select" id="educationLevel">
-                            <option selected disabled>Select one</option>
-                            <option>High School</option>
-                            <option>Undergraduate</option>
-                            <option>Graduate</option>
-                            <option>Other</option>
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-primary" id="user-info-next-btn">Next</button>
-                </form>
-            </div>
-        </div>
+    <div id="user-info-screen" class="py-5 transition-fade container" style="display:none;max-width:600px;">
+      <div class="shadow-lg p-4 card" data-aos="zoom-in">
+        <h2 class="mb-3 text-center fw-bold">Tell Us About You</h2>
+        <p class="mb-4 text-center">Please fill in your details to personalize your experience.</p>
+        <form id="user-info-form">
+          <div class="mb-3">
+            <label for="userName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="userName" placeholder="Enter your name">
+          </div>
+          <div class="mb-3">
+            <label for="userAge" class="form-label">Age</label>
+            <input type="number" class="form-control" id="userAge" placeholder="Enter your age">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Education Level</label>
+            <select class="form-select" id="educationLevel">
+              <option selected disabled>Select one</option>
+              <option>High School</option>
+              <option>Undergraduate</option>
+              <option>Graduate</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <button type="button" class="py-2 w-100 glow-btn" id="user-info-next-btn">Next</button>
+        </form>
+      </div>
     </div>
 
     <!-- Ambition Choice Screen -->
-    <div id="ambition-choice-screen" class="container py-5" style="display:none;">
-        <div class="row justify-content-center">
-            <div class="col-md-8 text-center">
+    <div id="ambition-choice-screen" class="py-5 container" style="display:none;">
+        <div class="justify-content-center row">
+            <div class="text-center col-md-8">
                 <h2 class="mb-3" id="personal-greeting">What's Your Learning Path?</h2>
                 <p class="mb-4">Choose how you'd like to explore resources.</p>
-                <div class="d-grid gap-3 col-6 mx-auto">
-                    <button class="btn btn-success btn-lg" onclick="showScreen('academic-subject-screen')">I Have an Ambition</button>
-                    <button class="btn btn-outline-primary btn-lg" onclick="showScreen('explore-screen')">Explore My Options</button>
+                <div class="gap-3 d-grid mx-auto w-100" style="min-width:220px;min-height:120px;">
+                  <button class="mb-3 btn-outline-primary btn btn-lg" type="button" data-goto="modular-subject-screen">Explore My Options</button>
+                  <button class="btn btn-success btn-lg" type="button" data-goto="academic-subject-screen">I Have an Ambition</button>
                 </div>
-                <button class="btn btn-link mt-3" id="logout-btn">Log out</button>
+                <button class="mt-3 btn btn-link" id="logout-btn">Log out</button>
             </div>
         </div>
     </div>
 
     <!-- Academic Subject Screen -->
-    <div id="academic-subject-screen" class="container py-5" style="display:none;">
+    <div id="academic-subject-screen" class="py-5 container" style="display:none;">
         <h2 class="mb-3 text-center">Choose a Subject</h2>
         <p class="mb-4 text-center">Select a subject to see tailored resources. (Only Computer Science is functional.)</p>
-        <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+        <div class="justify-content-center row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
-                <div class="card h-100 border-primary">
-                    <div class="card-body text-center">
+                <div class="border-primary h-100 card">
+                    <div class="text-center card-body">
                         <h5 class="card-title">Computer Science</h5>
                         <p class="card-text">Programming, algorithms, and more.</p>
                         <button class="btn btn-primary" onclick="showScreen('subject-detail-screen')">Select</button>
@@ -132,8 +329,8 @@
                 </div>
             </div>
             <div class="col">
-                <div class="card h-100">
-                    <div class="card-body text-center">
+                <div class="h-100 card">
+                    <div class="text-center card-body">
                         <h5 class="card-title">Mathematics</h5>
                         <p class="card-text">Coming soon...</p>
                         <button class="btn btn-secondary" disabled>Coming Soon</button>
@@ -141,8 +338,8 @@
                 </div>
             </div>
             <div class="col">
-                <div class="card h-100">
-                    <div class="card-body text-center">
+                <div class="h-100 card">
+                    <div class="text-center card-body">
                         <h5 class="card-title">Physics</h5>
                         <p class="card-text">Coming soon...</p>
                         <button class="btn btn-secondary" disabled>Coming Soon</button>
@@ -150,57 +347,53 @@
                 </div>
             </div>
         </div>
-        <div class="text-center mt-4">
-            <button class="btn btn-outline-secondary" onclick="showScreen('ambition-choice-screen')">Back</button>
+        <div class="mt-4 text-center">
+            <button class="btn-outline-secondary btn" onclick="showScreen('ambition-choice-screen')">Back</button>
         </div>
     </div>
 
-    <!-- Subject Detail Screen -->
-    <div id="subject-detail-screen" class="container py-5" style="display:none;">
-        <h2 class="mb-3 text-center">Computer Science Resources</h2>
-        <p class="mb-4 text-center">Dive into different aspects of Computer Science.</p>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="nav nav-tabs mb-3">
-                    <button class="nav-link" type="button" disabled>Exams</button>
-                    <button class="nav-link" type="button" disabled>Theory</button>
-                    <button class="nav-link active" type="button">Projects</button>
-                </div>
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Projects</h5>
-                        <p class="card-text">Start with a hands-on project to apply your knowledge.</p>
-                        <button class="btn btn-primary" onclick="goToProjectMentorSystem()">Project Mentor System</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Quiz & Practice</h5>
-                        <p class="card-text">Test your knowledge and earn badges.</p>
-                        <button class="btn btn-primary" onclick="goToQuizForge()">QuizForge</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Visual Roadmap</h5>
-                        <p class="card-text">See your personalized learning journey.</p>
-                        <button class="btn btn-primary" onclick="goToRoadmap()">Curriculum Map</button>
-                    </div>
-                </div>
-                <div class="text-center mt-4">
-                    <button class="btn btn-outline-secondary" onclick="showScreen('academic-subject-screen')">Back</button>
-                </div>
-            </div>
+    <!-- Subject Detail Immersive Learning Hub -->
+    <div id="subject-detail-screen" class="py-5 transition-fade container-fluid" style="display:none;max-width:100vw;">
+      <div class="justify-content-center row">
+        <!-- Collapsible Sidebar -->
+        <div class="mb-4 col-lg-3 col-md-4">
+          <div class="shadow-lg mb-4 p-3 rounded-4 glass-sidebar" id="subject-sidebar" style="min-height:400px;">
+            <button class="mb-3 btn-outline-primary w-100 btn d-lg-none" id="sidebar-toggle"><i class="fa fa-bars"></i> Topics</button>
+            <h5 class="mb-3 fw-bold">Topics</h5>
+            <ul class="flex-column gap-2 nav" id="sidebar-topic-list"></ul>
+          </div>
         </div>
+        <!-- Main Content -->
+        <div class="col-lg-9 col-md-8">
+          <div class="shadow-lg p-4 rounded-4 glass-main">
+            <h2 class="mb-3 fw-bold" id="subject-detail-title"></h2>
+            <!-- Animated Tabs -->
+            <ul class="mb-4 nav nav-tabs nav-justified glass-tabs" id="subject-tabs" role="tablist">
+              <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-exams" data-bs-toggle="tab" data-bs-target="#tab-content-exams" type="button" role="tab">Exams</button></li>
+              <li class="nav-item" role="presentation"><button class="nav-link" id="tab-theory" data-bs-toggle="tab" data-bs-target="#tab-content-theory" type="button" role="tab">Theory</button></li>
+              <li class="nav-item" role="presentation"><button class="nav-link" id="tab-projects" data-bs-toggle="tab" data-bs-target="#tab-content-projects" type="button" role="tab">Projects</button></li>
+              <li class="nav-item" role="presentation"><button class="nav-link" id="tab-videos" data-bs-toggle="tab" data-bs-target="#tab-content-videos" type="button" role="tab">Videos</button></li>
+              <li class="nav-item" role="presentation"><button class="nav-link" id="tab-flashcards" data-bs-toggle="tab" data-bs-target="#tab-content-flashcards" type="button" role="tab">Flashcards</button></li>
+            </ul>
+            <div class="tab-content" id="subject-tab-content">
+              <div class="tab-pane fade show active" id="tab-content-exams" role="tabpanel"></div>
+              <div class="tab-pane fade" id="tab-content-theory" role="tabpanel"></div>
+              <div class="tab-pane fade" id="tab-content-projects" role="tabpanel"></div>
+              <div class="tab-pane fade" id="tab-content-videos" role="tabpanel"></div>
+              <div class="tab-pane fade" id="tab-content-flashcards" role="tabpanel"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Project Detail Screen -->
-    <div id="project-detail-screen" class="container py-5" style="display:none;">
-        <div class="row justify-content-center">
+    <div id="project-detail-screen" class="py-5 container" style="display:none;">
+        <div class="justify-content-center row">
             <div class="col-md-8">
                 <h2 class="mb-3">Sample Project: Build a Calculator</h2>
                 <p class="mb-4">Apply your programming skills by building a simple calculator app. This project will help you practice variables, functions, and user input/output.</p>
-                <div class="card mb-3">
+                <div class="mb-3 card">
                     <div class="card-body">
                         <h5 class="card-title">Project Steps</h5>
                         <ol>
@@ -211,7 +404,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button class="btn btn-outline-secondary" onclick="showScreen('subject-detail-screen')">Back</button>
+                    <button class="btn-outline-secondary btn" onclick="showScreen('subject-detail-screen')">Back</button>
                     <button class="btn btn-primary" onclick="showScreen('explore-screen')">Next</button>
                 </div>
             </div>
@@ -219,13 +412,13 @@
     </div>
 
     <!-- Explore Screen -->
-    <div id="explore-screen" class="container py-5" style="display:none;">
+    <div id="explore-screen" class="py-5 container" style="display:none;">
         <h2 class="mb-3 text-center">Explore More Resources</h2>
         <p class="mb-4 text-center">Discover quizzes, books, and articles to deepen your knowledge.</p>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
-                <div class="card h-100">
-                    <div class="card-body text-center">
+                <div class="h-100 card">
+                    <div class="text-center card-body">
                         <h5 class="card-title">Quiz</h5>
                         <p class="card-text">Test your knowledge with interactive quizzes. (Coming soon)</p>
                         <button class="btn btn-secondary" disabled>Start Quiz</button>
@@ -233,8 +426,8 @@
                 </div>
             </div>
             <div class="col">
-                <div class="card h-100">
-                    <div class="card-body text-center">
+                <div class="h-100 card">
+                    <div class="text-center card-body">
                         <h5 class="card-title">Books</h5>
                         <p class="card-text">Browse recommended books for your subject. (Coming soon)</p>
                         <button class="btn btn-secondary" disabled>View Books</button>
@@ -242,8 +435,8 @@
                 </div>
             </div>
             <div class="col">
-                <div class="card h-100">
-                    <div class="card-body text-center">
+                <div class="h-100 card">
+                    <div class="text-center card-body">
                         <h5 class="card-title">Articles</h5>
                         <p class="card-text">Read articles and guides to expand your understanding. (Coming soon)</p>
                         <button class="btn btn-secondary" disabled>Read Articles</button>
@@ -251,32 +444,32 @@
                 </div>
             </div>
         </div>
-        <div class="text-center mt-4">
-            <button class="btn btn-outline-secondary" onclick="showScreen('welcome-screen')">Back to Home</button>
+        <div class="mt-4 text-center">
+            <button class="btn-outline-secondary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
         </div>
     </div>
 
     <!-- Project Mentor System Dashboard -->
-    <div id="project-dashboard-screen" class="container py-5" style="display:none;">
+    <div id="project-dashboard-screen" class="py-5 container" style="display:none;">
         <h2 class="mb-3 text-center">Project Mentor System</h2>
         <div class="mb-3 text-end">
             <button class="btn btn-success" onclick="startNewProject()">Start New Project</button>
         </div>
         <div id="project-dashboard"></div>
         <div class="mt-4 text-center">
-            <button class="btn btn-outline-secondary" onclick="showScreen('subject-detail-screen')">Back</button>
+            <button class="btn-outline-secondary btn" onclick="showScreen('subject-detail-screen')">Back</button>
         </div>
     </div>
 
     <!-- QuizForge UI (inserted from quizUI.html) -->
-    <div id="quizforge-screen" class="container py-5" style="display:none;">
+    <div id="quizforge-screen" class="py-5 container" style="display:none;">
       <h2 class="mb-3 text-center">QuizForge</h2>
       <div class="mb-3 text-end">
         <button class="btn btn-success" onclick="startQuizUI()">Start Quiz</button>
-        <button class="btn btn-outline-primary" onclick="startDailyQuiz()">Daily Quiz</button>
+        <button class="btn-outline-primary btn" onclick="startDailyQuiz()">Daily Quiz</button>
         <button class="btn btn-secondary" onclick="showLeaderboard()">Leaderboard</button>
       </div>
-      <div id="quiz-progress-bar" class="progress mb-3" style="height: 24px;">
+      <div id="quiz-progress-bar" class="mb-3 progress" style="height: 24px;">
         <div class="progress-bar" role="progressbar" style="width: 0%" id="quiz-progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
       </div>
       <div id="quiz-question-carousel"></div>
@@ -300,14 +493,14 @@
     </div>
 
     <!-- Visual Curriculum Map (Roadmap) UI -->
-    <div id="roadmap-screen" class="container py-5" style="display:none;">
-      <h2 class="mb-3 text-center">Your Learning Roadmap</h2>
+    <div id="roadmap-screen" class="py-5 transition-fade container" style="display:none;max-width:1200px;">
+      <h2 class="mb-3 text-center fw-bold" style="color:var(--primary)">Your Learning Roadmap</h2>
       <div class="row">
         <div class="col-md-9">
           <div id="roadmap-container" style="min-height:350px;"></div>
         </div>
         <div class="col-md-3">
-          <div id="roadmap-sidebar" class="border rounded p-3 bg-light"></div>
+          <div id="roadmap-sidebar" class="bg-light p-3 border rounded"></div>
           <div class="mt-3">
             <b>XP:</b> <span id="roadmap-xp">0</span><br>
             <b>Streak:</b> <span id="roadmap-streak">0</span><br>
@@ -320,36 +513,72 @@
         </div>
       </div>
       <div class="mt-4 text-center">
-        <button class="btn btn-outline-secondary" onclick="showScreen('subject-detail-screen')">Back</button>
+        <button class="btn-outline-secondary btn" onclick="showScreen('subject-detail-screen')">Back</button>
       </div>
     </div>
 
-    <!-- Personalized AI Learning Feed -->
-    <div id="feed-screen" class="container py-5" style="display:none; max-width:700px;">
-      <h2 class="mb-3 text-center">Your Personalized Learning Feed</h2>
-      <div id="feed-container" class="overflow-auto" style="max-height:70vh;"></div>
+    <!-- Explore Feed Screen (Pinterest Masonry) -->
+    <div id="feed-screen" class="py-5 transition-fade container" style="display:none;max-width:1200px;">
+      <h2 class="mb-3 text-center fw-bold" style="color:var(--primary)">Explore More Resources</h2>
+      <div id="feed-masonry" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4"></div>
       <div class="mt-4 text-center">
-        <button class="btn btn-outline-secondary" onclick="showScreen('welcome-screen')">Back</button>
+        <button class="btn-outline-secondary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
       </div>
     </div>
 
     <!-- Mentor Chat Avatar UI -->
-    <div id="mentor-avatar" class="mentor-chat rounded shadow position-fixed end-0 bottom-0 m-4 bg-white" style="width:340px;z-index:1050;display:none;">
-      <div class="avatar-header bg-primary text-white p-2 rounded-top">Aria - Your AI Mentor</div>
+    <div id="mentor-avatar" class="bottom-0 position-fixed bg-white shadow m-4 rounded mentor-chat end-0" style="width:340px;z-index:1050;display:none;">
+      <div class="bg-primary p-2 rounded-top text-white avatar-header">Aria - Your AI Mentor</div>
       <div id="chat-body" class="p-3" style="min-height:100px;max-height:220px;overflow-y:auto;">
         <p>👋 Hey, ready for your next Python quest?</p>
       </div>
       <div class="d-flex border-top">
-        <input id="user-input" type="text" class="form-control border-0" placeholder="Ask me anything..." autocomplete="off" />
+        <input id="user-input" type="text" class="border-0 form-control" placeholder="Ask me anything..." autocomplete="off" />
         <button class="btn btn-primary" id="mentor-send-btn"><i class="fa fa-paper-plane"></i></button>
       </div>
     </div>
     <!-- Floating chat icon -->
-    <button id="mentor-fab" class="btn btn-primary rounded-circle shadow position-fixed end-0 bottom-0 m-4" style="width:60px;height:60px;z-index:1040;">
+    <button id="mentor-fab" class="bottom-0 position-fixed shadow m-4 rounded-circle btn btn-primary end-0" style="width:60px;height:60px;z-index:1040;">
       <span class="display-6">💬</span>
     </button>
 
-    <!-- Modular JS Scripts -->
+    <!-- Floating Action Button (Quick Nav) -->
+    <button id="quick-nav-fab" class="bottom-0 position-fixed shadow-lg m-4 rounded-circle btn glow-btn end-0" style="width:64px;height:64px;z-index:1060;">
+      <i class="fa fa-compass fa-lg"></i>
+    </button>
+
+    <!-- Modular Subject Architecture -->
+    <div id="modular-subject-screen" class="py-5 transition-fade container" style="display:none;max-width:1000px;">
+      <h2 class="mb-3 text-center fw-bold" data-aos="fade-down">Subjects</h2>
+      <div id="subject-list" class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+        <!-- Example subject card with icon -->
+        <!--
+        <div class="p-3 text-center card" style="width:140px;" data-aos="fade-up">
+          <div class="mb-2 subject-icon"><i class="fa fa-laptop-code"></i></div>
+          <div class="fw-bold">Computer Science</div>
+        </div>
+        -->
+      </div>
+      <div class="shadow-lg card">
+        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between bg-light card-header">
+          <span id="subject-section-title" class="fw-bold"></span>
+          <nav class="mt-3 mt-md-0 nav nav-tabs" id="subject-tabs"></nav>
+        </div>
+        <div class="card-body" id="subject-section-content"></div>
+      </div>
+      <div class="mt-4 text-center">
+        <button class="btn-outline-primary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
+      </div>
+    </div>
+
+    <!-- Recommendations Dashboard (Home) -->
+    <div id="recommendation-container" class="py-4 transition-fade container" style="display:none;max-width:900px;"></div>
+
+    <!-- Subject Detail Hub Script -->
+    <script type="module" src="js/subjectDetailHub.js"></script>
+
+    <!-- Move all scripts to the end of body for proper loading -->
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
     <script src="js/screens.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/events.js"></script>
@@ -359,24 +588,87 @@
     <script type="module" src="js/feedUI.js"></script>
     <script type="module" src="js/mentor.js"></script>
     <script type="module" src="js/subjectRouter.js"></script>
+    <script type="module" src="js/recommendationEngine.js"></script>
+    <script type="module" src="js/chatbotUI.js"></script>
+    <script type="module" src="js/searchEngine.js"></script>
+    <!-- Modular Subject Screen logic at the end -->
+    <script type="module">
+      import { renderSubjectList, showSubject } from './js/subjectRouter.js';
+      window.renderSubjectList = renderSubjectList;
+      window.showSubject = showSubject;
+      document.addEventListener('DOMContentLoaded', function() {
+        try {
+          window.renderSubjectList && window.renderSubjectList();
+          window.showSubject && window.showSubject('cs');
+        } catch (e) { console.error(e); }
+      });
+    </script>
+
     <script>
       // Universal showScreen function for navigation
       function showScreen(screenId) {
-        // Hide all screens
+        // Hide all screens ending with -screen
         document.querySelectorAll('[id$="-screen"]').forEach(div => div.style.display = 'none');
+        // Hide search container and recommendation container by default
+        const searchContainer = document.getElementById('search-container');
+        if (searchContainer) searchContainer.style.display = 'none';
+        const recContainer = document.getElementById('recommendation-container');
+        if (recContainer) recContainer.style.display = 'none';
         // Show the target screen
         const target = document.getElementById(screenId);
-        if (target) target.style.display = 'block';
+        if (target) {
+          target.style.display = 'block';
+          // Show search UI only on modular-subject-screen
+          if (screenId === 'modular-subject-screen' && searchContainer) {
+            searchContainer.style.display = 'block';
+          }
+          // Show recommendations only on welcome-screen
+          if (screenId === 'welcome-screen' && recContainer) {
+            recContainer.style.display = 'block';
+            // Move recContainer inside welcome-screen if not already
+            if (!document.getElementById('welcome-screen').contains(recContainer)) {
+              document.getElementById('welcome-screen').appendChild(recContainer);
+            }
+          }
+        } else {
+          // Fallback: show welcome screen if invalid screenId
+          const fallback = document.getElementById('welcome-screen');
+          if (fallback) fallback.style.display = 'block';
+        }
         window.scrollTo(0, 0);
       }
-      // Wire up all navigation buttons after DOM loads
+      // --- Fix: Use event delegation for all navigation buttons ---
+      document.addEventListener('click', function(e) {
+        // Handle all [data-goto] buttons
+        const btn = e.target.closest('[data-goto]');
+        if (btn) {
+          const screen = btn.getAttribute('data-goto');
+          if (screen) showScreen(screen);
+        }
+      });
+      // --- Fix: Wire up all static navigation buttons ---
       document.addEventListener('DOMContentLoaded', function() {
+        // Hide all screens except welcome on load
+        document.querySelectorAll('[id$="-screen"]').forEach(div => {
+          if (div.id === 'welcome-screen') {
+            div.style.display = 'block';
+          } else {
+            div.style.display = 'none';
+          }
+        });
+        // Hide search and recommendation containers on load
+        const searchContainer = document.getElementById('search-container');
+        if (searchContainer) searchContainer.style.display = 'none';
+        const recContainer = document.getElementById('recommendation-container');
+        if (recContainer) recContainer.style.display = 'none';
+
         // Welcome screen: Get Started
         const btn = document.getElementById('get-started-button');
         if (btn) btn.onclick = function() { showScreen('user-info-screen'); };
         // User Info: Next
         const nextBtn = document.getElementById('user-info-next-btn');
-        if (nextBtn) nextBtn.onclick = function() {
+        if (nextBtn) nextBtn.onclick = function(e) {
+          e.preventDefault(); // Prevent form submission
           const name = document.getElementById('userName').value.trim();
           const age = document.getElementById('userAge').value.trim();
           const educationLevel = document.getElementById('educationLevel').value;
@@ -397,23 +689,45 @@
           localStorage.clear();
           showScreen('welcome-screen');
         };
-        // All Back buttons
-        document.querySelectorAll('button[onclick*="showScreen("]').forEach(b => {
-          b.onclick = function() {
-            const match = b.getAttribute('onclick').match(/showScreen\('([^']+)'\)/);
-            if (match) showScreen(match[1]);
-          };
-        });
-        // Project Mentor System
-        window.goToProjectMentorSystem = function() { showScreen('project-dashboard-screen'); };
-        // QuizForge
-        window.goToQuizForge = function() { showScreen('quizforge-screen'); };
-        // Roadmap
-        window.goToRoadmap = function() { showScreen('roadmap-screen'); };
-        // Feed
-        window.goToFeed = function() { showScreen('feed-screen'); };
-        // Modular Subject Architecture
-        window.goToModularSubjects = function() { showScreen('modular-subject-screen'); };
+        // Academic Subject Screen: Select Computer Science
+        const csBtn = document.querySelector('#academic-subject-screen .btn.btn-primary');
+        if (csBtn) csBtn.onclick = function() { showScreen('subject-detail-screen'); };
+        // Academic Subject Screen: Back
+        const backBtn = document.querySelector('#academic-subject-screen .btn-outline-secondary');
+        if (backBtn) backBtn.onclick = function() { showScreen('ambition-choice-screen'); };
+        // Ambition Choice: Explore My Options
+        const exploreBtn = document.querySelector('#ambition-choice-screen .btn-outline-primary');
+        if (exploreBtn) exploreBtn.onclick = function() { showScreen('modular-subject-screen'); };
+        // Ambition Choice: I Have an Ambition
+        const ambitionBtn = document.querySelector('#ambition-choice-screen .btn-success');
+        if (ambitionBtn) ambitionBtn.onclick = function() { showScreen('academic-subject-screen'); };
+        // Explore Screen: Back to Home
+        const exploreBackBtn = document.querySelector('#explore-screen .btn-outline-secondary');
+        if (exploreBackBtn) exploreBackBtn.onclick = function() { showScreen('welcome-screen'); };
+        // Project Mentor System: Back
+        const projBackBtn = document.querySelector('#project-dashboard-screen .btn-outline-secondary');
+        if (projBackBtn) projBackBtn.onclick = function() { showScreen('subject-detail-screen'); };
+        // Project Detail: Back/Next
+        const projDetailBack = document.querySelector('#project-detail-screen .btn-outline-secondary');
+        if (projDetailBack) projDetailBack.onclick = function() { showScreen('subject-detail-screen'); };
+        const projDetailNext = document.querySelector('#project-detail-screen .btn-primary');
+        if (projDetailNext) projDetailNext.onclick = function() { showScreen('explore-screen'); };
+        // QuizForge: Start Quiz, Daily Quiz, Leaderboard
+        const quizStartBtn = document.querySelector('#quizforge-screen button.btn-success');
+        if (quizStartBtn) quizStartBtn.onclick = function() { if (window.startQuizUI) window.startQuizUI(); };
+        const quizDailyBtn = document.querySelector('#quizforge-screen button.btn-outline-primary');
+        if (quizDailyBtn) quizDailyBtn.onclick = function() { if (window.startDailyQuiz) window.startDailyQuiz(); };
+        const quizLeadBtn = document.querySelector('#quizforge-screen button.btn-secondary');
+        if (quizLeadBtn) quizLeadBtn.onclick = function() { if (window.showLeaderboard) window.showLeaderboard(); };
+        // QuizForge: Back to Home
+        const quizBackBtn = document.querySelector('#quizforge-screen .btn-outline-secondary');
+        if (quizBackBtn) quizBackBtn.onclick = function() { showScreen('welcome-screen'); };
+        // Roadmap: Back
+        const roadmapBackBtn = document.querySelector('#roadmap-screen .btn-outline-secondary');
+        if (roadmapBackBtn) roadmapBackBtn.onclick = function() { showScreen('subject-detail-screen'); };
+        // Feed: Back
+        const feedBackBtn = document.querySelector('#feed-screen .btn-outline-secondary');
+        if (feedBackBtn) feedBackBtn.onclick = function() { showScreen('welcome-screen'); };
         // Mentor Chat Icon (FAB) and Chat Window
         const mentorFab = document.getElementById('mentor-fab');
         const mentorAvatar = document.getElementById('mentor-avatar');
@@ -421,39 +735,61 @@
           mentorFab.onclick = function() {
             mentorAvatar.style.display = 'block';
           };
-          // Optional: hide chat on ESC or clicking outside
           document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') mentorAvatar.style.display = 'none';
           });
         }
-      });
-    </script>
-
-    <!-- Modular Subject Architecture -->
-    <div id="modular-subject-screen" class="container py-5" style="display:none;">
-      <h2 class="mb-3 text-center">Subjects</h2>
-      <div id="subject-list" class="mb-4 d-flex flex-wrap justify-content-center"></div>
-      <div class="card">
-        <div class="card-header bg-light">
-          <span id="subject-section-title" class="fw-bold"></span>
-          <nav class="nav nav-tabs mt-3" id="subject-tabs"></nav>
-        </div>
-        <div class="card-body" id="subject-section-content"></div>
-      </div>
-      <div class="text-center mt-4">
-        <button class="btn btn-outline-secondary" onclick="showScreen('welcome-screen')">Back to Home</button>
-      </div>
-    </div>
-    <script type="module">
-      import { renderSubjectList, showSubject } from './js/subjectRouter.js';
-      document.addEventListener('DOMContentLoaded', () => {
-        if (document.getElementById('modular-subject-screen')) {
-          renderSubjectList();
-          // Optionally show first subject by default
-          showSubject('cs');
+        // Floating Action Button Quick Nav
+        const fab = document.getElementById('quick-nav-fab');
+        if (fab) {
+          fab.onclick = function() {
+            const opts = [
+              { label: 'Home', screen: 'welcome-screen' },
+              { label: 'Subjects', screen: 'modular-subject-screen' },
+              { label: 'Roadmap', screen: 'roadmap-screen' },
+              { label: 'Feed', screen: 'feed-screen' }
+            ];
+            let menu = 'Quick Nav:\n';
+            opts.forEach((o,i) => menu += `${i+1}. ${o.label}\n`);
+            const choice = prompt(menu + '\nEnter number:');
+            const idx = parseInt(choice)-1;
+            if (opts[idx]) showScreen(opts[idx].screen);
+          };
+        }
+        // Theme toggle (dark/light mode)
+        const themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn) themeBtn.addEventListener('click', function() {
+          document.body.classList.toggle('dark-mode');
+          document.querySelectorAll('.card').forEach(card => card.classList.toggle('dark-mode'));
+          document.querySelectorAll('.navbar').forEach(nav => nav.classList.toggle('dark-mode'));
+        });
+        // AOS Animation Init
+        if (window.AOS) AOS.init({ duration: 700, once: true });
+        // Show recommendations on homepage
+        if (document.getElementById('recommendation-container')) {
+          import('./js/recommendationEngine.js').then(mod => {
+            mod.renderRecommendations('recommendation-container');
+            const welcome = document.getElementById('welcome-screen');
+            const rec = document.getElementById('recommendation-container');
+            if (welcome && rec) {
+              welcome.appendChild(rec);
+              rec.style.display = 'block';
+            }
+          });
         }
       });
-    </script>
+
+  </script>
+
+    <!-- Search UI (Bootstrap 5) -->
+    <div id="search-container" class="py-3 container" style="display:none;max-width:700px;">
+      <div class="input-group mb-2">
+        <input id="search-input" type="search" class="form-control" placeholder="Search subjects, resources, or sections..." aria-label="Search" autocomplete="off">
+        <button class="btn-outline-primary btn" type="button" id="search-btn" aria-label="Search"><i class="fa fa-search"></i></button>
+      </div>
+      <ul id="search-suggestions" class="list-group position-absolute w-100" style="z-index:1051;display:none;"></ul>
+      <div id="search-results" class="mt-3"></div>
+    </div>
 
 </body>
 </html>
