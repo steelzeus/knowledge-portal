@@ -41,8 +41,8 @@
     <!-- Bootstrap 5 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Font Awesome (latest stable) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- AOS Animation -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -107,27 +107,27 @@
       }
       .btn-outline-primary {
         background: #fff !important;
-        color: #0a2342 !important;
+        color: #00cfff !important;
         border: 2px solid #00cfff !important;
-        font-weight: 700;
-        box-shadow: 0 2px 8px #00cfff33;
+        box-shadow: 0 2px 12px #00cfff55;
       }
       .btn-outline-primary:hover, .btn-outline-primary:focus {
         background: #00cfff !important;
         color: #fff !important;
         border-color: #00cfff !important;
+        box-shadow: 0 4px 24px #00cfff99;
       }
       .btn-success {
         background: #00ff99 !important;
         color: #0a2342 !important;
         border: 2px solid #00ff99 !important;
-        font-weight: 700;
-        box-shadow: 0 2px 8px #00ff9933;
+        box-shadow: 0 2px 12px #00ff99cc;
       }
       .btn-success:hover, .btn-success:focus {
         background: #0a2342 !important;
-        color: #fff !important;
+        color: #00ff99 !important;
         border-color: #0a2342 !important;
+        box-shadow: 0 4px 24px #00ff9999;
       }
       .subject-icon {
         font-size: 2.5rem;
@@ -362,6 +362,237 @@
         background: linear-gradient(90deg,#00ff99 0%,#00cfff 100%);
         box-shadow: 0 -2px 16px #00ff9933;
       }
+
+      /* --- DEBUG BUTTONS: Ensure all buttons are visible, clickable, and not overlapped or hidden by z-index or background --- */
+      /* button, .btn, .btn-lg, .btn-outline-primary, .btn-success, .btn-link, .btn-outline-secondary {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
+        display: inline-block !important;
+        z-index: 100 !important;
+        background-clip: padding-box !important;
+      } */
+      /* Remove any accidental display:block on .btn that could break layout */
+      .btn, .btn-lg, .btn-outline-primary, .btn-success, .btn-link, .btn-outline-secondary {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        min-width: 120px;
+        min-height: 44px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: var(--radius);
+        margin-bottom: 0.5rem;
+        box-shadow: 0 2px 8px #00cfff33;
+      }
+      /* Fix: Remove any accidental background or color overrides from parent containers */
+      .d-grid, .gap-3, .d-flex {
+        background: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+        align-items: stretch !important;
+        width: 100% !important;
+      }
+      /* Fix: Remove any accidental opacity or pointer-events on parent containers */
+      #welcome-screen, #ambition-choice-screen, #user-info-screen, #academic-subject-screen, #modular-subject-screen {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        z-index: 10 !important;
+      }
+      /* Fix: Ensure .btn-link is always visible and styled */
+      .btn-link {
+        color: var(--primary) !important;
+        background: transparent !important;
+        text-decoration: underline;
+        font-weight: 600;
+        box-shadow: none !important;
+      }
+      .btn-link:hover, .btn-link:focus {
+        color: var(--accent) !important;
+        background: #e6fff6 !important;
+      }
+      /* Responsive fixes for button containers */
+      @media (max-width: 768px) {
+        .btn, .btn-lg, .btn-outline-primary, .btn-success, .btn-link, .btn-outline-secondary {
+          font-size: 1rem;
+          min-width: 90px;
+          min-height: 38px;
+        }
+        .d-grid, .gap-3, .d-flex {
+          gap: 0.5rem !important;
+        }
+      }
+      /* Fix: Remove any accidental overlay from #cinematic-loader after load */
+      body.loaded #cinematic-loader {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        z-index: -1 !important;
+      }
+      /* --- FINAL BUTTON/UI VISIBILITY & CONTRAST FIXES --- */
+      .btn, .btn-lg, .btn-outline-primary, .btn-success, .btn-link, .btn-outline-secondary {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        min-width: 120px;
+        min-height: 44px;
+        font-size: 1.15rem;
+        font-weight: 700;
+        border-radius: var(--radius);
+        margin-bottom: 0.5rem;
+        box-shadow: 0 2px 12px #00ff99cc, 0 2px 8px #0a234233;
+        background-clip: padding-box !important;
+        border-width: 2px !important;
+        outline: none !important;
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      }
+      .btn-outline-primary {
+        background: #fff !important;
+        color: #00cfff !important;
+        border: 2px solid #00cfff !important;
+        box-shadow: 0 2px 12px #00cfff55;
+      }
+      .btn-outline-primary:hover, .btn-outline-primary:focus {
+        background: #00cfff !important;
+        color: #fff !important;
+        border-color: #00cfff !important;
+        box-shadow: 0 4px 24px #00cfff99;
+      }
+      .btn-success {
+        background: #00ff99 !important;
+        color: #0a2342 !important;
+        border: 2px solid #00ff99 !important;
+        box-shadow: 0 2px 12px #00ff99cc;
+      }
+      .btn-success:hover, .btn-success:focus {
+        background: #0a2342 !important;
+        color: #00ff99 !important;
+        border-color: #0a2342 !important;
+        box-shadow: 0 4px 24px #00ff9999;
+      }
+      .btn-link {
+        color: #00cfff !important;
+        background: transparent !important;
+        text-decoration: underline;
+        font-weight: 700;
+        box-shadow: none !important;
+      }
+      .btn-link:hover, .btn-link:focus {
+        color: #00ff99 !important;
+        background: #e6fff6 !important;
+      }
+      .glow-btn, .btn.glow-btn {
+        background: linear-gradient(90deg, #00ff99 0%, #00cfff 100%) !important;
+        color: #fff !important;
+        box-shadow: 0 0 24px #00ff99cc, 0 2px 8px #0a234233 !important;
+        border: none !important;
+      }
+      .glow-btn:hover, .glow-btn:focus {
+        box-shadow: 0 0 48px #00ff99cc, 0 4px 16px #0a234266 !important;
+        color: #181c24 !important;
+        background: linear-gradient(90deg, #00cfff 0%, #00ff99 100%) !important;
+      }
+      /* Icon color fix for contrast */
+      /* .fa, .fas, .far, .fal, .fab, .fa-moon, .fa-user, .fa-compass, .fa-map-signs, .fa-trophy, .fa-bolt, .fa-eye, .fa-power-off, .fa-play, .fa-undo, .fa-sync {
+        color: #00cfff !important;
+        filter: drop-shadow(0 0 4px #00ff99cc);
+      } */
+      .btn-success .fa, .btn-success .fas, .btn-success .fa-power-off {
+        color: #0a2342 !important;
+      }
+      .btn-outline-primary .fa, .btn-outline-primary .fas {
+        color: #00cfff !important;
+      }
+      .btn-link .fa, .btn-link .fas {
+        color: #00cfff !important;
+      }
+      /* Fix for .profile-icon and navbar icons */
+      .profile-icon i, .navbar .fa-moon {
+        color: #00cfff !important;
+        filter: drop-shadow(0 0 4px #00ff99cc);
+      }
+      /* Fix for .subject-icon */
+      .subject-icon {
+        color: #00ff99 !important;
+        filter: drop-shadow(0 0 8px #00ff99cc);
+      }
+      /* Ensure all button containers are flex and not hidden */
+      .d-grid, .gap-3, .d-flex {
+        background: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+      /* Responsive fixes for button containers */
+      @media (max-width: 768px) {
+        .btn, .btn-lg, .btn-outline-primary, .btn-success, .btn-link, .btn-outline-secondary {
+          font-size: 1rem;
+          min-width: 90px;
+          min-height: 38px;
+        }
+        .d-grid, .gap-3, .d-flex {
+          gap: 0.5rem !important;
+        }
+      }
+
+      /* DEBUG: FontAwesome Test Icon + Fallback */
+      #fa-debug-test {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+        background: #fff;
+        padding: 8px 16px;
+        border-bottom: 2px solid #00cfff;
+        box-shadow: 0 2px 8px #00cfff33;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      #fa-debug-test span {
+        font-weight: 700;
+      }
+      #fa-debug-test i {
+        font-size: 2rem;
+      }
+      #fa-debug-test #fa-fallback {
+        display: none;
+        font-size: 2rem;
+      }
+      #fa-debug-test #fa-debug-msg {
+        margin-left: 12px;
+        font-size: 1rem;
+        color: #f00;
+        font-weight: 600;
+      }
+
+      /* Minimal FontAwesome test (no custom CSS) */
+      #fa-test-minimal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+        background: #fff;
+        padding: 8px 16px;
+      }
+      #fa-test-minimal i {
+        font-size: 2rem;
+        color: #333;
+      }
+      #fa-test-minimal span {
+        font-size: 1.2rem;
+      }
     </style>
 </head>
 <body class="bg-light">
@@ -461,7 +692,7 @@
                     <div class="text-center card-body">
                         <h5 class="card-title">Computer Science</h5>
                         <p class="card-text">Programming, algorithms, and more.</p>
-                        <button class="btn btn-primary" onclick="showScreen('subject-detail-screen')">Select</button>
+                        <button class="btn btn-primary" type="button">Select</button>
                     </div>
                 </div>
             </div>
@@ -469,8 +700,8 @@
                 <div class="h-100 card">
                     <div class="text-center card-body">
                         <h5 class="card-title">Mathematics</h5>
-                        <p class="card-text">Coming soon...</p>
-                        <button class="btn btn-secondary" disabled>Coming Soon</button>
+                        <p class="card-text">Math projects and challenges.</p>
+                        <button class="btn-outline-primary btn btn-math" type="button">Select</button>
                     </div>
                 </div>
             </div>
@@ -478,8 +709,26 @@
                 <div class="h-100 card">
                     <div class="text-center card-body">
                         <h5 class="card-title">Physics</h5>
-                        <p class="card-text">Coming soon...</p>
-                        <button class="btn btn-secondary" disabled>Coming Soon</button>
+                        <p class="card-text">Physics simulations and experiments.</p>
+                        <button class="btn-outline-primary btn btn-physics" type="button">Select</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="h-100 card">
+                    <div class="text-center card-body">
+                        <h5 class="card-title">Chemistry</h5>
+                        <p class="card-text">Chemistry visualizations and labs.</p>
+                        <button class="btn-outline-primary btn btn-chemistry" type="button">Select</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="h-100 card">
+                    <div class="text-center card-body">
+                        <h5 class="card-title">Biology</h5>
+                        <p class="card-text">Biology interactives and simulations.</p>
+                        <button class="btn-outline-success btn btn-biology" type="button">Select</button>
                     </div>
                 </div>
             </div>
@@ -1032,7 +1281,7 @@
 
     <!-- Global Launch Footer -->
     <footer class="footer-glass" style="backdrop-filter:blur(12px);background:rgba(10,35,66,0.85);color:#fff;padding:2rem 0 1rem 0;margin-top:4rem;box-shadow:0 -2px 24px #00ff9933;">
-      <div class="container text-center">
+      <div class="text-center container">
         <div class="mb-2">
           <b>Knowledge Portal</b> &copy; 2025 | Created by <a href="https://github.com/yourgithub" style="color:#00ff99;">Your Name</a>
           <span class="mx-2">·</span>
@@ -1048,25 +1297,25 @@
     </footer>
 
     <!-- Testimonials Section -->
-    <section id="testimonials" class="container py-5" style="max-width:900px;">
-      <h2 class="text-center fw-bold mb-4" style="color:var(--accent);">What Learners Say</h2>
-      <div class="row g-4 justify-content-center">
+    <section id="testimonials" class="py-5 container" style="max-width:900px;">
+      <h2 class="mb-4 text-center fw-bold" style="color:var(--accent);">What Learners Say</h2>
+      <div class="justify-content-center row g-4">
         <div class="col-md-4">
-          <div class="testimonial-card p-4 rounded-4 shadow-lg bg-white text-center" style="backdrop-filter:blur(8px);">
+          <div class="bg-white shadow-lg p-4 rounded-4 text-center testimonial-card" style="backdrop-filter:blur(8px);">
             <div class="mb-2" style="font-size:2.5rem;">🌟</div>
             <div class="mb-2 fw-bold">“This portal changed how I learn.”</div>
             <div class="text-muted">— Priya, Student</div>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="testimonial-card p-4 rounded-4 shadow-lg bg-white text-center" style="backdrop-filter:blur(8px);">
+          <div class="bg-white shadow-lg p-4 rounded-4 text-center testimonial-card" style="backdrop-filter:blur(8px);">
             <div class="mb-2" style="font-size:2.5rem;">🚀</div>
             <div class="mb-2 fw-bold">“I feel like I have a mentor in my pocket.”</div>
             <div class="text-muted">— Arjun, Developer</div>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="testimonial-card p-4 rounded-4 shadow-lg bg-white text-center" style="backdrop-filter:blur(8px);">
+          <div class="bg-white shadow-lg p-4 rounded-4 text-center testimonial-card" style="backdrop-filter:blur(8px);">
             <div class="mb-2" style="font-size:2.5rem;">🧠</div>
             <div class="mb-2 fw-bold">“The gamified roadmap keeps me coming back.”</div>
             <div class="text-muted">— Sara, Lifelong Learner</div>
@@ -1097,3 +1346,13 @@
     <script>
     document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='k'){e.preventDefault();showScreen('search-container');}if(e.ctrlKey&&e.key==='j'){e.preventDefault();showScreen('my-journey-dashboard');}if(e.ctrlKey&&e.key==='r'){e.preventDefault();showScreen('roadmap-screen');}if(e.ctrlKey&&e.key==='f'){e.preventDefault();showScreen('feed-screen');}});
     </script>
+
+    <!-- REMOVE ALL DEBUG/RECOVERY CSS for buttons and icons -->
+    <!-- REMOVE: .fa, .fas, .far, .fal, .fab, .fa-moon, .fa-user, .fa-compass, .fa-map-signs, .fa-trophy, .fa-bolt, .fa-eye, .fa-power-off, .fa-play, .fa-undo, .fa-sync { ... } -->
+    <!-- REMOVE: .btn, .btn-lg, .btn-outline-primary, .btn-success, .btn-link, .btn-outline-secondary { ... } (all forced visibility, pointer-events, z-index, etc) -->
+    <!-- REMOVE: .d-grid, .gap-3, .d-flex { ... } (all forced flex, background, box-shadow, etc) -->
+    <!-- REMOVE: #fa-debug-test, #fa-test-minimal and related styles -->
+    <!-- REMOVE: any other debug/fallback/test bar code -->
+    <!-- RESTORE: Only keep your original, intended theme and layout CSS for buttons and icons. -->
+</body>
+</html>

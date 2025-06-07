@@ -258,3 +258,50 @@
   #subject-sidebar { display: none; }
   #subject-sidebar.collapsed { display: block; position: absolute; left:0; top:0; z-index:10; }
 }
+
+/* Ensure all buttons are visible and styled correctly */
+.btn {
+  visibility: visible !important;
+  opacity: 1 !important;
+  transition: all 0.2s ease;
+}
+
+.card .btn {
+  transition: all 0.2s ease;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Ensure card grid is responsive and visually consistent */
+#project-detail-screen .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+#project-detail-screen .card {
+  min-height: 220px;
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.latex {
+  font-size: 1.1rem;
+  font-weight: 500;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+  color: #0a2342;
+}
+
+.bg-primary-subtle {
+  background: #e6f0fa !important;
+}
+
+.neon-float {
+  box-shadow: 0 0 15px rgba(0,255,255,0.4), 0 0 40px rgba(0,255,255,0.2);
+  border-radius: 20px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.neon-float:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 0 25px rgba(0,255,255,0.6), 0 0 60px rgba(0,255,255,0.3);
+}
