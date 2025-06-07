@@ -240,10 +240,147 @@
         border-radius: 1.5rem;
         padding: 2rem 1rem;
         box-shadow: 0 4px 24px #00cfff22;
+        z-index: 10;
+        position: relative;
+      }
+      #ambition-choice-screen .btn-outline-primary,
+      #ambition-choice-screen .btn-success {
+        font-size: 1.3rem;
+        padding: 1rem 0;
+        width: 100%;
+        margin-bottom: 1rem;
+        display: block;
+        opacity: 1 !important;
+      }
+      #ambition-choice-screen .btn-outline-primary {
+        background: #fff !important;
+        color: #007bff !important;
+        border: 2px solid #007bff !important;
+        font-weight: 800;
+        box-shadow: 0 2px 8px #007bff33;
+      }
+      #ambition-choice-screen .btn-outline-primary:hover, #ambition-choice-screen .btn-outline-primary:focus {
+        background: #007bff !important;
+        color: #fff !important;
+        border-color: #007bff !important;
+      }
+      #ambition-choice-screen .btn-success {
+        background: #28a745 !important;
+        color: #fff !important;
+        border: 2px solid #28a745 !important;
+        font-weight: 800;
+        box-shadow: 0 2px 8px #28a74533;
+      }
+      #ambition-choice-screen .btn-success:hover, #ambition-choice-screen .btn-success:focus {
+        background: #218838 !important;
+        color: #fff !important;
+        border-color: #218838 !important;
+      }
+
+      /* Cinematic Loading Screen */
+      #cinematic-loader {
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(ellipse at center,#0a2342 0%,#181c24 100%);
+        transition: opacity 1s;
+      }
+      @keyframes portalPulse { 0%{text-shadow:0 0 32px #00ff99;} 100%{text-shadow:0 0 64px #00cfff;} }
+      .loader-orb {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg,#00ff99 0%,#00cfff 100%);
+        box-shadow: 0 0 64px #00ff99cc, 0 2px 8px #0a234233;
+        animation: orbSpin 1.5s linear infinite;
+      }
+      @keyframes orbSpin { 0%{transform:rotate(0);} 100%{transform:rotate(360deg);} }
+      body.loaded #cinematic-loader {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1s;
+      }
+      /* Parallax/Particle Background */
+      #bg-particles {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        pointer-events: none;
+      }
+      /* Global Launch Footer */
+      .footer-glass {
+        backdrop-filter: blur(12px);
+        background: rgba(10,35,66,0.85);
+        color: #fff;
+        padding: 2rem 0 1rem 0;
+        margin-top: 4rem;
+        box-shadow: 0 -2px 24px #00ff9933;
+      }
+      /* Testimonials Section */
+      #testimonials {
+        max-width: 900px;
+      }
+      .testimonial-card {
+        backdrop-filter: blur(8px);
+      }
+      /* Ambient Study Sounds Toggle */
+      #ambient-toggle {
+        position: fixed;
+        bottom: 90px;
+        right: 24px;
+        z-index: 1100;
+        background: rgba(0,0,0,0.7);
+        color: #00ff99;
+        border: none;
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        box-shadow: 0 2px 16px #00ff9933;
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+      }
+      /* Daily XP Bar */
+      #daily-xp-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 12px;
+        z-index: 1200;
+        background: linear-gradient(90deg,#00ff99 0%,#00cfff 100%);
+        box-shadow: 0 -2px 16px #00ff9933;
       }
     </style>
 </head>
 <body class="bg-light">
+  <!-- Cinematic Loading Screen -->
+  <div id="cinematic-loader" style="position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#0a2342 0%,#181c24 100%);transition:opacity 1s;">
+    <div style="text-align:center;">
+      <h1 style="font-size:3rem;font-weight:900;letter-spacing:2px;color:#00ff99;text-shadow:0 0 32px #00ff99,0 2px 8px #0a2342;animation: portalPulse 2s infinite alternate;">KNOWLEDGE PORTAL</h1>
+      <div style="margin:2rem auto;width:80px;height:80px;position:relative;">
+        <div class="loader-orb"></div>
+      </div>
+      <div style="color:#fff;font-size:1.2rem;opacity:0.8;">Empowering Minds from Jharkhand to the World.</div>
+    </div>
+  </div>
+  <script>
+  window.addEventListener('DOMContentLoaded',()=>{
+    setTimeout(()=>{document.body.classList.add('loaded');},1800);
+  });
+  </script>
+
   <!-- Header/Navbar -->
   <nav class="fixed-top shadow-sm navbar navbar-expand-lg">
     <div class="px-4 container-fluid">
@@ -574,6 +711,60 @@
     <!-- Recommendations Dashboard (Home) -->
     <div id="recommendation-container" class="py-4 transition-fade container" style="display:none;max-width:900px;"></div>
 
+    <!-- My Journey Dashboard (Personalized, Gamified) -->
+    <div id="my-journey-dashboard" class="py-5 transition-fade container" style="display:none;max-width:1100px;">
+      <h2 class="mb-3 text-center fw-bold" style="color:var(--primary)">My Journey</h2>
+      <div class="row">
+        <!-- Roadmap Progress -->
+        <div class="mb-4 col-lg-7">
+          <div class="bg-white shadow-lg p-4 rounded-4">
+            <h4 class="mb-3 fw-bold"><i class="me-2 fa fa-map-signs"></i>Learning Roadmap</h4>
+            <div id="my-journey-roadmap" style="min-height:180px;"></div>
+            <div class="mt-3">
+              <b>XP:</b> <span id="my-journey-xp">0</span> |
+              <b>Streak:</b> <span id="my-journey-streak">0</span> |
+              <b>Level:</b> <span id="my-journey-level">1</span>
+            </div>
+            <div class="mt-2">
+              <b>Recent Topics:</b>
+              <ul id="my-journey-recent-topics" class="mb-0"></ul>
+            </div>
+          </div>
+        </div>
+        <!-- Badges & Achievements -->
+        <div class="mb-4 col-lg-3">
+          <div class="bg-white shadow-lg p-4 rounded-4">
+            <h4 class="mb-3 fw-bold"><i class="me-2 fa fa-trophy"></i>Badges & Achievements</h4>
+            <div id="my-journey-badges" class="d-flex flex-wrap gap-2"></div>
+            <div class="mt-3">
+              <b>Milestones:</b>
+              <ul id="my-journey-milestones" class="mb-0"></ul>
+            </div>
+          </div>
+        </div>
+        <!-- Daily Spark & Focus Mode -->
+        <div class="mb-4 col-lg-2">
+          <div class="bg-white shadow-lg p-4 rounded-4 text-center">
+            <h4 class="mb-3 fw-bold"><i class="me-2 fa fa-bolt"></i>Daily Spark</h4>
+            <div id="daily-spark-suggestion" class="mb-3"></div>
+            <button class="mb-2 btn-outline-primary btn btn-sm" id="refresh-daily-spark"><i class="fa fa-sync"></i> New Spark</button>
+            <hr>
+            <h5 class="mb-2 fw-bold"><i class="me-1 fa fa-eye"></i>Focus Mode</h5>
+            <button class="mb-2 btn btn-success btn-sm" id="focus-mode-toggle"><i class="fa fa-power-off"></i> Toggle Focus</button>
+            <div id="pomodoro-timer" class="mt-2">
+              <span id="pomodoro-label">Pomodoro:</span>
+              <span id="pomodoro-time">25:00</span>
+              <button class="ms-2 btn-outline-secondary btn btn-sm" id="pomodoro-start"><i class="fa fa-play"></i></button>
+              <button class="ms-1 btn-outline-secondary btn btn-sm" id="pomodoro-reset"><i class="fa fa-undo"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 text-center">
+        <button class="btn-outline-primary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
+      </div>
+    </div>
+
     <!-- Subject Detail Hub Script -->
     <script type="module" src="js/subjectDetailHub.js"></script>
 
@@ -779,7 +970,47 @@
         }
       });
 
-  </script>
+      import { aiContentDB, regenerateTopics } from './js/aiContentDB.js';
+
+      // Example: Render content cards for the first subject (for demo)
+      function renderAIDemoContent() {
+        const container = document.getElementById('modular-subject-screen');
+        if (!container) return;
+        let html = '';
+        aiContentDB.forEach(subject => {
+          html += `<h3 class="mt-4 mb-2"><i class="fa ${subject.icon}"></i> ${subject.subject}</h3>`;
+          subject.topics.forEach(topic => {
+            html += `<div class="mb-3 card"><div class="card-body">
+              <h5 class="card-title">${topic.name}</h5>
+              <div class="mb-2">${topic.tags.map(t=>`<span class='bg-info me-1 text-dark badge'>${t}</span>`).join('')}</div>
+              ${topic.resources.map(r => {
+                if (r.type === 'intro') return `<div class='mb-2'><b>Intro:</b><br>${marked.parse(r.content)}</div>`;
+                if (r.type === 'project') return `<div class='mb-2'><b>Project:</b><br>${marked.parse(r.content)}</div>`;
+                if (r.type === 'recommendation') return `<div class='mb-2'><b>Resources:</b><br>${marked.parse(r.content)}</div>`;
+                if (r.type === 'quiz') return `<div class='mb-2'><b>Quiz:</b> <button class='btn-outline-primary btn btn-sm' onclick='alert("Quiz coming soon!")'>Try Quiz</button></div>`;
+                return '';
+              }).join('')}
+            </div></div>`;
+          });
+        });
+        container.innerHTML = html + `<button class='mt-3 btn btn-warning' id='regenerate-ai-content'>Regenerate Topics</button>`;
+        document.getElementById('regenerate-ai-content').onclick = () => {
+          regenerateTopics();
+          renderAIDemoContent();
+        };
+      }
+
+      // Attach to window for demo/testing
+      window.renderAIDemoContent = renderAIDemoContent;
+      // Optionally auto-render on modular-subject-screen show
+      const origShowScreen = window.showScreen;
+      window.showScreen = function(screenId) {
+        origShowScreen(screenId);
+        if (screenId === 'modular-subject-screen') {
+          renderAIDemoContent();
+        }
+      };
+    </script>
 
     <!-- Search UI (Bootstrap 5) -->
     <div id="search-container" class="py-3 container" style="display:none;max-width:700px;">
@@ -791,5 +1022,78 @@
       <div id="search-results" class="mt-3"></div>
     </div>
 
-</body>
-</html>
+    <!-- Parallax/Particle Background -->
+    <canvas id="bg-particles" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;"></canvas>
+    <script>
+    (function(){
+      const c=document.getElementById('bg-particles');if(!c)return;const ctx=c.getContext('2d');let w=window.innerWidth,h=window.innerHeight;let p=[];function resize(){w=window.innerWidth;h=window.innerHeight;c.width=w;c.height=h;}window.addEventListener('resize',resize);resize();for(let i=0;i<60;i++){p.push({x:Math.random()*w,y:Math.random()*h,r:1+Math.random()*2,s:0.5+Math.random()*1.5,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5,c:`hsla(${180+Math.random()*120},100%,70%,0.7)`});}function draw(){ctx.clearRect(0,0,w,h);for(let i=0;i<p.length;i++){let a=p[i];ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,2*Math.PI);ctx.fillStyle=a.c;ctx.shadowColor=a.c;ctx.shadowBlur=12;ctx.fill();a.x+=a.dx;a.y+=a.dy;if(a.x<0||a.x>w)a.dx*=-1;if(a.y<0||a.y>h)a.dy*=-1;}requestAnimationFrame(draw);}draw();
+    })();
+    </script>
+
+    <!-- Global Launch Footer -->
+    <footer class="footer-glass" style="backdrop-filter:blur(12px);background:rgba(10,35,66,0.85);color:#fff;padding:2rem 0 1rem 0;margin-top:4rem;box-shadow:0 -2px 24px #00ff9933;">
+      <div class="container text-center">
+        <div class="mb-2">
+          <b>Knowledge Portal</b> &copy; 2025 | Created by <a href="https://github.com/yourgithub" style="color:#00ff99;">Your Name</a>
+          <span class="mx-2">·</span>
+          <a href="https://github.com/yourgithub/knowledge-portal" style="color:#00cfff;">GitHub Repo</a>
+        </div>
+        <div class="mb-2">
+          <a href="#" style="color:#fff;opacity:0.7;margin:0 0.5rem;"><i class="fab fa-twitter"></i></a>
+          <a href="#" style="color:#fff;opacity:0.7;margin:0 0.5rem;"><i class="fab fa-discord"></i></a>
+          <a href="#" style="color:#fff;opacity:0.7;margin:0 0.5rem;"><i class="fab fa-github"></i></a>
+        </div>
+        <div style="font-size:1rem;opacity:0.7;">Empowering Minds from Jharkhand to the World.</div>
+      </div>
+    </footer>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="container py-5" style="max-width:900px;">
+      <h2 class="text-center fw-bold mb-4" style="color:var(--accent);">What Learners Say</h2>
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-4">
+          <div class="testimonial-card p-4 rounded-4 shadow-lg bg-white text-center" style="backdrop-filter:blur(8px);">
+            <div class="mb-2" style="font-size:2.5rem;">🌟</div>
+            <div class="mb-2 fw-bold">“This portal changed how I learn.”</div>
+            <div class="text-muted">— Priya, Student</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="testimonial-card p-4 rounded-4 shadow-lg bg-white text-center" style="backdrop-filter:blur(8px);">
+            <div class="mb-2" style="font-size:2.5rem;">🚀</div>
+            <div class="mb-2 fw-bold">“I feel like I have a mentor in my pocket.”</div>
+            <div class="text-muted">— Arjun, Developer</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="testimonial-card p-4 rounded-4 shadow-lg bg-white text-center" style="backdrop-filter:blur(8px);">
+            <div class="mb-2" style="font-size:2.5rem;">🧠</div>
+            <div class="mb-2 fw-bold">“The gamified roadmap keeps me coming back.”</div>
+            <div class="text-muted">— Sara, Lifelong Learner</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ambient Study Sounds Toggle -->
+    <audio id="ambient-audio" loop src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b6b6b6b6.mp3"></audio>
+    <button id="ambient-toggle" style="position:fixed;bottom:90px;right:24px;z-index:1100;background:rgba(0,0,0,0.7);color:#00ff99;border:none;border-radius:50%;width:56px;height:56px;box-shadow:0 2px 16px #00ff9933;font-size:2rem;display:flex;align-items:center;justify-content:center;transition:background 0.2s;">
+      <i class="fa fa-music"></i>
+    </button>
+    <script>
+    const ambientBtn=document.getElementById('ambient-toggle');const audio=document.getElementById('ambient-audio');let playing=false;if(ambientBtn&&audio){ambientBtn.onclick=function(){playing=!playing;if(playing){audio.volume=0.18;audio.play();ambientBtn.style.background='#00ff99';ambientBtn.style.color='#181c24';}else{audio.pause();ambientBtn.style.background='rgba(0,0,0,0.7)';ambientBtn.style.color='#00ff99';}}}
+    </script>
+
+    <!-- Daily XP Bar -->
+    <div id="daily-xp-bar" style="position:fixed;bottom:0;left:0;width:100vw;height:12px;z-index:1200;background:linear-gradient(90deg,#00ff99 0%,#00cfff 100%);box-shadow:0 -2px 16px #00ff9933;">
+      <div id="daily-xp-fill" style="height:100%;width:0%;background:rgba(10,35,66,0.9);transition:width 0.5s;"></div>
+    </div>
+    <script>
+    window.dailyXP=0;function addXP(x){window.dailyXP+=x;if(window.dailyXP>100)window.dailyXP=100;document.getElementById('daily-xp-fill').style.width=window.dailyXP+'%';}
+    document.body.addEventListener('click',()=>addXP(2));
+    </script>
+
+    <!-- Keyboard Shortcuts -->
+    <script>
+    document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='k'){e.preventDefault();showScreen('search-container');}if(e.ctrlKey&&e.key==='j'){e.preventDefault();showScreen('my-journey-dashboard');}if(e.ctrlKey&&e.key==='r'){e.preventDefault();showScreen('roadmap-screen');}if(e.ctrlKey&&e.key==='f'){e.preventDefault();showScreen('feed-screen');}});
+    </script>

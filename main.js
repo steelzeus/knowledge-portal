@@ -521,3 +521,93 @@ document.addEventListener('DOMContentLoaded', () => {
     m.animateAvatar();
   });
 });
+
+// --- My Journey Dashboard Logic ---
+import { generateLearningPath } from './js/learningPathEngine.js';
+import { generateFeed } from './js/aiFeedEngine.js';
+import { renderRoadmap } from './js/roadmapUI.js';
+import { loadProgress, saveProgress } from './js/userProgressTracker.js';
+
+window.showMyJourneyDashboard = function() {
+  showScreen('my-journey-dashboard');
+  // Load user data
+  const name = localStorage.getItem('userName') || 'Learner';
+  const age = parseInt(localStorage.getItem('userAge') || '18', 10);
+  const educationLevel = localStorage.getItem('educationLevel') || 'High School';
+  const ambition = localStorage.getItem('userAmbition') || 'Learn Computer Science';
+  const userId = name.toLowerCase().replace(/\s+/g, '_');
+  // Progress
+  let progress = {};
+  try { progress = loadProgress(userId); } catch { progress = {}; }
+  // Generate learning path
+  const path = generateLearningPath({ name, age, educationLevel, ambition });
+  // XP, streak, level (mock/demo)
+  let xp = 0, streak = 3, level = 1;
+  if (progress && progress.xp) xp = progress.xp;
+  if (progress && progress.streak) streak = progress.streak;
+  if (progress && progress.level) level = progress.level;
+  document.getElementById('my-journey-xp').textContent = xp;
+  document.getElementById('my-journey-streak').textContent = streak;
+  document.getElementById('my-journey-level').textContent = level;
+  // Recent topics
+  const recent = (progress && progress.recentTopics) || [path[0]?.title];
+  const ul = document.getElementById('my-journey-recent-topics');
+  ul.innerHTML = '';
+  recent.forEach(t => { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
+  // Badges & milestones (mock/demo)
+  const badges = (progress && progress.badges) || ['🔥', '🏅'];
+  const badgeDiv = document.getElementById('my-journey-badges');
+  badgeDiv.innerHTML = badges.map(b => `<span style='font-size:2rem;'>${b}</span>`).join(' ');
+  const milestones = (progress && progress.milestones) || ['First Quiz', 'First Project'];
+  const msUl = document.getElementById('my-journey-milestones');
+  msUl.innerHTML = '';
+  milestones.forEach(m => { const li = document.createElement('li'); li.textContent = m; msUl.appendChild(li); });
+  // Roadmap
+  renderRoadmap('Computer Science', progress.modules || {}, 'my-journey-roadmap');
+  // Daily Spark
+  function renderSpark() {
+    const user = { quizPerformance: {}, preferredFormat: 'video', roadmapStatus: [], timeAvailable: 10, recentActivity: [], XP: xp };
+    const feed = generateFeed(user);
+    const spark = feed[0];
+    document.getElementById('daily-spark-suggestion').innerHTML = spark ? `<div><span style='font-size:2rem;'>${spark.icon}</span><br><b>${spark.title}</b><br><small>${spark.reason || ''}</small><br><span class='badge bg-success'>+${spark.XP} XP</span></div>` : 'No suggestion.';
+  }
+  renderSpark();
+  document.getElementById('refresh-daily-spark').onclick = renderSpark;
+  // Focus Mode & Pomodoro
+  let focus = false, pomodoro = null, pomodoroTime = 25*60;
+  function updatePomodoro() {
+    const min = String(Math.floor(pomodoroTime/60)).padStart(2,'0');
+    const sec = String(pomodoroTime%60).padStart(2,'0');
+    document.getElementById('pomodoro-time').textContent = `${min}:${sec}`;
+  }
+  document.getElementById('focus-mode-toggle').onclick = function() {
+    focus = !focus;
+    document.body.classList.toggle('dark-mode', focus);
+    this.textContent = focus ? 'Exit Focus' : 'Toggle Focus';
+  };
+  document.getElementById('pomodoro-start').onclick = function() {
+    if (pomodoro) return;
+    pomodoro = setInterval(() => {
+      if (pomodoroTime > 0) { pomodoroTime--; updatePomodoro(); }
+      else { clearInterval(pomodoro); pomodoro = null; alert('Pomodoro complete!'); pomodoroTime = 25*60; updatePomodoro(); }
+    }, 1000);
+  };
+  document.getElementById('pomodoro-reset').onclick = function() {
+    if (pomodoro) { clearInterval(pomodoro); pomodoro = null; }
+    pomodoroTime = 25*60; updatePomodoro();
+  };
+  updatePomodoro();
+};
+
+// Optionally, add a button or nav to open My Journey Dashboard
+document.addEventListener('DOMContentLoaded', function() {
+  const nav = document.querySelector('.navbar .container-fluid');
+  if (nav && !document.getElementById('my-journey-nav-btn')) {
+    const btn = document.createElement('button');
+    btn.id = 'my-journey-nav-btn';
+    btn.className = 'btn btn-outline-primary ms-2';
+    btn.innerHTML = '<i class="fa fa-map-signs"></i> My Journey';
+    btn.onclick = () => window.showMyJourneyDashboard();
+    nav.appendChild(btn);
+  }
+});
