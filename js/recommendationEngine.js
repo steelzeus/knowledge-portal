@@ -2,7 +2,7 @@
 // Content recommendation engine for learning portal
 // No DOM, ES6 module, localStorage for persistence, upgradeable to cloud
 
-import { subjects as SUBJECTS } from './subjectConfig.js';
+import { SUBJECTS } from './subjectConfig.js';
 
 // =====================
 // Simulated User Profiles
@@ -85,20 +85,6 @@ export function scoreContent(user, content, history = {}) {
     let score = (0.4 * interestScore) + (0.3 * skillMatchScore) + (0.2 * popularityScore) + (0.1 * diversityBoost);
     // Clamp
     return Math.round(Math.max(0, Math.min(100, score)));
-}
-
-/**
- * Get user profile from localStorage (or defaults)
- * @returns {object} profile
- */
-function getUserProfile() {
-  return {
-    name: localStorage.getItem('userName') || '',
-    age: localStorage.getItem('userAge') || '',
-    educationLevel: localStorage.getItem('educationLevel') || '',
-    ambitions: JSON.parse(localStorage.getItem('userAmbitions') || '[]'),
-    subjects: JSON.parse(localStorage.getItem('userSubjects') || '[]'),
-  };
 }
 
 /**
@@ -240,6 +226,22 @@ export function renderRecommendations(containerId = 'recommendation-container') 
       // Optionally, navigate to resource (modular subject UI)
       // You can call showScreen('modular-subject-screen') and load the resource
     });
+  });
+}
+
+// Render recommendations on the homepage
+export function renderHomepageRecommendations(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '<h3>Recommended Subjects</h3>';
+  SUBJECTS.forEach(subject => {
+    const div = document.createElement('div');
+    div.className = 'recommendation-card mb-2 p-2';
+    div.innerHTML = `
+      <div><i class="fa ${subject.icon}"></i> <b>${subject.name}</b></div>
+      <div class="small">${subject.description}</div>
+    `;
+    container.appendChild(div);
   });
 }
 

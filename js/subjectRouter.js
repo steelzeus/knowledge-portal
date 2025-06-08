@@ -1,76 +1,76 @@
 // subjectRouter.js
 // Handles dynamic subject routing, tab switching, and section rendering
-import { subjects } from './subjectConfig.js';
+import { SUBJECTS } from './subjectConfig.js';
 
 // --- Dynamic Subject Data with Gradients, Icons, and Descriptions ---
-const SUBJECTS = [
-  {
-    id: 'cs', name: 'Computer Science',
-    icon: 'fa-laptop-code',
-    gradient: 'linear-gradient(135deg,#00cfff 0%,#005bea 100%)',
-    desc: 'Code, algorithms, and the digital future.'
-  },
-  {
-    id: 'math', name: 'Mathematics',
-    icon: 'fa-square-root-alt',
-    gradient: 'linear-gradient(135deg,#ffb300 0%,#ff6e7f 100%)',
-    desc: 'Logic, numbers, and the language of the universe.'
-  },
-  {
-    id: 'physics', name: 'Physics',
-    icon: 'fa-atom',
-    gradient: 'linear-gradient(135deg,#a259ff 0%,#38ef7d 100%)',
-    desc: 'Matter, energy, and the laws of nature.'
-  },
-  {
-    id: 'chem', name: 'Chemistry',
-    icon: 'fa-flask',
-    gradient: 'linear-gradient(135deg,#ff5e5e 0%,#ffc371 100%)',
-    desc: 'Reactions, molecules, and the science of change.'
-  },
-  {
-    id: 'bio', name: 'Biology',
-    icon: 'fa-dna',
-    gradient: 'linear-gradient(135deg,#00e676 0%,#43cea2 100%)',
-    desc: 'Life, evolution, and the living world.'
-  },
-  {
-    id: 'history', name: 'History',
-    icon: 'fa-landmark',
-    gradient: 'linear-gradient(135deg,#ff8a65 0%,#ffd452 100%)',
-    desc: 'Civilizations, revolutions, and the story of us.'
-  },
-  {
-    id: 'eco', name: 'Economics',
-    icon: 'fa-chart-line',
-    gradient: 'linear-gradient(135deg,#00bfae 0%,#1de9b6 100%)',
-    desc: 'Markets, money, and the science of choice.'
-  },
-  {
-    id: 'philosophy', name: 'Philosophy',
-    icon: 'fa-brain',
-    gradient: 'linear-gradient(135deg,#232526 0%,#414345 100%)',
-    desc: 'Wisdom, logic, and the art of thinking.'
-  },
-  {
-    id: 'literature', name: 'Literature',
-    icon: 'fa-book-open',
-    gradient: 'linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%)',
-    desc: 'Stories, poetry, and the power of words.'
-  },
-  {
-    id: 'art', name: 'Art',
-    icon: 'fa-palette',
-    gradient: 'linear-gradient(135deg,#f7971e 0%,#ffd200 100%)',
-    desc: 'Creativity, expression, and visual wonder.'
-  },
-  {
-    id: 'music', name: 'Music',
-    icon: 'fa-music',
-    gradient: 'linear-gradient(135deg,#43cea2 0%,#185a9d 100%)',
-    desc: 'Rhythm, harmony, and the sound of emotion.'
-  }
-];
+// const SUBJECTS = [
+//   {
+//     id: 'cs', name: 'Computer Science',
+//     icon: 'fa-laptop-code',
+//     gradient: 'linear-gradient(135deg,#00cfff 0%,#005bea 100%)',
+//     desc: 'Code, algorithms, and the digital future.'
+//   },
+//   {
+//     id: 'math', name: 'Mathematics',
+//     icon: 'fa-square-root-alt',
+//     gradient: 'linear-gradient(135deg,#ffb300 0%,#ff6e7f 100%)',
+//     desc: 'Logic, numbers, and the language of the universe.'
+//   },
+//   {
+//     id: 'physics', name: 'Physics',
+//     icon: 'fa-atom',
+//     gradient: 'linear-gradient(135deg,#a259ff 0%,#38ef7d 100%)',
+//     desc: 'Matter, energy, and the laws of nature.'
+//   },
+//   {
+//     id: 'chem', name: 'Chemistry',
+//     icon: 'fa-flask',
+//     gradient: 'linear-gradient(135deg,#ff5e5e 0%,#ffc371 100%)',
+//     desc: 'Reactions, molecules, and the science of change.'
+//   },
+//   {
+//     id: 'bio', name: 'Biology',
+//     icon: 'fa-dna',
+//     gradient: 'linear-gradient(135deg,#00e676 0%,#43cea2 100%)',
+//     desc: 'Life, evolution, and the living world.'
+//   },
+//   {
+//     id: 'history', name: 'History',
+//     icon: 'fa-landmark',
+//     gradient: 'linear-gradient(135deg,#ff8a65 0%,#ffd452 100%)',
+//     desc: 'Civilizations, revolutions, and the story of us.'
+//   },
+//   {
+//     id: 'eco', name: 'Economics',
+//     icon: 'fa-chart-line',
+//     gradient: 'linear-gradient(135deg,#00bfae 0%,#1de9b6 100%)',
+//     desc: 'Markets, money, and the science of choice.'
+//   },
+//   {
+//     id: 'philosophy', name: 'Philosophy',
+//     icon: 'fa-brain',
+//     gradient: 'linear-gradient(135deg,#232526 0%,#414345 100%)',
+//     desc: 'Wisdom, logic, and the art of thinking.'
+//   },
+//   {
+//     id: 'literature', name: 'Literature',
+//     icon: 'fa-book-open',
+//     gradient: 'linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%)',
+//     desc: 'Stories, poetry, and the power of words.'
+//   },
+//   {
+//     id: 'art', name: 'Art',
+//     icon: 'fa-palette',
+//     gradient: 'linear-gradient(135deg,#f7971e 0%,#ffd200 100%)',
+//     desc: 'Creativity, expression, and visual wonder.'
+//   },
+//   {
+//     id: 'music', name: 'Music',
+//     icon: 'fa-music',
+//     gradient: 'linear-gradient(135deg,#43cea2 0%,#185a9d 100%)',
+//     desc: 'Rhythm, harmony, and the sound of emotion.'
+//   }
+// ];
 
 // --- Parallax Background ---
 function createParallaxBG() {
@@ -95,7 +95,7 @@ function createParallaxBG() {
 }
 
 // --- Animated Subject Card Grid ---
-function renderSubjectList() {
+export function renderSubjectList() {
   createParallaxBG();
   const list = document.getElementById('subject-list');
   if (!list) return;
@@ -139,36 +139,34 @@ function renderSubjectList() {
   if (window.AOS) AOS.refresh();
 }
 
-function showSubject(subjectId) {
-  const subj = subjects.find(s => s.id === subjectId);
-  if (!subj) return;
-  document.getElementById('subject-section-title').textContent = subj.name;
-  renderTabs(subj);
-  showSection(subj.id, subj.sections[0]);
-}
+// function showSubject(subjectId) {
+//   const subj = subjects.find(s => s.id === subjectId);
+//   if (!subj) return;
+//   document.getElementById('subject-section-title').textContent = subj.name;
+//   renderTabs(subj);
+//   showSection(subj.id, subj.sections[0]);
+// }
 
-function renderTabs(subj) {
-  const tabNav = document.getElementById('subject-tabs');
-  if (!tabNav) return;
-  tabNav.innerHTML = '';
-  subj.sections.forEach(section => {
-    const tabBtn = document.createElement('button');
-    tabBtn.className = 'nav-link';
-    tabBtn.textContent = section;
-    tabBtn.onclick = () => showSection(subj.id, section);
-    tabNav.appendChild(tabBtn);
-  });
-}
+// function renderTabs(subj) {
+//   const tabNav = document.getElementById('subject-tabs');
+//   if (!tabNav) return;
+//   tabNav.innerHTML = '';
+//   subj.sections.forEach(section => {
+//     const tabBtn = document.createElement('button');
+//     tabBtn.className = 'nav-link';
+//     tabBtn.textContent = section;
+//     tabBtn.onclick = () => showSection(subj.id, section);
+//     tabNav.appendChild(tabBtn);
+//   });
+// }
 
-function showSection(subjectId, section) {
-  const content = document.getElementById('subject-section-content');
-  if (!content) return;
-  // Loader animation placeholder
-  content.innerHTML = `<div class='text-center my-4'><div class='spinner-border text-primary' role='status'></div></div>`;
-  setTimeout(() => {
-    // Placeholder for unimplemented sections
-    content.innerHTML = `<div class='alert alert-info text-center my-4'>${section} for ${subjectId.toUpperCase()} coming soon!</div>`;
-  }, 500);
-}
-
-export { renderSubjectList, showSubject };
+// function showSection(subjectId, section) {
+//   const content = document.getElementById('subject-section-content');
+//   if (!content) return;
+//   // Loader animation placeholder
+//   content.innerHTML = `<div class='text-center my-4'><div class='spinner-border text-primary' role='status'></div></div>`;
+//   setTimeout(() => {
+//     // Placeholder for unimplemented sections
+//     content.innerHTML = `<div class='alert alert-info text-center my-4'>${section} for ${subjectId.toUpperCase()} coming soon!</div>`;
+//   }, 500);
+// }

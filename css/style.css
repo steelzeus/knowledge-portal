@@ -305,3 +305,76 @@ body {
   transform: translateY(-8px) scale(1.03);
   box-shadow: 0 0 25px rgba(0,255,255,0.6), 0 0 60px rgba(0,255,255,0.3);
 }
+
+svg, i {
+  color: white !important;
+  stroke: white !important;
+  fill: white !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 999 !important;
+  pointer-events: auto !important;
+}
+
+/* --- GLOBAL KNOWLEDGE FEED & DEBUG PANEL STYLES --- */
+#global-knowledge-feed {
+  background: linear-gradient(120deg, #f8fafc 80%, #e0f7fa 100%);
+  border: 1.5px solid #b2ebf2;
+  box-shadow: 0 4px 32px #00cfff22;
+}
+.feed-card {
+  transition: box-shadow 0.3s, transform 0.3s, opacity 0.5s;
+  box-shadow: 0 2px 12px #00cfff22;
+  border-radius: 1.2rem;
+  opacity: 0;
+  background: #fff;
+}
+.feed-card.aos-animate {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1.02);
+  box-shadow: 0 6px 24px #00cfff33;
+}
+#floating-debug-panel {
+  font-family: 'JetBrains Mono', 'Fira Mono', 'Consolas', monospace;
+  background: rgba(24,28,36,0.97);
+  color: #fff;
+  border: 1.5px solid #00cfff;
+  box-shadow: 0 4px 24px #0008;
+  scrollbar-width: thin;
+  scrollbar-color: #00cfff #222;
+}
+#floating-debug-panel::-webkit-scrollbar {
+  width: 8px;
+  background: #222;
+}
+#floating-debug-panel::-webkit-scrollbar-thumb {
+  background: #00cfff;
+  border-radius: 8px;
+}
+#debug-log-entries {
+  max-height: 30vh;
+  overflow-y: auto;
+  font-size: 0.97em;
+}
+#clear-debug-log {
+  cursor: pointer;
+  color: #0ff;
+  transition: color 0.2s;
+}
+#clear-debug-log:hover {
+  color: #ffd700;
+}
+/* Progressive card reveal for subject/feed cards */
+.subject-card, .feed-card {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+}
+.subject-card.aos-animate, .feed-card.aos-animate {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1.01);
+}
+@media (max-width: 600px) {
+  #floating-debug-panel { width: 98vw; right: 1vw; bottom: 1vw; }
+  #global-knowledge-feed { padding: 1.2rem !important; }
+}

@@ -33,6 +33,16 @@ window.addEventListener('DOMContentLoaded', () => {
     updateGreeting();
 });
 
+// Safe logout function
+function logout() {
+  localStorage.clear();
+  if (typeof showScreen === 'function') {
+    showScreen('welcome-screen');
+  } else {
+    window.location.reload();
+  }
+}
+
 // Update greeting with user's name
 function updateGreeting() {
     const userName = localStorage.getItem('userName');

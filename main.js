@@ -1,3 +1,47 @@
+import { renderSubjectList } from './subjectRouter.js';
+import { renderRecommendations } from './recommendationEngine.js';
+
+// Centralized navigation logic
+function showScreen(screenId) {
+  // Hide all screens ending with -screen
+  document.querySelectorAll('[id$="-screen"]').forEach(div => div.style.display = 'none');
+  // Show the target screen
+  const target = document.getElementById(screenId);
+  if (target) {
+    target.style.display = 'block';
+    if (screenId === 'modular-subject-screen') {
+      renderSubjectList();
+    }
+    if (screenId === 'welcome-screen') {
+      renderRecommendations('recommendation-container');
+      const rec = document.getElementById('recommendation-container');
+      if (rec) rec.style.display = 'block';
+    }
+  } else {
+    // Fallback: show welcome screen if invalid screenId
+    const fallback = document.getElementById('welcome-screen');
+    if (fallback) fallback.style.display = 'block';
+  }
+  window.scrollTo(0, 0);
+}
+
+// Expose to global for inline HTML use
+window.showScreen = showScreen;
+
+// App initialization
+function initApp() {
+  showScreen('welcome-screen');
+  const getStartedBtn = document.getElementById('get-started-button');
+  if (getStartedBtn) {
+    getStartedBtn.addEventListener('click', () => showScreen('modular-subject-screen'));
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initApp);
+
+
+
+
 // Screen navigation function
 function showScreen(id) {
     const screens = document.querySelectorAll('[id$="-screen"]');
@@ -1082,3 +1126,392 @@ function loadSubjectProjects(subject) {
   }
   showScreen('project-detail-screen');
 }
+
+window.addEventListener('error', function(e) {
+  console.error('Global JS Error:', e.message, e.filename, e.lineno, e.colno, e.error);
+});
+window.addEventListener('DOMContentLoaded', function() {
+  setTimeout(() => {
+    console.log('DOM Snapshot:', document.body.innerHTML);
+  }, 1500);
+});
+
+// --- FULL REPAIR MODE: UI/Interactivity/Icons/Subjects Fix ---
+document.addEventListener("DOMContentLoaded", () => {
+  try {
+    loadIconLibraries(); // Ensure all icons are loaded (Lucide + FontAwesome)
+    forceFixCSSVisibility(); // Apply visibility/reset patches
+    injectSubjects(); // Add 3 new subjects with 4 content-rich cards each
+    reattachEventListeners(); // Ensure buttons toggle subjects and animations work
+    initAOS(); // Animate everything
+  } catch (err) {
+    console.error("INIT ERROR:", err);
+  }
+});
+
+function loadIconLibraries() {
+  // FontAwesome
+  if (!document.querySelector('link[href*="font-awesome"],link[href*="fontawesome"],link[href*="fontawesome"]')) {
+    const fa = document.createElement('link');
+    fa.rel = 'stylesheet';
+    fa.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css';
+    document.head.appendChild(fa);
+  }
+  // Lucide
+  if (!document.querySelector('script[src*="lucide"]')) {
+    const lucide = document.createElement('script');
+    lucide.src = 'https://unpkg.com/lucide@latest/dist/umd/lucide.js';
+    lucide.defer = true;
+    document.body.appendChild(lucide);
+  }
+  // AOS
+  if (!window.AOS && !document.querySelector('script[src*="aos"]')) {
+    const aos = document.createElement('script');
+    aos.src = 'https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js';
+    aos.onload = () => { if (window.AOS) window.AOS.init({ duration: 700 }); };
+    document.body.appendChild(aos);
+  }
+  if (!document.querySelector('link[href*="aos"]')) {
+    const aosCss = document.createElement('link');
+    aosCss.rel = 'stylesheet';
+    aosCss.href = 'https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css';
+    document.head.appendChild(aosCss);
+  }
+}
+
+function forceFixCSSVisibility() {
+  // Patch all .card, .btn, .icon, .subject-btn, svg, i for visibility and contrast
+  const selectors = ['.card', '.btn', '.icon', '.subject-btn', 'svg', 'i'];
+  document.querySelectorAll(selectors.join(',')).forEach(el => {
+    el.style.opacity = '1';
+    el.style.visibility = 'visible';
+    el.style.display = '';
+    el.style.zIndex = '999';
+    el.style.pointerEvents = 'auto';
+    // Force color/contrast for icons/buttons
+    if (el.matches('svg, i, .icon')) {
+      el.style.color = '#fff';
+      el.style.stroke = '#fff';
+      el.style.fill = '#fff';
+    }
+    // If dark background, force light text
+    const bg = window.getComputedStyle(el).backgroundColor;
+    if (bg && (bg.includes('0, 0, 0') || bg.includes('18, 18, 18') || bg.includes('24, 28, 36'))) {
+      el.style.color = '#fff';
+    }
+  });
+}
+
+function injectSubjects() {
+  const subjects = [
+    {
+      name: "World History",
+      icon: "fa-solid fa-landmark",
+      topics: ["Ancient Civilizations", "World Wars", "Colonialism", "Modern Diplomacy"]
+    },
+    {
+      name: "Artificial Intelligence",
+      icon: "lucide lucide-cpu",
+      topics: ["Neural Networks", "LLMs", "AI Ethics", "Future of AGI"]
+    },
+    {
+      name: "Environmental Science",
+      icon: "fa-solid fa-leaf",
+      topics: ["Climate Change", "Biodiversity", "Sustainability", "Conservation"]
+    }
+  ];
+  let contentArea = document.getElementById('content-area');
+  if (!contentArea) {
+    contentArea = document.createElement('div');
+    contentArea.id = 'content-area';
+    contentArea.className = 'container mt-4';
+    document.body.prepend(contentArea);
+  }
+  contentArea.innerHTML = '';
+  subjects.forEach((subject, idx) => {
+    const subjectPanel = document.createElement('div');
+    subjectPanel.className = 'mb-5';
+    subjectPanel.innerHTML = `
+      <h2 class="fw-bold mb-3"><i class="${subject.icon} me-2 subject-icon"></i>${subject.name}</h2>
+      <div class="row g-4">
+        ${subject.topics.map((topic, i) => `
+          <div class="col-md-6 col-lg-3">
+            <div class="card shadow h-100 subject-card" data-aos="fade-up" data-aos-delay="${i*100}">
+              <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                <div class="mb-2"><i class="${subject.icon} fa-2x subject-icon"></i></div>
+                <h5 class="card-title text-center">${topic}</h5>
+                <button class="btn btn-outline-primary mt-2 expand-btn" data-subject="${subject.name}" data-topic="${topic}">Learn More</button>
+                <div class="expand-content mt-2" style="display:none;"></div>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    contentArea.appendChild(subjectPanel);
+  });
+}
+
+function reattachEventListeners() {
+  // Expand/collapse for each card
+  document.querySelectorAll('.expand-btn').forEach(btn => {
+    btn.onclick = function() {
+      const card = btn.closest('.card');
+      const content = card.querySelector('.expand-content');
+      if (content.style.display === 'none' || !content.innerHTML) {
+        content.innerHTML = `<div class='text-muted'>Loading details for <b>${btn.dataset.topic}</b>...</div>`;
+        setTimeout(() => {
+          content.innerHTML = `<div><b>${btn.dataset.topic}</b> is a key topic in <b>${btn.dataset.subject}</b>. Explore more at <a href='https://en.wikipedia.org/wiki/${encodeURIComponent(btn.dataset.topic)}' target='_blank'>Wikipedia</a>.</div>`;
+        }, 500);
+        content.style.display = 'block';
+        btn.textContent = 'Hide';
+      } else {
+        content.style.display = 'none';
+        btn.textContent = 'Learn More';
+      }
+    };
+  });
+}
+
+function initAOS() {
+  if (window.AOS) window.AOS.init({ duration: 700 });
+}
+
+// --- UI+CONTENT EXPANSION: Home Hero, DOM Repair, More Subjects ---
+document.addEventListener("DOMContentLoaded", () => {
+  createHeroSection();
+  repairOrphanedContainers();
+  injectMoreSubjects();
+  forceAllCardVisibility();
+  if (window.AOS) AOS.init({ duration: 700 });
+});
+
+function createHeroSection() {
+  // Replace welcome-screen with a new hero section
+  const welcome = document.getElementById('welcome-screen');
+  if (!welcome) return;
+  welcome.innerHTML = `
+    <div class="hero-gradient-bg position-relative p-5 rounded-4 shadow-lg text-center" style="overflow:hidden;">
+      <h1 class="fw-bold mb-3" style="font-size:2.8rem;letter-spacing:1px;animation:fadeInDown 1s;">
+        <span style="color:var(--accent)">Welcome to the Knowledge Portal</span>
+      </h1>
+      <p class="lead mb-4" style="font-size:1.3rem;animation:fadeInUp 1.2s;">Explore, learn, and grow with interactive resources and a vibrant community.</p>
+      <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+        <button class="btn btn-lg glow-btn px-5 py-3" onclick="showScreen('user-info-screen')">Get Started</button>
+        <button class="btn btn-outline-primary btn-lg px-5 py-3" onclick="showScreen('modular-subject-screen')">Browse Subjects</button>
+      </div>
+      <svg viewBox="0 0 1440 180" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;bottom:-1px;left:0;width:100%;z-index:2;"><path d="M0,80 C360,180 1080,0 1440,100 L1440,180 L0,180 Z" fill="url(#waveGradient)"/><defs><linearGradient id="waveGradient" x1="0" y1="0" x2="1440" y2="180" gradientUnits="userSpaceOnUse"><stop stop-color="#00cfff"/><stop offset="1" stop-color="#00ff99"/></linearGradient></defs></svg>
+    </div>
+  `;
+  // Add hero-gradient-bg CSS if not present
+  if (!document.getElementById('hero-gradient-bg-style')) {
+    const style = document.createElement('style');
+    style.id = 'hero-gradient-bg-style';
+    style.innerHTML = `
+      .hero-gradient-bg { background: linear-gradient(135deg,#0a2342 0%,#00cfff 100%); color:#fff; }
+      @keyframes fadeInDown { from{opacity:0;transform:translateY(-40px);} to{opacity:1;transform:translateY(0);} }
+      @keyframes fadeInUp { from{opacity:0;transform:translateY(40px);} to{opacity:1;transform:translateY(0);} }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+function repairOrphanedContainers() {
+  // Find .card/.subject-panel not in #content-area or display:none
+  let contentArea = document.getElementById('content-area');
+  if (!contentArea) {
+    contentArea = document.createElement('div');
+    contentArea.id = 'content-area';
+    contentArea.className = 'container mt-4';
+    document.body.appendChild(contentArea);
+  }
+  // Move any .subject-panel or .card not in contentArea
+  document.querySelectorAll('.subject-panel, .card').forEach(el => {
+    if (!contentArea.contains(el)) {
+      contentArea.appendChild(el);
+    }
+    if (el.style.display === 'none') el.style.display = '';
+    el.style.opacity = '1';
+    el.style.visibility = 'visible';
+  });
+}
+
+function injectMoreSubjects() {
+  const newSubjects = [
+    { name: "Psychology", icon: "fa-solid fa-brain", topics: ["Cognitive Biases", "Neuroscience", "Dreams", "Jung vs Freud"] },
+    { name: "Quantum Physics", icon: "lucide lucide-atom", topics: ["Wave-Particle Duality", "Quantum Entanglement", "Uncertainty Principle", "Quantum Computing"] },
+    { name: "Philosophy", icon: "fa-solid fa-scale-balanced", topics: ["Existentialism", "Stoicism", "Ethics", "Consciousness"] },
+    { name: "Cybersecurity", icon: "fa-solid fa-shield-halved", topics: ["Encryption", "Hacking", "Phishing", "Digital Privacy"] }
+  ];
+  let contentArea = document.getElementById('content-area');
+  if (!contentArea) {
+    contentArea = document.createElement('div');
+    contentArea.id = 'content-area';
+    contentArea.className = 'container mt-4';
+    document.body.appendChild(contentArea);
+  }
+  newSubjects.forEach((subject, idx) => {
+    const panel = document.createElement('div');
+    panel.className = 'mb-5 subject-panel';
+    panel.innerHTML = `
+      <h2 class="fw-bold mb-3"><i class="${subject.icon} me-2 subject-icon"></i>${subject.name}</h2>
+      <div class="row g-4">
+        ${subject.topics.map((topic, i) => `
+          <div class="col-md-6 col-lg-3">
+            <div class="card shadow h-100 subject-card" data-aos="fade-up" data-aos-delay="${i*100}">
+              <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                <div class="mb-2"><i class="${subject.icon} fa-2x subject-icon"></i></div>
+                <h5 class="card-title text-center">${topic}</h5>
+                <button class="btn btn-outline-primary mt-2 expand-btn" data-subject="${subject.name}" data-topic="${topic}">Learn More</button>
+                <div class="expand-content mt-2" style="display:none;"></div>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    contentArea.appendChild(panel);
+  });
+  // Attach expand/collapse logic
+  document.querySelectorAll('.expand-btn').forEach(btn => {
+    btn.onclick = function() {
+      const card = btn.closest('.card');
+      const content = card.querySelector('.expand-content');
+      if (content.style.display === 'none' || !content.innerHTML) {
+        content.innerHTML = `<div class='text-muted'>Loading details for <b>${btn.dataset.topic}</b>...</div>`;
+        setTimeout(() => {
+          content.innerHTML = `<div><b>${btn.dataset.topic}</b> is a fascinating topic in <b>${btn.dataset.subject}</b>. Learn more at <a href='https://en.wikipedia.org/wiki/${encodeURIComponent(btn.dataset.topic)}' target='_blank'>Wikipedia</a>.</div>`;
+        }, 500);
+        content.style.display = 'block';
+        btn.textContent = 'Hide';
+      } else {
+        content.style.display = 'none';
+        btn.textContent = 'Learn More';
+      }
+    };
+  });
+}
+
+function forceAllCardVisibility() {
+  document.querySelectorAll('.card, .subject-panel, .expand-content').forEach(el => {
+    el.style.display = '';
+    el.style.opacity = '1';
+    el.style.visibility = 'visible';
+    el.style.zIndex = '999';
+  });
+}
+
+// --- GLOBAL KNOWLEDGE FEED, DEBUG PANEL, CARD REVEAL ---
+
+function injectGlobalKnowledgeFeed() {
+  let feed = document.getElementById('global-knowledge-feed');
+  if (!feed) {
+    feed = document.createElement('section');
+    feed.id = 'global-knowledge-feed';
+    feed.className = 'container my-5 p-4 rounded-4 shadow-lg bg-light';
+    document.body.insertBefore(feed, document.body.firstChild);
+  }
+  feed.innerHTML = `
+    <h2 class="fw-bold mb-4"><i class="fa-solid fa-globe me-2"></i>Global Knowledge Feed</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 feed-card" data-aos="fade-up">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fa-solid fa-newspaper me-2"></i>Education News</h5>
+            <ul class="list-unstyled mb-0">
+              <li><b>AI tutors</b> are transforming classrooms worldwide (2025).</li>
+              <li>UNESCO launches <b>Global Digital Literacy</b> initiative.</li>
+              <li>Open-source textbooks gain traction in universities.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 feed-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fa-brands fa-github me-2"></i>Trending GitHub Repos</h5>
+            <ul class="list-unstyled mb-0">
+              <li><a href="https://github.com/openai/openai-cookbook" target="_blank">openai/openai-cookbook</a></li>
+              <li><a href="https://github.com/karpathy/llama2.c" target="_blank">karpathy/llama2.c</a></li>
+              <li><a href="https://github.com/PKUFlyingPig/cs-self-learning" target="_blank">PKUFlyingPig/cs-self-learning</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 feed-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="card-body">
+            <h5 class="card-title"><i class="fa-solid fa-flask me-2"></i>Research Paper Highlights</h5>
+            <ul class="list-unstyled mb-0">
+              <li><b>"Scaling Laws for Neural Language Models"</b> (OpenAI, 2024)</li>
+              <li><b>"Quantum Supremacy Using Random Circuits"</b> (Nature, 2023)</li>
+              <li><b>"Climate Change and Global Food Security"</b> (Science, 2025)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function createDebugPanel() {
+  if (document.getElementById('floating-debug-panel')) return;
+  const panel = document.createElement('div');
+  panel.id = 'floating-debug-panel';
+  panel.style = 'position:fixed;bottom:24px;right:24px;z-index:2000;width:340px;max-height:50vh;overflow:auto;background:rgba(24,28,36,0.97);color:#fff;border-radius:12px;box-shadow:0 4px 24px #0008;padding:12px 16px;font-size:0.95rem;pointer-events:auto;';
+  panel.innerHTML = `
+    <div style="font-weight:bold;margin-bottom:6px;">Debug Log <button id="clear-debug-log" style="float:right;font-size:0.9em;background:none;border:none;color:#fff;">Clear</button></div>
+    <div id="debug-log-entries"></div>
+  `;
+  document.body.appendChild(panel);
+  document.getElementById('clear-debug-log').onclick = () => {
+    document.getElementById('debug-log-entries').innerHTML = '';
+  };
+}
+
+function logRenderEvent(type, name, status = 'rendered') {
+  createDebugPanel();
+  const log = document.getElementById('debug-log-entries');
+  if (!log) return;
+  const time = new Date().toLocaleTimeString();
+  const entry = document.createElement('div');
+  entry.innerHTML = `<span style='color:#0ff;'>[${time}]</span> <b>${type}</b>: <span style='color:#ffd700;'>${name}</span> <span style='color:${status==='rendered'?'#0f0':'#f00'};'>${status}</span>`;
+  log.appendChild(entry);
+  log.scrollTop = log.scrollHeight;
+}
+
+function revealCardsOnScroll() {
+  const cards = document.querySelectorAll('.subject-card, .feed-card');
+  if (!('IntersectionObserver' in window)) {
+    cards.forEach(card => card.style.opacity = '1');
+    return;
+  }
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('aos-animate');
+        entry.target.style.opacity = '1';
+        logRenderEvent('Card', entry.target.querySelector('.card-title')?.textContent || 'Unknown', 'rendered');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  cards.forEach(card => {
+    card.style.opacity = '0';
+    observer.observe(card);
+  });
+}
+
+// --- Patch main DOMContentLoaded to initialize new features ---
+document.addEventListener("DOMContentLoaded", () => {
+  injectGlobalKnowledgeFeed();
+  createDebugPanel();
+  revealCardsOnScroll();
+  // Log subject panel renders
+  setTimeout(() => {
+    document.querySelectorAll('.subject-panel').forEach(panel => {
+      const name = panel.querySelector('h2')?.textContent || 'Unknown Subject';
+      logRenderEvent('Subject Panel', name, 'rendered');
+    });
+  }, 1200);
+});

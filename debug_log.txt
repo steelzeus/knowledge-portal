@@ -1,0 +1,25 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20250607233105
+Username: RICKNOROLL\Lenovo
+RunAs User: RICKNOROLL\Lenovo
+Configuration Name: 
+Machine: RICKNOROLL (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -Command Start-Transcript -Path debug_log.txt; Continue = 'Continue'; try { [System.Windows.Forms.MessageBox]::Show('JS/DOM diagnostics running...') } catch {};  = Get-Content index.html -Raw; Add-Content debug_log.txt ;  = Get-Content main.js -Raw; Add-Content debug_log.txt ; Start-Sleep -Seconds 1; Stop-Transcript
+Process ID: 26220
+PSVersion: 5.1.26100.4061
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.4061
+BuildVersion: 10.0.26100.4061
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is debug_log.txt
+PS>$global:?
+True
+**********************
+Windows PowerShell transcript end
+End time: 20250607233105
+**********************
