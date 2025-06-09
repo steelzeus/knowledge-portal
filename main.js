@@ -1,7 +1,9 @@
-import { renderSubjectList, renderSubjectDetail } from './subjectRouter.js';
-import { renderRecommendations } from './recommendationEngine.js';
+// main.js - Application entry point
+import { renderSubjectList } from './js/subjectRouter.js';
+import { renderRecommendations } from './js/recommendationEngine.js';
+import { showScreen } from './js/navigation.js';
 
-// Show/hide a global loading spinner (for future use)
+// Utility functions for loading state
 export function showLoading() {
   let spinner = document.getElementById('global-loading-spinner');
   if (!spinner) {
@@ -22,26 +24,30 @@ export function showLoading() {
   }
   spinner.style.display = 'flex';
 }
+
 export function hideLoading() {
   const spinner = document.getElementById('global-loading-spinner');
   if (spinner) spinner.style.display = 'none';
 }
 
-// Parse subject ID from URL (?subject=cs)
-function getSubjectIdFromURL() {
+// Initialize application
+function initApp() {
+  // Parse subject ID from URL (?subject=cs)
   const params = new URLSearchParams(window.location.search);
-  return params.get('subject');
-}
+  const subjectId = params.get('subject');
 
-// Centralized navigation logic
-function showScreen(screenId, opts = {}) {
-  showLoading();
-  // Hide all screens ending with -screen
-  document.querySelectorAll('[id$="-screen"]').forEach(div => div.style.display = 'none');
-  // Show the target screen
-  const target = document.getElementById(screenId);
-  if (target) {
-    target.style.display = 'block';
+  if (subjectId) {
+    showScreen('subject-detail-screen');
+  } else {
+    showScreen('welcome-screen');
+    renderRecommendations('recommendation-container');
+  }
+
+  // Set up screen change handlers
+  document.addEventListener('screenChange', (e) => {
+    const { screenId } = e.detail;
+    showLoading();
+    
     if (screenId === 'modular-subject-screen') {
       renderSubjectList();
     }
@@ -50,54 +56,20 @@ function showScreen(screenId, opts = {}) {
       const rec = document.getElementById('recommendation-container');
       if (rec) rec.style.display = 'block';
     }
-    if (screenId === 'subject-detail-screen') {
-      // Use subjectId from opts or URL
-      const subjectId = opts.subjectId || getSubjectIdFromURL();
-      renderSubjectDetail(subjectId);
-    }
-  } else {
-    // Fallback: show welcome screen if invalid screenId
-    const fallback = document.getElementById('welcome-screen');
-    if (fallback) fallback.style.display = 'block';
-  }
-  window.scrollTo(0, 0);
-  setTimeout(hideLoading, 300); // Simulate loading
+    
+    hideLoading();
+  });
 }
 
-// Expose to global for inline HTML use
-window.showScreen = showScreen;
-
-// App initialization
-function initApp() {
-  // If ?subject=... is present, go directly to subject detail
-  const subjectId = getSubjectIdFromURL();
-  if (subjectId) {
-    showScreen('subject-detail-screen', { subjectId });
-  } else {
-    showScreen('welcome-screen');
-  }
-  const getStartedBtn = document.getElementById('get-started-button');
-  if (getStartedBtn) {
-    getStartedBtn.addEventListener('click', () => showScreen('modular-subject-screen'));
-  }
-}
-
-document.addEventListener('DOMContentLoaded', initApp);
-
-// For navigation from subject cards
-export function goToSubjectDetail(subjectId) {
-  // Update URL (no reload)
-  window.history.pushState({}, '', `?subject=${subjectId}`);
-  showScreen('subject-detail-screen', { subjectId });
-}
-window.goToSubjectDetail = goToSubjectDetail;
-
-// Handle browser navigation (back/forward)
-window.addEventListener('popstate', () => {
-  const subjectId = getSubjectIdFromURL();
-  if (subjectId) {
-    showScreen('subject-detail-screen', { subjectId });
-  } else {
-    showScreen('welcome-screen');
-  }
+// Initialize AOS library after DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize AOS
+  AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    offset: 100
+  });
+  
+  // Initialize the application
+  initApp();
 });

@@ -1,3 +1,5 @@
+import DEBUG from './debug.js';
+
 // ============================================
 // CORE NAVIGATION LOGIC
 // ============================================
@@ -22,9 +24,8 @@ function showScreen(screenId) {
         }
         if (screenId === "welcome-screen") {
             personalizeWelcome();
-        }
-    } else {
-        console.warn(`Screen with ID "${screenId}" not found`);
+        }    } else {
+        DEBUG.warn(`Screen with ID "${screenId}" not found`);
     }
 }
 
@@ -56,7 +57,7 @@ function showAmbitionChoiceScreen() {
             ambition.checked = false;
         });
     } catch (error) {
-        console.warn("Error showing ambition choice screen:", error);
+        DEBUG.warn("Error showing ambition choice screen:", error);
         showScreen('user-data-input-screen');
     }
 }
@@ -107,7 +108,7 @@ function getStarted() {
             showUserDataInputScreen();
         }
     } catch (error) {
-        console.warn("Error in getStarted:", error);
+        DEBUG.warn("Error in getStarted:", error);
         showUserDataInputScreen();
     }
 }

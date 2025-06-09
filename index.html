@@ -280,13 +280,14 @@
       z-index: 9999;
       top: 0;
       left: 0;
-      width: 100vw;
+      width: 100%;
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       background: radial-gradient(ellipse at center,#0a2342 0%,#181c24 100%);
       transition: opacity 1s;
+      overflow: hidden;
     }
     @keyframes portalPulse { 0%{text-shadow:0 0 32px #00ff99;} 100%{text-shadow:0 0 64px #00cfff;} }
     .loader-orb {
@@ -308,10 +309,11 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
+      width: 100%;
       height: 100vh;
       z-index: 0;
       pointer-events: none;
+      overflow: hidden;
     }
     /* Global Launch Footer */
     .footer-glass {
@@ -528,8 +530,11 @@
       gap: 1rem !important;
       align-items: stretch !important;
       width: 100% !important;
+      max-width: 100% !important;
       opacity: 1 !important;
       pointer-events: auto !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
     }
     /* Responsive fixes for button containers */
     @media (max-width: 768px) {
@@ -613,8 +618,7 @@
   <nav class="fixed-top shadow-sm navbar navbar-expand-lg">
     <div class="px-4 container-fluid">
       <a class="d-flex align-items-center navbar-brand" href="#">
-        <img src="assets/images/icons/logo.png" alt="Logo" style="height:36px;width:36px;margin-right:10px;filter:drop-shadow(0 0 6px #00ff99);"
-             onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f393.png';this.alt='Logo missing';">
+        <img src="assets/images/icons/logo.png" alt="Knowledge Portal Logo" style="height:36px;width:36px;margin-right:10px;filter:drop-shadow(0 0 6px #00ff99);">
         Knowledge Portal
       </a>
       <div class="d-flex align-items-center ms-auto">
@@ -1015,16 +1019,13 @@
 
   <!-- Global loading spinner (hidden by default) -->
   <div id="global-loading-spinner" style="display:none;"><div class="spinner"></div></div>
-
-  <!-- Subject Detail Hub Script -->
-  <script type="module" src="js/subjectDetailHub.js"></script>
-
-  <!-- Move all scripts to the end of body for proper loading -->
-  <script type="module" src="js/main.js"></script>
-  <script type="module" src="js/subjectRouter.js"></script>
-  <script type="module" src="js/recommendationEngine.js"></script>
-  <script type="module" src="js/chatbotUI.js"></script>
-  <script type="module" src="js/searchEngine.js"></script>
+  <!-- Application Scripts -->
+  <script type="module" src="main.js" defer></script>
+  <script type="module" src="js/subjectRouter.js" defer></script>
+  <script type="module" src="js/recommendationEngine.js" defer></script>
+  <script type="module" src="js/chatbotUI.js" defer></script>
+  <script type="module" src="js/searchEngine.js" defer></script>
+  <script type="module" src="js/subjectDetailHub.js" defer></script>
 
   <!-- Search UI (Bootstrap 5) -->
   <div id="search-container" class="py-3 container" style="display:none;max-width:700px;">
@@ -1092,16 +1093,9 @@
   <!-- Daily XP Bar -->
   <div id="daily-xp-bar" style="position:fixed;bottom:0;left:0;width:100vw;height:12px;z-index:1200;background:linear-gradient(90deg,#00ff99 0%,#00cfff 100%);box-shadow:0 -2px 16px #00ff9933;">
     <div id="daily-xp-fill" style="height:100%;width:0%;background:rgba(10,35,66,0.9);transition:width 0.5s;"></div>
-  </div>
-  <script>
-  window.dailyXP=0;function addXP(x){window.dailyXP+=x;if(window.dailyXP>100)window.dailyXP=100;document.getElementById('daily-xp-fill').style.width=window.dailyXP+'%';}
-  document.body.addEventListener('click',()=>addXP(2));
-  </script>
-
-  <!-- Keyboard Shortcuts -->
-  <script>
-  document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='k'){e.preventDefault();showScreen('search-container');}if(e.ctrlKey&&e.key==='j'){e.preventDefault();showScreen('my-journey-dashboard');}if(e.ctrlKey&&e.key==='r'){e.preventDefault();showScreen('roadmap-screen');}if(e.ctrlKey&&e.key==='f'){e.preventDefault();showScreen('feed-screen');}});
-  </script>
+  </div>  <!-- Application behavior scripts loaded as modules -->
+  <script type="module" src="js/xp.js" defer></script>
+  <script type="module" src="js/shortcuts.js" defer></script>
 
   <!-- REMOVE ALL DEBUG/RECOVERY CSS for buttons and icons -->
   <!-- REMOVE: .fa, .fas, .far, .fal, .fab, .fa-moon, .fa-user, .fa-compass, .fa-map-signs, .fa-trophy, .fa-bolt, .fa-eye, .fa-power-off, .fa-play, .fa-undo, .fa-sync { ... } -->

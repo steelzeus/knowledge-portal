@@ -6,6 +6,8 @@
 // USER DATA STORAGE
 // ============================================
 
+import DEBUG from './debug.js';
+
 // Save user info to localStorage
 export function saveUserInfo() {
     const name = document.getElementById('userName').value.trim();
@@ -15,6 +17,7 @@ export function saveUserInfo() {
         localStorage.setItem('userName', name);
         localStorage.setItem('userAge', age);
         localStorage.setItem('educationLevel', educationLevel);
+        DEBUG.log('User info saved:', { name, age, educationLevel });
         return true;
     } else {
         alert('Please fill in all fields.');
@@ -35,11 +38,11 @@ function loadUserInfo() {
             if (ageField) ageField.value = userInfo.age || '';
             if (levelField) levelField.value = userInfo.level || '';
             
-            console.log("User info loaded from storage");
+            DEBUG.log("User info loaded from storage");
             return userInfo;
         }
     } catch (error) {
-        console.warn("Error loading user info:", error);
+        DEBUG.warn("Error loading user info:", error);
         // Clear corrupted data
         localStorage.removeItem("userInfo");
     }
@@ -52,7 +55,7 @@ function getUserInfo() {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
         return userInfo || null;
     } catch (error) {
-        console.warn("Error getting user info:", error);
+        DEBUG.warn("Error getting user info:", error);
         return null;
     }
 }
@@ -76,7 +79,7 @@ function showUserInfo() {
             return false;
         }
     } catch (error) {
-        console.warn("Error displaying user info:", error);
+        DEBUG.error("Error displaying user info:", error);
         alert("Error loading user information.");
         return false;
     }
@@ -94,10 +97,10 @@ function saveAmbition(ambitionValue) {
         // Also save timestamp
         localStorage.setItem("userAmbitionTimestamp", new Date().toISOString());
         
-        console.log("Ambition saved:", ambitionValue);
+        DEBUG.log("Ambition saved:", ambitionValue);
         return true;
     } catch (error) {
-        console.error("Error saving ambition:", error);
+        DEBUG.error("Error saving ambition:", error);
         return false;
     }
 }
@@ -107,7 +110,7 @@ function getAmbition() {
     try {
         return localStorage.getItem("userAmbition");
     } catch (error) {
-        console.warn("Error getting ambition:", error);
+        DEBUG.warn("Error getting ambition:", error);
         return null;
     }
 }
@@ -131,10 +134,10 @@ function saveSelectedAmbition() {
 function saveTheme(theme) {
     try {
         localStorage.setItem("theme", theme);
-        console.log("Theme saved:", theme);
+        DEBUG.log("Theme saved:", theme);
         return true;
     } catch (error) {
-        console.error("Error saving theme:", error);
+        DEBUG.error("Error saving theme:", error);
         return false;
     }
 }
@@ -153,7 +156,7 @@ function loadTheme() {
         }
         return "light";
     } catch (error) {
-        console.warn("Error loading theme:", error);
+        DEBUG.warn("Error loading theme:", error);
         return "light";
     }
 }
@@ -178,7 +181,7 @@ function getAllUserData() {
             isComplete: !!(userInfo?.name && userInfo?.age && ambition)
         };
     } catch (error) {
-        console.warn("Error getting all user data:", error);
+        DEBUG.warn("Error getting all user data:", error);
         return {
             userInfo: null,
             ambition: null,
@@ -203,10 +206,10 @@ function clearAllUserData() {
             localStorage.removeItem(key);
         });
         
-        console.log("All user data cleared");
+        DEBUG.log("All user data cleared");
         return true;
     } catch (error) {
-        console.error("Error clearing user data:", error);
+        DEBUG.error("Error clearing user data:", error);
         return false;
     }
 }
@@ -215,10 +218,10 @@ function clearAllUserData() {
 function resetAllData() {
     try {
         localStorage.clear();
-        console.log("All localStorage data cleared");
+        DEBUG.log("All localStorage data cleared");
         return true;
     } catch (error) {
-        console.error("Error resetting all data:", error);
+        DEBUG.error("Error resetting all data:", error);
         return false;
     }
 }
@@ -269,7 +272,7 @@ function cleanupCorruptedData() {
     const validation = validateStoredData();
     
     if (!validation.valid) {
-        console.warn("Corrupted data detected, cleaning up:", validation.errors);
+        DEBUG.warn("Corrupted data detected, cleaning up:", validation.errors);
         clearAllUserData();
         return true;
     }
@@ -289,7 +292,7 @@ function isStorageAvailable() {
         localStorage.removeItem(test);
         return true;
     } catch (error) {
-        console.warn("localStorage not available:", error);
+        DEBUG.warn("localStorage not available:", error);
         return false;
     }
 }
@@ -323,7 +326,7 @@ function getStorageInfo() {
             itemCount: Object.keys(items).length
         };
     } catch (error) {
-        console.warn("Error getting storage info:", error);
+        DEBUG.warn("Error getting storage info:", error);
         return { available: true, error: error.message };
     }
 }
@@ -340,7 +343,7 @@ function exportUserData() {
         
         return JSON.stringify(exportData, null, 2);
     } catch (error) {
-        console.error("Error exporting data:", error);
+        DEBUG.error("Error exporting data:", error);
         return null;
     }
 }
@@ -370,10 +373,10 @@ function importUserData(jsonString) {
             localStorage.setItem("theme", importData.theme);
         }
         
-        console.log("Data imported successfully");
+        DEBUG.log("Data imported successfully");
         return true;
     } catch (error) {
-        console.error("Error importing data:", error);
+        DEBUG.error("Error importing data:", error);
         return false;
     }
 }
@@ -415,7 +418,7 @@ function resetUserData() {
 
 // Listen for storage changes across tabs
 window.addEventListener('storage', function(e) {
-    console.log('Storage changed:', e.key, e.oldValue, e.newValue);
+    DEBUG.log('Storage changed:', e.key, e.oldValue, e.newValue);
     
     // Handle specific storage changes
     switch(e.key) {
@@ -429,7 +432,7 @@ window.addEventListener('storage', function(e) {
             break;
         case 'userAmbition':
             // Handle ambition changes
-            console.log('Ambition updated:', e.newValue);
+            DEBUG.log('Ambition updated:', e.newValue);
             break;
     }
 });
@@ -440,11 +443,11 @@ window.addEventListener('storage', function(e) {
 
 // Initialize storage system
 function initStorage() {
-    console.log("Initializing storage system...");
+    DEBUG.log("Initializing storage system...");
     
     // Check storage availability
     if (!isStorageAvailable()) {
-        console.error("localStorage not available!");
+        DEBUG.error("localStorage not available!");
         return false;
     }
     
@@ -455,8 +458,8 @@ function initStorage() {
     loadUserInfo();
     loadTheme();
     
-    console.log("Storage system initialized");
-    console.log("Storage info:", getStorageInfo());
+    DEBUG.log("Storage system initialized");
+    DEBUG.log("Storage info:", getStorageInfo());
     
     return true;
 }

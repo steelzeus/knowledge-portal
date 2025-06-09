@@ -1,3 +1,5 @@
+import DEBUG from './debug.js';
+
 window.addEventListener('DOMContentLoaded', () => {
     const nextBtn = document.getElementById('user-info-next-btn');
     if (nextBtn) {
@@ -32,6 +34,19 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     updateGreeting();
 });
+
+/**
+ * Initialize event handlers
+ */
+function initializeEventHandlers() {
+    DEBUG.log("Registering event handlers...");
+    registerEventHandlers();
+    
+    // Initial window resize to set mobile/desktop classes
+    handleWindowResize();
+    
+    DEBUG.log("Event handlers registered successfully");
+}
 
 // Safe logout function
 function logout() {

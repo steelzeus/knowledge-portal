@@ -4,6 +4,7 @@
 
 import { SUBJECTS } from './subjectConfig.js';
 import { showSubject, showSection } from './subjectRouter.js';
+import DEBUG from './debug.js';
 
 // --- 1. Build Search Index from Subject Config ---
 function buildSearchIndex() {
@@ -193,9 +194,8 @@ document.addEventListener('click', e => {
 });
 
 // --- 9. Initialize on DOMContentLoaded ---
-document.addEventListener('DOMContentLoaded', () => {
-  if (!window.Fuse) {
-    console.error('Fuse.js not loaded!');
+document.addEventListener('DOMContentLoaded', () => {  if (!window.Fuse) {
+    DEBUG.error('Fuse.js not loaded!');
     return;
   }
   initFuse();
