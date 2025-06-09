@@ -1,78 +1,10 @@
 // subjectRouter.js
 // Handles dynamic subject routing, tab switching, and section rendering
 import { SUBJECTS } from './subjectConfig.js';
+import { LESSONS } from './lessons.js';
+import { goToSubjectDetail } from '../main.js';
 
-// --- Dynamic Subject Data with Gradients, Icons, and Descriptions ---
-// const SUBJECTS = [
-//   {
-//     id: 'cs', name: 'Computer Science',
-//     icon: 'fa-laptop-code',
-//     gradient: 'linear-gradient(135deg,#00cfff 0%,#005bea 100%)',
-//     desc: 'Code, algorithms, and the digital future.'
-//   },
-//   {
-//     id: 'math', name: 'Mathematics',
-//     icon: 'fa-square-root-alt',
-//     gradient: 'linear-gradient(135deg,#ffb300 0%,#ff6e7f 100%)',
-//     desc: 'Logic, numbers, and the language of the universe.'
-//   },
-//   {
-//     id: 'physics', name: 'Physics',
-//     icon: 'fa-atom',
-//     gradient: 'linear-gradient(135deg,#a259ff 0%,#38ef7d 100%)',
-//     desc: 'Matter, energy, and the laws of nature.'
-//   },
-//   {
-//     id: 'chem', name: 'Chemistry',
-//     icon: 'fa-flask',
-//     gradient: 'linear-gradient(135deg,#ff5e5e 0%,#ffc371 100%)',
-//     desc: 'Reactions, molecules, and the science of change.'
-//   },
-//   {
-//     id: 'bio', name: 'Biology',
-//     icon: 'fa-dna',
-//     gradient: 'linear-gradient(135deg,#00e676 0%,#43cea2 100%)',
-//     desc: 'Life, evolution, and the living world.'
-//   },
-//   {
-//     id: 'history', name: 'History',
-//     icon: 'fa-landmark',
-//     gradient: 'linear-gradient(135deg,#ff8a65 0%,#ffd452 100%)',
-//     desc: 'Civilizations, revolutions, and the story of us.'
-//   },
-//   {
-//     id: 'eco', name: 'Economics',
-//     icon: 'fa-chart-line',
-//     gradient: 'linear-gradient(135deg,#00bfae 0%,#1de9b6 100%)',
-//     desc: 'Markets, money, and the science of choice.'
-//   },
-//   {
-//     id: 'philosophy', name: 'Philosophy',
-//     icon: 'fa-brain',
-//     gradient: 'linear-gradient(135deg,#232526 0%,#414345 100%)',
-//     desc: 'Wisdom, logic, and the art of thinking.'
-//   },
-//   {
-//     id: 'literature', name: 'Literature',
-//     icon: 'fa-book-open',
-//     gradient: 'linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%)',
-//     desc: 'Stories, poetry, and the power of words.'
-//   },
-//   {
-//     id: 'art', name: 'Art',
-//     icon: 'fa-palette',
-//     gradient: 'linear-gradient(135deg,#f7971e 0%,#ffd200 100%)',
-//     desc: 'Creativity, expression, and visual wonder.'
-//   },
-//   {
-//     id: 'music', name: 'Music',
-//     icon: 'fa-music',
-//     gradient: 'linear-gradient(135deg,#43cea2 0%,#185a9d 100%)',
-//     desc: 'Rhythm, harmony, and the sound of emotion.'
-//   }
-// ];
-
-// --- Parallax Background ---
+// --- Parallax Background (optional, can be removed for simplicity) ---
 function createParallaxBG() {
   let bg = document.getElementById('parallax-bg');
   if (!bg) {
@@ -94,79 +26,106 @@ function createParallaxBG() {
   }
 }
 
-// --- Animated Subject Card Grid ---
+// --- Subject List with Search ---
 export function renderSubjectList() {
   createParallaxBG();
   const list = document.getElementById('subject-list');
   if (!list) return;
   list.innerHTML = '';
-  SUBJECTS.forEach((subj, i) => {
-    const card = document.createElement('div');
-    card.className = 'subject-card-anim card p-4 text-center shadow-lg border-0';
-    card.style.background = subj.gradient;
-    card.style.color = '#fff';
-    card.style.borderRadius = '2rem';
-    card.style.margin = '1rem';
-    card.style.minWidth = '220px';
-    card.style.maxWidth = '260px';
-    card.style.cursor = 'pointer';
-    card.style.position = 'relative';
-    card.style.overflow = 'hidden';
-    card.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
-    card.setAttribute('tabindex', '0');
-    card.setAttribute('role', 'button');
-    card.setAttribute('data-subject', subj.id);
-    card.setAttribute('data-aos', 'zoom-in');
-    card.setAttribute('data-aos-delay', 80*i);
-    card.innerHTML = `
-      <div class="subject-icon mb-3" style="font-size:3rem;"><i class="fa ${subj.icon}"></i></div>
-      <div class="fw-bold mb-2" style="font-size:1.3rem;">${subj.name}</div>
-      <div class="mb-2" style="font-size:1rem;opacity:0.85;">${subj.desc}</div>
-      <div class="subject-card-glow"></div>
-    `;
-    card.onmouseover = () => {
-      card.style.transform = 'scale(1.04) rotate(-1deg)';
-      card.style.boxShadow = `0 12px 48px ${subj.gradient.split(' ')[0]}55, 0 2px 8px #0a234233`;
-    };
-    card.onmouseout = () => {
-      card.style.transform = '';
-      card.style.boxShadow = '0 8px 32px rgba(0,0,0,0.18)';
-    };
-    card.onclick = () => showSubject(subj.id);
-    card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') showSubject(subj.id); };
-    list.appendChild(card);
-  });
-  if (window.AOS) AOS.refresh();
+
+  // Search bar
+  let searchBar = document.getElementById('subject-search-bar');
+  if (!searchBar) {
+    searchBar = document.createElement('input');
+    searchBar.id = 'subject-search-bar';
+    searchBar.type = 'search';
+    searchBar.placeholder = 'Search subjects...';
+    searchBar.className = 'form-control mb-4';
+    list.parentElement.insertBefore(searchBar, list);
+  }
+
+  // Render cards
+  function renderCards(filter = '') {
+    list.innerHTML = '';
+    const filterLower = filter.trim().toLowerCase();
+    const filtered = SUBJECTS.filter(s =>
+      s.name.toLowerCase().includes(filterLower) ||
+      (s.description && s.description.toLowerCase().includes(filterLower))
+    );
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="text-muted">No subjects found.</div>';
+      return;
+    }
+    filtered.forEach(subject => {
+      const card = document.createElement('div');
+      card.className = 'p-3 text-center card subject-card m-2';
+      card.style.width = '180px';
+      card.style.cursor = 'pointer';
+      card.innerHTML = `
+        <div class="mb-2 subject-icon" style="font-size:2.2rem;"><i class="fa ${subject.icon}"></i></div>
+        <div class="fw-bold mb-1">${subject.name}</div>
+        <div class="small text-muted mb-2">${subject.description || ''}</div>
+      `;
+      card.onclick = () => goToSubjectDetail(subject.id);
+      card.onmouseover = () => card.style.boxShadow = '0 8px 32px #00ff9933, 0 2px 8px #0a234233';
+      card.onmouseout = () => card.style.boxShadow = '';
+      list.appendChild(card);
+    });
+  }
+  renderCards();
+  searchBar.oninput = e => renderCards(e.target.value);
 }
 
-// function showSubject(subjectId) {
-//   const subj = subjects.find(s => s.id === subjectId);
-//   if (!subj) return;
-//   document.getElementById('subject-section-title').textContent = subj.name;
-//   renderTabs(subj);
-//   showSection(subj.id, subj.sections[0]);
-// }
-
-// function renderTabs(subj) {
-//   const tabNav = document.getElementById('subject-tabs');
-//   if (!tabNav) return;
-//   tabNav.innerHTML = '';
-//   subj.sections.forEach(section => {
-//     const tabBtn = document.createElement('button');
-//     tabBtn.className = 'nav-link';
-//     tabBtn.textContent = section;
-//     tabBtn.onclick = () => showSection(subj.id, section);
-//     tabNav.appendChild(tabBtn);
-//   });
-// }
-
-// function showSection(subjectId, section) {
-//   const content = document.getElementById('subject-section-content');
-//   if (!content) return;
-//   // Loader animation placeholder
-//   content.innerHTML = `<div class='text-center my-4'><div class='spinner-border text-primary' role='status'></div></div>`;
-//   setTimeout(() => {
-//     // Placeholder for unimplemented sections
-//     content.innerHTML = `<div class='alert alert-info text-center my-4'>${section} for ${subjectId.toUpperCase()} coming soon!</div>`;
-//   }, 500);
-// }
+// --- Subject Detail Renderer ---
+export function renderSubjectDetail(subjectId) {
+  const screen = document.getElementById('subject-detail-screen');
+  if (!screen) return;
+  const subject = SUBJECTS.find(s => s.id === subjectId);
+  if (!subject) {
+    screen.innerHTML = '<div class="alert alert-danger">Subject not found.</div>';
+    return;
+  }
+  screen.innerHTML = `
+    <div class="container py-4">
+      <div class="d-flex align-items-center mb-4">
+        <div class="subject-icon me-3" style="font-size:2.8rem;"><i class="fa ${subject.icon}"></i></div>
+        <div>
+          <h2 class="fw-bold mb-1">${subject.name}</h2>
+          <div class="text-muted mb-2">${subject.description || ''}</div>
+        </div>
+      </div>
+      <div class="row g-4">
+        <div class="col-12 col-md-8">
+          <div class="card p-4 mb-3">
+            <h4 class="fw-bold mb-3">Lessons & Modules</h4>
+            <div id="subject-lessons-list" class="d-flex flex-column gap-3"></div>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="card p-3 mb-3">
+            <h5 class="fw-bold mb-2">About this subject</h5>
+            <div>${subject.description || ''}</div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 text-center">
+        <button class="btn btn-outline-primary" onclick="showScreen('modular-subject-screen')">Back to Subjects</button>
+      </div>
+    </div>
+  `;
+  // Render lessons for this subject
+  const lessonsList = document.getElementById('subject-lessons-list');
+  if (lessonsList) {
+    const lessons = LESSONS[subjectId] || [];
+    if (lessons.length === 0) {
+      lessonsList.innerHTML = '<div class="text-muted">No lessons available for this subject yet.</div>';
+    } else {
+      lessonsList.innerHTML = lessons.map(lesson => `
+        <div class="card lesson-card p-3 mb-2" style="border-left:4px solid #00cfff;">
+          <div class="fw-bold mb-1">${lesson.title}</div>
+          <div class="text-muted small">${lesson.summary || ''}</div>
+        </div>
+      `).join('');
+    }
+  }
+}

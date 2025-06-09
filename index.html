@@ -614,7 +614,7 @@
     <div class="px-4 container-fluid">
       <a class="d-flex align-items-center navbar-brand" href="#">
         <img src="assets/images/icons/logo.png" alt="Logo" style="height:36px;width:36px;margin-right:10px;filter:drop-shadow(0 0 6px #00ff99);"
-             onerror="this.onerror=null;this.src='https://via.placeholder.com/36x36?text=KP';this.alt='Logo missing';">
+             onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f393.png';this.alt='Logo missing';">
         Knowledge Portal
       </a>
       <div class="d-flex align-items-center ms-auto">
@@ -1013,19 +1013,14 @@
     </div>
   </div>
 
+  <!-- Global loading spinner (hidden by default) -->
+  <div id="global-loading-spinner" style="display:none;"><div class="spinner"></div></div>
+
   <!-- Subject Detail Hub Script -->
   <script type="module" src="js/subjectDetailHub.js"></script>
 
   <!-- Move all scripts to the end of body for proper loading -->
-  <script type="module" src="main.js"></script>
-  <script type="module" src="js/screens.js"></script>
-  <script type="module" src="js/storage.js"></script>
-  <script type="module" src="js/events.js"></script>
-  <script type="module" src="js/projectTrackerUI.js"></script>
-  <script type="module" src="js/quizUI.js"></script>
-  <script type="module" src="js/roadmapUI.js"></script>
-  <script type="module" src="js/feedUI.js"></script>
-  <script type="module" src="js/mentor.js"></script>
+  <script type="module" src="js/main.js"></script>
   <script type="module" src="js/subjectRouter.js"></script>
   <script type="module" src="js/recommendationEngine.js"></script>
   <script type="module" src="js/chatbotUI.js"></script>

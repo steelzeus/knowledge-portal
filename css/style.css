@@ -378,3 +378,101 @@ svg, i {
   #floating-debug-panel { width: 98vw; right: 1vw; bottom: 1vw; }
   #global-knowledge-feed { padding: 1.2rem !important; }
 }
+
+/* Modern dark navbar with logo fallback */
+.navbar {
+  background: #181c24 !important;
+  color: #fff;
+  font-family: 'Poppins', Arial, sans-serif;
+  font-weight: 600;
+  box-shadow: 0 2px 16px #00cfff22;
+  min-height: 64px;
+}
+.navbar .navbar-brand {
+  color: #fff !important;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.navbar .navbar-brand img {
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px #00ff9933;
+  margin-right: 10px;
+  height: 36px;
+  width: 36px;
+  object-fit: cover;
+}
+.navbar .navbar-brand img[onerror] {
+  content: url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f393.png');
+}
+.navbar .navbar-brand:hover {
+  color: #00ff99 !important;
+  text-shadow: 0 0 8px #00ff99cc;
+}
+.navbar .fa-moon, .navbar .fa-user {
+  color: #00cfff !important;
+  font-size: 1.3rem;
+  margin-left: 1rem;
+  transition: color 0.2s;
+}
+.navbar .fa-moon:hover, .navbar .fa-user:hover {
+  color: #00ff99 !important;
+}
+
+/* Loading spinner (centered, animated) */
+#global-loading-spinner {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+#global-loading-spinner .spinner {
+  width: 48px;
+  height: 48px;
+  border: 6px solid #00cfff33;
+  border-top: 6px solid #00cfff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Subject card and lesson card polish */
+.subject-card {
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 2px 12px #00cfff22;
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  border: none;
+}
+.subject-card:hover {
+  box-shadow: 0 8px 32px #00ff9933, 0 2px 8px #0a234233;
+  transform: translateY(-2px) scale(1.03);
+}
+.lesson-card {
+  background: #f8fafd;
+  border-radius: 1rem;
+  border-left: 4px solid #00cfff;
+  box-shadow: 0 2px 8px #00cfff11;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.lesson-card:hover {
+  box-shadow: 0 4px 16px #00cfff33;
+  transform: scale(1.01);
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .subject-card, .lesson-card { width: 100% !important; }
+  .navbar .navbar-brand { font-size: 1.1rem; }
+}
