@@ -1,0 +1,15 @@
+﻿{
+  "name": "knowledge-portal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "live-server --port=5500 --no-browser",
+    "build": "powershell -File build.ps1",
+    "dev": "live-server --port=5500",
+    "preview": "live-server dist --port=5501"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

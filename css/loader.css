@@ -1,0 +1,84 @@
+.module-loading {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    background: rgba(0, 207, 255, 0.1);
+    border: 1px solid rgba(0, 207, 255, 0.2);
+    border-radius: 8px;
+    font-size: 14px;
+    color: #00cfff;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+    display: none;
+    min-width: 200px;
+}
+
+.module-loading.visible {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.module-loading.error {
+    background: rgba(255, 69, 58, 0.1);
+    border-color: rgba(255, 69, 58, 0.2);
+    color: #ff453a;
+}
+
+.module-loading .spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: spin 1s linear infinite;
+}
+
+.module-loading .progress-bar {
+    margin-top: 8px;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.module-loading .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: currentColor;
+    transition: width 0.3s ease-out;
+}
+
+.module-loading .retry-button {
+    display: none;
+    margin-top: 8px;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    color: inherit;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.module-loading.error .retry-button {
+    display: inline-block;
+}
+
+.module-loading .loading-details {
+    font-size: 12px;
+    margin-top: 4px;
+    opacity: 0.8;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

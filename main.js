@@ -1,7 +1,16 @@
 // main.js - Application entry point
+import DEBUG from './js/debug.js';
 import { renderSubjectList } from './js/subjectRouter.js';
 import { renderRecommendations } from './js/recommendationEngine.js';
 import { showScreen } from './js/navigation.js';
+
+window.addEventListener('error', (event) => {
+    DEBUG.error('Runtime error:', event.error);
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+    DEBUG.error('Unhandled Promise rejection:', event.reason);
+});
 
 // Utility functions for loading state
 export function showLoading() {
