@@ -3,10 +3,58 @@
 import { SUBJECTS } from './subjectConfig.js';
 import { LESSONS } from './lessons.js';
 import { goToSubjectDetail } from './navigation.js';
+import DEBUG from './debug.js';
 
 let parallaxBgInitialized = false;
 
-import DEBUG from './debug.js';
+// --- Core Navigation Functions ---
+export function showSection(subjectId, sectionId, resourceId = null) {
+  try {
+    const subject = SUBJECTS[subjectId];
+    if (!subject) {
+      DEBUG.error(`Subject not found: ${subjectId}`);
+      return;
+    }
+
+    const section = subject.sections?.[sectionId];
+    if (!section) {
+      DEBUG.error(`Section not found: ${sectionId}`);
+      return;
+    }
+
+    // Navigate to subject detail view
+    goToSubjectDetail(subject);
+
+    // Select the appropriate tab
+    const tab = document.querySelector(`#subject-tabs button[data-section="${sectionId}"]`);
+    if (tab) {
+      tab.click();
+    }
+
+    // Scroll to specific resource if provided
+    if (resourceId) {
+      setTimeout(() => {
+        const resource = document.getElementById(resourceId);
+        if (resource) {
+          resource.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          resource.classList.add('highlight-resource');
+          setTimeout(() => resource.classList.remove('highlight-resource'), 2000);
+        }
+      }, 300);
+    }
+  } catch (error) {
+    DEBUG.error('Error in showSection:', error);
+  }
+}
+
+export function showSubject(subjectId) {
+  const subject = SUBJECTS[subjectId];
+  if (subject) {
+    goToSubjectDetail(subject);
+  } else {
+    DEBUG.error(`Subject not found: ${subjectId}`);
+  }
+}
 
 // --- Parallax Background (optional, can be removed for simplicity) ---
 function createParallaxBG() {

@@ -1,131 +1,124 @@
 import { ENV } from './config.js';
 
-// Debug utility for development logging
-const DEBUG = {
-    enabled: ENV.enableDebugLogging,
-    performanceMarks: new Map(),
-    errorCount: 0,
-    warningCount: 0,
+class Debug {
+    constructor() {
+        this.enabled = ENV.enableDebugLogging;
+        this.errorCount = 0;
+        this.warningCount = 0;
+        this.performanceMarks = new Map();
+        this.init();
+    }
 
-    // Enable debug mode - should be called early in app initialization
+    init() {
+        if (typeof localStorage !== 'undefined') {
+            this.enabled = localStorage.getItem('debug_mode') === 'true' || ENV.enableDebugLogging;
+        }
+        this.setupGlobalErrorHandler();
+    }
+
+    setupGlobalErrorHandler() {
+        window.onerror = (msg, url, line, col, error) => {
+            this.error('Global Error:', {
+                message: msg,
+                url,
+                line,
+                col,
+                error: error?.stack || error
+            });
+            return false;
+        };
+
+        window.onunhandledrejection = (event) => {
+            this.error('Unhandled Promise Rejection:', event.reason);
+        };
+    }
+
     enable() {
         if (ENV.isDevelopment) {
             this.enabled = true;
-            if (typeof localStorage !== 'undefined') {
-                localStorage.setItem('debug_mode', 'true');
-            }
+            localStorage?.setItem('debug_mode', 'true');
         }
-    },
+    }
 
-    // Disable debug mode
     disable() {
         this.enabled = false;
-        if (typeof localStorage !== 'undefined') {
-            localStorage.removeItem('debug_mode');
-        }
-    },
+        localStorage?.removeItem('debug_mode');
+    }
 
-    // Initialize debug mode from localStorage
-    init() {
-        if (typeof localStorage !== 'undefined') {
-            this.enabled = localStorage.getItem('debug_mode') === 'true';
-        }
-    },
-
-    // Performance monitoring
     startPerformanceMark(name) {
         if (!this.enabled) return;
-        this.performanceMarks.set(name, performance.now());
-        performance.mark(`start_${name}`);
-    },
+        const start = performance.now();
+        this.performanceMarks.set(name, start);
+        this.log(`🔍 Starting ${name}...`);
+    }
 
     endPerformanceMark(name) {
-        if (!this.enabled) return;
-        const startTime = this.performanceMarks.get(name);
-        if (startTime) {
-            const duration = performance.now() - startTime;
-            performance.mark(`end_${name}`);
-            performance.measure(name, `start_${name}`, `end_${name}`);
-            this.log(`🕒 ${name} took ${duration.toFixed(2)}ms`);
-            this.performanceMarks.delete(name);
-            return duration;
-        }
-    },
-
-    // Error tracking
-    trackError(error, context = '') {
-        this.errorCount++;
-        this.error(`[${context}]`, error);
-        if (error instanceof Error) {
-            console.error(error.stack);
-        }
-    },
-
-    trackWarning(message, context = '') {
-        this.warningCount++;
-        this.warn(`[${context}]`, message);
-    },
-
-    // Resource loading tracking
-    trackResourceLoad(url) {
-        if (!this.enabled) return;
+        if (!this.enabled) return 0;
+        const start = this.performanceMarks.get(name);
+        if (!start) return 0;
         
-        return fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status} for ${url}`);
-                }
-                this.log(`✅ Loaded: ${url}`);
-                return response;
-            })
-            .catch(error => {
-                this.trackError(error, `Failed to load ${url}`);
-                throw error;
-            });
-    },
+        const duration = performance.now() - start;
+        this.performanceMarks.delete(name);
+        this.log(`✓ Completed ${name} in ${duration.toFixed(2)}ms`);
+        return duration;
+    }
 
-    // Get debug summary
-    getSummary() {
+    log(...args) {
+        if (!this.enabled) return;
+        console.log('[DEBUG]', ...args);
+    }
+
+    warn(...args) {
+        if (!this.enabled) return;
+        this.warningCount++;
+        console.warn('[DEBUG WARNING]', ...args);
+    }
+
+    error(...args) {
+        this.errorCount++;
+        console.error('[DEBUG ERROR]', ...args);
+        // Log to file in development
+        if (ENV.isDevelopment) {
+            this.logToFile('error', ...args);
+        }
+    }
+
+    trackError(error, context = '') {
+        this.error(`${context}:`, error?.message || error);
+        if (error?.stack) {
+            this.error('Stack trace:', error.stack);
+        }
+    }
+
+    async logToFile(level, ...args) {
+        if (!ENV.isDevelopment) return;
+        
+        const timestamp = new Date().toISOString();
+        const message = args.map(arg => 
+            typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+        ).join(' ');
+
+        const logEntry = `[${timestamp}] [${level.toUpperCase()}] ${message}\n`;
+        
+        try {
+            await fetch('/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ entry: logEntry })
+            });
+        } catch (err) {
+            console.error('Failed to write to log file:', err);
+        }
+    }
+
+    getStats() {
         return {
             errors: this.errorCount,
             warnings: this.warningCount,
-            performanceMarks: Array.from(this.performanceMarks.keys()),
             debugEnabled: this.enabled
         };
-    },
-
-    // Debug logging functions with enhanced tracking
-    log(...args) {
-        if (this.enabled) console.log('[DEBUG]', ...args);
-    },
-
-    warn(...args) {
-        if (this.enabled) {
-            console.warn('[DEBUG]', ...args);
-            this.warningCount++;
-        }
-    },
-
-    error(...args) {
-        if (this.enabled) {
-            console.error('[DEBUG]', ...args);
-            this.errorCount++;
-        }
     }
-};
-
-// Initialize debug mode
-DEBUG.init();
-
-// Set up global error handling
-if (typeof window !== 'undefined') {
-    window.addEventListener('error', (event) => {
-        DEBUG.trackError(event.error || event.message, 'UnhandledError');
-    });
-
-    window.addEventListener('unhandledrejection', (event) => {
-        DEBUG.trackError(event.reason, 'UnhandledPromiseRejection');
-    });
 }
 
+const DEBUG = new Debug();
 export default DEBUG;

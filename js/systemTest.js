@@ -1,99 +1,122 @@
 import DEBUG from './debug.js';
 import { ENV } from './config.js';
 
+const REQUIRED_COMPONENTS = {
+    'Navigation Bar': '#main-nav',
+    'Main Content': '#main-content',
+    'Subject Area': '#academic-subject-screen',
+    'Recommendations': '#recommendation-container',
+    'Search Container': '#search-container'
+};
+
 class SystemTest {
     constructor() {
         this.results = {
             components: new Map(),
             errors: [],
-            warnings: []
+            warnings: [],
+            summary: {
+                total: 0,
+                passed: 0,
+                failed: 0,
+                errors: 0,
+                warnings: 0
+            }
         };
     }
 
-    async testComponent(name, testFn) {
+    async testComponent(name, selector, testFn = null) {
+        console.log(`🔍 Testing ${name}...`);
         DEBUG.startPerformanceMark(name);
+        
         try {
-            const element = document.querySelector(testFn.selector);
+            const element = document.querySelector(selector);
             if (!element) {
-                throw new Error(`Component ${name} not found in DOM`);
+                throw new Error(`Component not found: ${selector}`);
             }
             
-            const result = await testFn(element);
+            if (testFn) {
+                await testFn(element);
+            }
+            
             this.results.components.set(name, {
                 status: 'passed',
-                time: DEBUG.endPerformanceMark(name),
-                ...result
+                selector,
+                time: DEBUG.endPerformanceMark(name)
             });
+            
+            this.results.summary.passed++;
+            console.log(`✅ ${name}: OK`);
+            
         } catch (error) {
-            DEBUG.trackError(error, `Component Test: ${name}`);
             this.results.components.set(name, {
                 status: 'failed',
+                selector,
                 error: error.message,
                 time: DEBUG.endPerformanceMark(name)
             });
+            
+            this.results.summary.failed++;
+            this.results.summary.errors++;
+            console.error(`❌ ${name}: ${error.message}`);
+            DEBUG.error(`Component Test Failed: ${name}`, error);
         }
+        
+        this.results.summary.total++;
     }
 
     async runAllTests() {
-        console.log('🧪 Starting system tests...');
+        console.group('🧪 System Tests');
         
-        // Test navbar
-        await this.testComponent('navbar', async (el) => {
-            const links = el.querySelectorAll('a');
-            return { activeLinks: links.length };
-        });
-
-        // Test content area
-        await this.testComponent('mainContent', async (el) => {
-            const visible = el.offsetParent !== null;
-            return { visible };
-        });
-
-        // Test subject router
-        await this.testComponent('subjectRouter', async (el) => {
-            const routes = el.querySelectorAll('[data-route]');
-            return { routeCount: routes.length };
-        });
-
-        // Test recommendation engine
-        await this.testComponent('recommendationContainer', async (el) => {
-            const recommendations = el.querySelectorAll('.recommendation-card');
-            return { recommendationCount: recommendations.length };
-        });
-
-        // Test search functionality
-        await this.testComponent('searchContainer', async (el) => {
-            const searchInput = el.querySelector('input[type="search"]');
-            const working = searchInput && searchInput.disabled === false;
-            return { working };
-        });
-
-        // Log results
-        this.logResults();
+        for (const [name, selector] of Object.entries(REQUIRED_COMPONENTS)) {
+            await this.testComponent(name, selector);
+        }
+        
+        this.displayResults();
+        console.groupEnd();
     }
 
-    logResults() {
-        console.log('\n📊 System Test Results:');
-        console.table(Array.from(this.results.components.entries()).map(([name, result]) => ({
-            Component: name,
-            Status: result.status,
-            'Time (ms)': result.time?.toFixed(2) || 'N/A',
-            Details: JSON.stringify(result)
-        })));
-
-        const summary = DEBUG.getSummary();
-        console.log(`\n📝 Test Summary:
-• Components Tested: ${this.results.components.size}
-• Passed: ${Array.from(this.results.components.values()).filter(r => r.status === 'passed').length}
-• Failed: ${Array.from(this.results.components.values()).filter(r => r.status === 'failed').length}
-• Errors: ${summary.errors}
-• Warnings: ${summary.warnings}
-`);
+    displayResults() {
+        const { total, passed, failed, errors, warnings } = this.results.summary;
+        
+        console.group('📊 System Test Results');
+        
+        // Component Results Table
+        console.table(
+            Object.fromEntries(
+                Array.from(this.results.components.entries()).map(([name, data]) => [
+                    name,
+                    {
+                        Status: data.status === 'passed' ? '✅' : '❌',
+                        Selector: data.selector,
+                        'Load Time': `${data.time}ms`,
+                        Error: data.error || '-'
+                    }
+                ])
+            )
+        );
+        
+        // Summary
+        console.group('📝 Test Summary');
+        console.log(`• Components Tested: ${total}`);
+        console.log(`• Passed: ${passed}`);
+        console.log(`• Failed: ${failed}`);
+        console.log(`• Errors: ${errors}`);
+        console.log(`• Warnings: ${warnings}`);
+        console.groupEnd();
+        
+        console.groupEnd();
     }
 }
 
-// Run tests when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    const tester = new SystemTest();
-    tester.runAllTests();
-});
+// Initialize and run tests in development mode
+if (ENV.isDevelopment) {
+    const systemTest = new SystemTest();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => systemTest.runAllTests());
+    } else {
+        systemTest.runAllTests();
+    }
+}
+
+export default SystemTest;

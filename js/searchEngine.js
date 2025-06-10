@@ -3,30 +3,50 @@
 // Features: fuzzy search, autocomplete, highlights, dynamic section loading, Bootstrap 5 styling, keyboard accessibility
 
 import { SUBJECTS } from './subjectConfig.js';
-import { showSubject, showSection } from './subjectRouter.js';
+import { showSubject } from './subjectRouter.js';
 import DEBUG from './debug.js';
 
 // --- 1. Build Search Index from Subject Config ---
 function buildSearchIndex() {
   const index = [];
-  for (const subject of SUBJECTS) {
-    for (const section of subject.sections) {
-      for (const resource of section.resources) {
+  Object.entries(SUBJECTS).forEach(([subjectId, subject]) => {
+    if (!subject.sections) return;
+    
+    Object.entries(subject.sections).forEach(([sectionId, section]) => {
+      if (!section.resources) return;
+      
+      section.resources.forEach(resource => {
         index.push({
-          id: `${subject.id}|${section.id}|${resource.id}`,
-          subjectId: subject.id,
+          id: `${subjectId}|${sectionId}|${resource.id}`,
+          subjectId,
           subjectName: subject.name,
-          sectionId: section.id,
+          sectionId,
           sectionName: section.name,
           resourceId: resource.id,
           resourceTitle: resource.title,
           resourceType: resource.type,
           resourceDescription: resource.description || '',
         });
-      }
-    }
-  }
+      });
+    });
+  });
   return index;
+}
+
+// --- Handle Resource Selection ---
+export function handleResourceSelect(result) {
+  const { subjectId, sectionId, resourceId } = result;
+  showSubject(subjectId);
+  
+  // Allow the subject view to load before scrolling to resource
+  setTimeout(() => {
+    const resourceElement = document.getElementById(resourceId);
+    if (resourceElement) {
+      resourceElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      resourceElement.classList.add('highlight-resource');
+      setTimeout(() => resourceElement.classList.remove('highlight-resource'), 2000);
+    }
+  }, 300);
 }
 
 // --- 2. Initialize Fuse.js ---

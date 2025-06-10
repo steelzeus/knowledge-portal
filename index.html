@@ -597,546 +597,464 @@
     }
   </style>
 </head>
-<body class="bg-light">
-  <!-- Cinematic Loading Screen -->
-  <div id="cinematic-loader" style="position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#0a2342 0%,#181c24 100%);transition:opacity 1s;">
-    <div style="text-align:center;">
-      <h1 style="font-size:3rem;font-weight:900;letter-spacing:2px;color:#00ff99;text-shadow:0 0 32px #00ff99,0 2px 8px #0a2342;animation: portalPulse 2s infinite alternate;">KNOWLEDGE PORTAL</h1>
-      <div style="margin:2rem auto;width:80px;height:80px;position:relative;">
-        <div class="loader-orb"></div>
-      </div>
-      <div style="color:#fff;font-size:1.2rem;opacity:0.8;">Empowering Minds from Jharkhand to the World.</div>
-    </div>
-  </div>
-  <script>
-  window.addEventListener('DOMContentLoaded',()=>{
-    setTimeout(()=>{document.body.classList.add('loaded');},1800);
-  });
-  </script>
-
-  <!-- Header/Navbar -->
-  <nav class="fixed-top shadow-sm navbar navbar-expand-lg">
-    <div class="px-4 container-fluid">
-      <a class="d-flex align-items-center navbar-brand" href="#">
-        <img src="assets/images/icons/logo.png" alt="Knowledge Portal Logo" style="height:36px;width:36px;margin-right:10px;filter:drop-shadow(0 0 6px #00ff99);">
-        Knowledge Portal
-      </a>
-      <div class="d-flex align-items-center ms-auto">
-        <button id="theme-toggle" class="me-3 btn-outline-primary btn" aria-label="Toggle dark mode"><i class="fa fa-moon"></i></button>
-        <div class="ms-2 profile-icon" title="Profile"><i class="fa fa-user"></i></div>
+<body>
+    <!-- Cinematic Loading Screen -->
+    <div id="cinematic-loader" style="position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#0a2342 0%,#181c24 100%);transition:opacity 1s;">
+      <div style="text-align:center;">
+        <h1 style="font-size:3rem;font-weight:900;letter-spacing:2px;color:#00ff99;text-shadow:0 0 32px #00ff99,0 2px 8px #0a2342;animation: portalPulse 2s infinite alternate;">KNOWLEDGE PORTAL</h1>
+        <div style="margin:2rem auto;width:80px;height:80px;position:relative;">
+          <div class="loader-orb"></div>
+        </div>
+        <div style="color:#fff;font-size:1.2rem;opacity:0.8;">Empowering Minds from Jharkhand to the World.</div>
       </div>
     </div>
-  </nav>
-  <div style="height:var(--header-height);"></div>
+    <script>
+    window.addEventListener('DOMContentLoaded',()=>{
+      setTimeout(()=>{document.body.classList.add('loaded');},1800);
+    });
+    </script>
 
-  <!-- Welcome Screen -->
-  <div id="welcome-screen" class="py-5 transition-fade container" style="display:block;max-width:900px;">
-    <div class="align-items-center justify-content-center row" style="min-height:60vh;">
-      <div class="text-center col-lg-7" data-aos="fade-up">
-        <h1 class="mb-4 fw-bold" style="font-size:2.5rem;">Welcome to <span style="color:var(--accent)">The One-Stop Knowledge Portal</span></h1>
-        <p class="mb-4 lead">Your personalized platform to explore learning resources and achieve your ambitions.</p>
-        <button class="mt-2 px-5 py-3 glow-btn btn-lg" id="get-started-button">Get Started</button>
+    <!-- Header/Navbar -->
+    <nav class="fixed-top shadow-sm navbar navbar-expand-lg" id="main-nav">
+      <div class="px-4 container-fluid">
+          <a class="d-flex align-items-center navbar-brand" href="#">
+              <img src="assets/images/icons/logo.png" alt="Knowledge Portal Logo" style="height:36px;width:36px;margin-right:10px;filter:drop-shadow(0 0 6px #00ff99);">
+              Knowledge Portal
+          </a>
+          <div class="d-flex align-items-center ms-auto">
+              <div id="search-container" class="me-3">
+                  <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+              </div>
+              <button id="theme-toggle" class="me-3 btn-outline-primary btn" aria-label="Toggle dark mode"><i class="fa fa-moon"></i></button>
+              <div class="ms-2 profile-icon" title="Profile"><i class="fa fa-user"></i></div>
+          </div>
       </div>
+    </nav>
+    <div style="height:var(--header-height);"></div>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="min-vh-100">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="py-5 transition-fade container" style="display:block;max-width:900px;">
+          <div class="align-items-center justify-content-center row" style="min-height:60vh;">
+            <div class="text-center col-lg-7" data-aos="fade-up">
+              <h1 class="mb-4 fw-bold" style="font-size:2.5rem;">Welcome to <span style="color:var(--accent)">The One-Stop Knowledge Portal</span></h1>
+              <p class="mb-4 lead">Your personalized platform to explore learning resources and achieve your ambitions.</p>
+              <button class="mt-2 px-5 py-3 glow-btn btn-lg" id="get-started-button">Get Started</button>
+            </div>
+          </div>
+          <div id="recommendation-container" class="mt-5 container-fluid">
+        <h3 class="mb-4">Recommended for You</h3>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <!-- Recommendations will be dynamically inserted here -->
+        </div>
     </div>
-    <div id="recommendation-container" class="py-4" style="display:none;max-width:900px;"></div>
-  </div>
-
-  <!-- User Info Screen -->
-  <div id="user-info-screen" class="py-5 transition-fade container" style="display:none;max-width:600px;">
-    <div class="shadow-lg p-4 card" data-aos="zoom-in">
-      <h2 class="mb-3 text-center fw-bold">Tell Us About You</h2>
-      <p class="mb-4 text-center">Please fill in your details to personalize your experience.</p>
-      <form id="user-info-form">
-        <div class="mb-3">
-          <label for="userName" class="form-label">Name</label>
-          <input type="text" class="form-control" id="userName" placeholder="Enter your name">
         </div>
-        <div class="mb-3">
-          <label for="userAge" class="form-label">Age</label>
-          <input type="number" class="form-control" id="userAge" placeholder="Enter your age">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Education Level</label>
-          <select class="form-select" id="educationLevel">
-            <option selected disabled>Select one</option>
-            <option>High School</option>
-            <option>Undergraduate</option>
-            <option>Graduate</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <button type="button" class="py-2 w-100 glow-btn" id="user-info-next-btn">Next</button>
-      </form>
-    </div>
-  </div>
 
-  <!-- Ambition Choice Screen -->
-  <div id="ambition-choice-screen" class="py-5 container" style="display:none;">
-      <div class="justify-content-center row">
-          <div class="text-center col-md-8">
-              <h2 class="mb-3" id="personal-greeting">What's Your Learning Path?</h2>
-              <p class="mb-4">Choose how you'd like to explore resources.</p>
-              <div class="gap-3 d-grid mx-auto w-100" style="min-width:220px;min-height:120px;">
-                <button class="mb-3 btn-outline-primary btn btn-lg" type="button" data-goto="modular-subject-screen">Explore My Options</button>
-                <button class="btn btn-success btn-lg" type="button" data-goto="academic-subject-screen">I Have an Ambition</button>
+        <!-- User Info Screen -->
+        <div id="user-info-screen" class="py-5 transition-fade container" style="display:none;max-width:600px;">
+          <div class="shadow-lg p-4 card" data-aos="zoom-in">
+            <h2 class="mb-3 text-center fw-bold">Tell Us About You</h2>
+            <p class="mb-4 text-center">Please fill in your details to personalize your experience.</p>
+            <form id="user-info-form">
+              <div class="mb-3">
+                <label for="userName" class="form-label">Name</label>
+                <input type="text" class="form-control" id="userName" placeholder="Enter your name">
               </div>
-              <button class="mt-3 btn btn-link" id="logout-btn">Log out</button>
-          </div>
-      </div>
-  </div>
-
-  <!-- Academic Subject Screen -->
-  <div id="academic-subject-screen" class="py-5 container" style="display:none;">
-      <h2 class="mb-3 text-center">Choose a Subject</h2>
-      <p class="mb-4 text-center">Select a subject to see tailored resources. (Only Computer Science is functional.)</p>
-      <div class="justify-content-center row row-cols-1 row-cols-md-3 g-4">
-          <div class="col">
-              <div class="border-primary h-100 card">
-                  <div class="text-center card-body">
-                      <h5 class="card-title">Computer Science</h5>
-                      <p class="card-text">Programming, algorithms, and more.</p>
-                      <button class="btn btn-primary" type="button">Select</button>
-                  </div>
+              <div class="mb-3">
+                <label for="userAge" class="form-label">Age</label>
+                <input type="number" class="form-control" id="userAge" placeholder="Enter your age">
               </div>
-          </div>
-          <div class="col">
-              <div class="h-100 card">
-                  <div class="text-center card-body">
-                      <h5 class="card-title">Mathematics</h5>
-                      <p class="card-text">Math projects and challenges.</p>
-                      <button class="btn-outline-primary btn btn-math" type="button">Select</button>
-                  </div>
+              <div class="mb-3">
+                <label class="form-label">Education Level</label>
+                <select class="form-select" id="educationLevel">
+                  <option selected disabled>Select one</option>
+                  <option>High School</option>
+                  <option>Undergraduate</option>
+                  <option>Graduate</option>
+                  <option>Other</option>
+                </select>
               </div>
-          </div>
-          <div class="col">
-              <div class="h-100 card">
-                  <div class="text-center card-body">
-                      <h5 class="card-title">Physics</h5>
-                      <p class="card-text">Physics simulations and experiments.</p>
-                      <button class="btn-outline-primary btn btn-physics" type="button">Select</button>
-                  </div>
-              </div>
-          </div>
-          <div class="col">
-              <div class="h-100 card">
-                  <div class="text-center card-body">
-                      <h5 class="card-title">Chemistry</h5>
-                      <p class="card-text">Chemistry visualizations and labs.</p>
-                      <button class="btn-outline-primary btn btn-chemistry" type="button">Select</button>
-                  </div>
-              </div>
-          </div>
-          <div class="col">
-              <div class="h-100 card">
-                  <div class="text-center card-body">
-                      <h5 class="card-title">Biology</h5>
-                      <p class="card-text">Biology interactives and simulations.</p>
-                      <button class="btn-outline-success btn btn-biology" type="button">Select</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="mt-4 text-center">
-          <button class="btn-outline-secondary btn" onclick="showScreen('ambition-choice-screen')">Back</button>
-      </div>
-  </div>
-
-  <!-- Subject Detail Immersive Learning Hub -->
-  <div id="subject-detail-screen" class="py-5 transition-fade container-fluid" style="display:none;max-width:100vw;">
-    <div class="justify-content-center row">
-      <!-- Collapsible Sidebar -->
-      <div class="mb-4 col-lg-3 col-md-4">
-        <div class="shadow-lg mb-4 p-3 rounded-4 glass-sidebar" id="subject-sidebar" style="min-height:400px;">
-          <button class="mb-3 btn-outline-primary w-100 btn d-lg-none" id="sidebar-toggle"><i class="fa fa-bars"></i> Topics</button>
-          <h5 class="mb-3 fw-bold">Topics</h5>
-          <ul class="flex-column gap-2 nav" id="sidebar-topic-list"></ul>
-        </div>
-      </div>
-      <!-- Main Content -->
-      <div class="col-lg-9 col-md-8">
-        <div class="shadow-lg p-4 rounded-4 glass-main">
-          <h2 class="mb-3 fw-bold" id="subject-detail-title"></h2>
-          <!-- Animated Tabs -->
-          <ul class="mb-4 nav nav-tabs nav-justified glass-tabs" id="subject-tabs" role="tablist">
-            <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-exams" data-bs-toggle="tab" data-bs-target="#tab-content-exams" type="button" role="tab">Exams</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link" id="tab-theory" data-bs-toggle="tab" data-bs-target="#tab-content-theory" type="button" role="tab">Theory</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link" id="tab-projects" data-bs-toggle="tab" data-bs-target="#tab-content-projects" type="button" role="tab">Projects</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link" id="tab-videos" data-bs-toggle="tab" data-bs-target="#tab-content-videos" type="button" role="tab">Videos</button></li>
-            <li class="nav-item" role="presentation"><button class="nav-link" id="tab-flashcards" data-bs-toggle="tab" data-bs-target="#tab-content-flashcards" type="button" role="tab">Flashcards</button></li>
-          </ul>
-          <div class="tab-content" id="subject-tab-content">
-            <div class="tab-pane fade show active" id="tab-content-exams" role="tabpanel"></div>
-            <div class="tab-pane fade" id="tab-content-theory" role="tabpanel"></div>
-            <div class="tab-pane fade" id="tab-content-projects" role="tabpanel"></div>
-            <div class="tab-pane fade" id="tab-content-videos" role="tabpanel"></div>
-            <div class="tab-pane fade" id="tab-content-flashcards" role="tabpanel"></div>
+              <button type="button" class="py-2 w-100 glow-btn" id="user-info-next-btn">Next</button>
+            </form>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Project Detail Screen -->
-  <div id="project-detail-screen" class="py-5 container" style="display:none;">
-      <div class="justify-content-center row">
-          <div class="col-md-8">
-              <h2 class="mb-3">Sample Project: Build a Calculator</h2>
-              <p class="mb-4">Apply your programming skills by building a simple calculator app. This project will help you practice variables, functions, and user input/output.</p>
-              <div class="mb-3 card">
-                  <div class="card-body">
-                      <h5 class="card-title">Project Steps</h5>
-                      <ol>
-                          <li>Design a user interface for the calculator.</li>
-                          <li>Implement basic operations: add, subtract, multiply, divide.</li>
-                          <li>Test your calculator with different inputs.</li>
-                      </ol>
-                  </div>
+        <!-- Ambition Choice Screen -->
+        <div id="ambition-choice-screen" class="py-5 container" style="display:none;">
+            <div class="justify-content-center row">
+                <div class="text-center col-md-8">
+                    <h2 class="mb-3" id="personal-greeting">What's Your Learning Path?</h2>
+                    <p class="mb-4">Choose how you'd like to explore resources.</p>
+                    <div class="gap-3 d-grid mx-auto w-100" style="min-width:220px;min-height:120px;">
+                      <button class="mb-3 btn-outline-primary btn btn-lg" type="button" data-goto="modular-subject-screen">Explore My Options</button>
+                      <button class="btn btn-success btn-lg" type="button" data-goto="academic-subject-screen">I Have an Ambition</button>
+                    </div>
+                    <button class="mt-3 btn btn-link" id="logout-btn">Log out</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Academic Subject Screen -->
+        <div id="academic-subject-screen" class="py-5 container" style="display:none;">
+            <h2 class="mb-3 text-center">Choose a Subject</h2>
+            <p class="mb-4 text-center">Select a subject to see tailored resources. (Only Computer Science is functional.)</p>
+            <div class="justify-content-center row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="border-primary h-100 card">
+                        <div class="text-center card-body">
+                            <h5 class="card-title">Computer Science</h5>
+                            <p class="card-text">Programming, algorithms, and more.</p>
+                            <button class="btn btn-primary" type="button">Select</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="h-100 card">
+                        <div class="text-center card-body">
+                            <h5 class="card-title">Mathematics</h5>
+                            <p class="card-text">Math projects and challenges.</p>
+                            <button class="btn-outline-primary btn btn-math" type="button">Select</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="h-100 card">
+                        <div class="text-center card-body">
+                            <h5 class="card-title">Physics</h5>
+                            <p class="card-text">Physics simulations and experiments.</p>
+                            <button class="btn-outline-primary btn btn-physics" type="button">Select</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="h-100 card">
+                        <div class="text-center card-body">
+                            <h5 class="card-title">Chemistry</h5>
+                            <p class="card-text">Chemistry visualizations and labs.</p>
+                            <button class="btn-outline-primary btn btn-chemistry" type="button">Select</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="h-100 card">
+                        <div class="text-center card-body">
+                            <h5 class="card-title">Biology</h5>
+                            <p class="card-text">Biology interactives and simulations.</p>
+                            <button class="btn-outline-success btn btn-biology" type="button">Select</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 text-center">
+                <button class="btn-outline-secondary btn" onclick="showScreen('ambition-choice-screen')">Back</button>
+            </div>
+        </div>
+
+        <!-- Subject Detail Immersive Learning Hub -->
+        <div id="subject-detail-screen" class="py-5 transition-fade container-fluid" style="display:none;max-width:100vw;">
+          <div class="justify-content-center row">
+            <!-- Collapsible Sidebar -->
+            <div class="mb-4 col-lg-3 col-md-4">
+              <div class="shadow-lg mb-4 p-3 rounded-4 glass-sidebar" id="subject-sidebar" style="min-height:400px;">
+                <button class="mb-3 btn-outline-primary w-100 btn d-lg-none" id="sidebar-toggle"><i class="fa fa-bars"></i> Topics</button>
+                <h5 class="mb-3 fw-bold">Topics</h5>
+                <ul class="flex-column gap-2 nav" id="sidebar-topic-list"></ul>
               </div>
-              <div class="d-flex justify-content-between">
-                  <button class="btn-outline-secondary btn" onclick="showScreen('subject-detail-screen')">Back</button>
-                  <button class="btn btn-primary" onclick="showScreen('explore-screen')">Next</button>
+            </div>
+            <!-- Main Content -->
+            <div class="col-lg-9 col-md-8">
+              <div class="shadow-lg p-4 rounded-4 glass-main">
+                <h2 class="mb-3 fw-bold" id="subject-detail-title"></h2>
+                <!-- Animated Tabs -->
+                <ul class="mb-4 nav nav-tabs nav-justified glass-tabs" id="subject-tabs" role="tablist">
+                  <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-exams" data-bs-toggle="tab" data-bs-target="#tab-content-exams" type="button" role="tab">Exams</button></li>
+                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-theory" data-bs-toggle="tab" data-bs-target="#tab-content-theory" type="button" role="tab">Theory</button></li>
+                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-projects" data-bs-toggle="tab" data-bs-target="#tab-content-projects" type="button" role="tab">Projects</button></li>
+                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-videos" data-bs-toggle="tab" data-bs-target="#tab-content-videos" type="button" role="tab">Videos</button></li>
+                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-flashcards" data-bs-toggle="tab" data-bs-target="#tab-content-flashcards" type="button" role="tab">Flashcards</button></li>
+                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-quiz" data-bs-toggle="tab" data-bs-target="#tab-content-quiz" type="button" role="tab">Quiz</button></li>
+                </ul>
+                <div class="tab-content" id="subject-tab-content">
+                  <div class="tab-pane fade show active" id="tab-content-exams" role="tabpanel"></div>
+                  <div class="tab-pane fade" id="tab-content-theory" role="tabpanel"></div>
+                  <div class="tab-pane fade" id="tab-content-projects" role="tabpanel"></div>
+                  <div class="tab-pane fade" id="tab-content-videos" role="tabpanel"></div>
+                  <div class="tab-pane fade" id="tab-content-flashcards" role="tabpanel"></div>
+                  <div class="tab-pane fade" id="tab-content-quiz" role="tabpanel"></div>
+                </div>
               </div>
+            </div>
           </div>
-      </div>
-  </div>
+        </div>
 
-  <!-- Explore Screen -->
-  <div id="explore-screen" class="py-5 container" style="display:none;">
-      <h2 class="mb-3 text-center">Explore More Resources</h2>
-      <p class="mb-4 text-center">Discover quizzes, books, and articles to deepen your knowledge.</p>
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col">
-              <div class="h-100 card">
-                  <div class="text-center card-body">
-                      <h5 class="card-title">Quiz</h5>
-                      <p class="card-text">Test your knowledge with interactive quizzes. (Coming soon)</p>
-                      <button class="btn btn-secondary" disabled>Start Quiz</button>
-                  </div>
+        <!-- Project Detail Screen -->
+        <div id="project-detail-screen" class="py-5 container" style="display:none;">
+            <div class="justify-content-center row">
+                <div class="col-md-8">
+                    <h2 class="mb-3">Sample Project: Build a Calculator</h2>
+                    <p class="mb-4">Apply your programming skills by building a simple calculator app. This project will help you practice variables, functions, and user input/output.</p>
+                    <div class="mb-3 card">
+                        <div class="card-body">
+                            <h5 class="card-title">Project Steps</h5>
+                            <ol>
+                                <li>Design a user interface for the calculator.</li>
+                                <li>Implement basic operations: add, subtract, multiply, divide.</li>
+                                <li>Test your calculator with different inputs.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn-outline-secondary btn" onclick="showScreen('subject-detail-screen')">Back</button>
+                        <button class="btn btn-primary" onclick="showScreen('explore-screen')">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explore Screen -->
+        <div id="explore-screen" class="py-5 container" style="display:none;">
+            <h2 class="mb-3 text-center">Explore More Resources</h2>
+            <p class="mb-4 text-center">Discover quizzes, books, and articles to deepen your knowledge.</p>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="h-100 card">
+                        <div class="text-center card-body">
+                            <h5 class="card-title">Quiz</h5>
+                            <p class="card-text">Test your knowledge with interactive quizzes. (Coming soon)</p>
+                            <button class="btn btn-secondary" disabled>Start Quiz</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="h-100 card">
+                        <div class="text-center card-body">
+                            <h5 class="card-title">Books</h5>
+                            <p class="card-text">Browse recommended books for your subject. (Coming soon)</p>
+                            <button class="btn btn-secondary" disabled>View Books</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="h-100 card">
+                        <div class="text-center card-body">
+                            <h5 class="card-title">Articles</h5>
+                            <p class="card-text">Read articles and guides to expand your understanding. (Coming soon)</p>
+                            <button class="btn btn-secondary" disabled>Read Articles</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 text-center">
+                <button class="btn-outline-secondary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
+            </div>
+        </div>
+
+        <!-- Project Mentor System Dashboard -->
+        <div id="project-dashboard-screen" class="py-5 container" style="display:none;">
+            <h2 class="mb-3 text-center">Project Mentor System</h2>
+            <div class="mb-3 text-end">
+                <button class="btn btn-success" onclick="startNewProject()">Start New Project</button>
+            </div>
+            <div id="project-dashboard"></div>
+            <div class="mt-4 text-center">
+                <button class="btn-outline-secondary btn" onclick="showScreen('subject-detail-screen')">Back</button>
+            </div>
+        </div>
+
+        <!-- QuizForge UI (inserted from quizUI.html) -->
+        <div id="quizforge-screen" class="py-5 container" style="display:none;">
+          <h2 class="mb-3 text-center">QuizForge</h2>
+          <div class="mb-3 text-end">
+            <button class="btn btn-success" onclick="startQuizUI()">Start Quiz</button>
+            <button class="btn-outline-primary btn" onclick="startDailyQuiz()">Daily Quiz</button>
+            <button class="btn btn-secondary" onclick="showLeaderboard()">Leaderboard</button>
+          </div>
+          <div id="quiz-progress-bar" class="mb-3 progress" style="height: 24px;">
+            <div class="progress-bar" role="progressbar" style="width: 0%" id="quiz-progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+          </div>
+          <div id="quiz-question-carousel"></div>
+          <div id="quiz-result-modal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Quiz Results</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="quiz-result-body"></div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
               </div>
+            </div>
           </div>
-          <div class="col">
-              <div class="h-100 card">
-                  <div class="text-center card-body">
-                      <h5 class="card-title">Books</h5>
-                      <p class="card-text">Browse recommended books for your subject. (Coming soon)</p>
-                      <button class="btn btn-secondary" disabled>View Books</button>
-                  </div>
+          <div class="mt-4 text-center">
+            <span id="quiz-xp"></span> | <span id="quiz-streak"></span> | <span id="quiz-badges"></span>
+          </div>
+        </div>
+
+        <!-- Visual Curriculum Map (Roadmap) UI -->
+        <div id="roadmap-screen" class="py-5 transition-fade container" style="display:none;max-width:1200px;">
+          <h2 class="mb-3 text-center fw-bold" style="color:var(--primary)">Your Learning Roadmap</h2>
+          <div class="row">
+            <div class="col-md-9">
+              <div id="roadmap-container" style="min-height:350px;"></div>
+            </div>
+            <div class="col-md-3">
+              <div id="roadmap-sidebar" class="bg-light p-3 border rounded"></div>
+              <div class="mt-3">
+                <b>XP:</b> <span id="roadmap-xp">0</span><br>
+                <b>Streak:</b> <span id="roadmap-streak">0</span><br>
+                <b>Milestones:</b> <span id="roadmap-milestones"></span>
               </div>
-          </div>
-          <div class="col">
-              <div class="h-100 card">
-                  <div class="text-center card-body">
-                      <h5 class="card-title">Articles</h5>
-                      <p class="card-text">Read articles and guides to expand your understanding. (Coming soon)</p>
-                      <button class="btn btn-secondary" disabled>Read Articles</button>
-                  </div>
+              <div class="mt-3">
+                <b>Suggested Next Topics:</b>
+                <ul id="roadmap-suggestions"></ul>
               </div>
+            </div>
           </div>
-      </div>
-      <div class="mt-4 text-center">
-          <button class="btn-outline-secondary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
-      </div>
-  </div>
-
-  <!-- Project Mentor System Dashboard -->
-  <div id="project-dashboard-screen" class="py-5 container" style="display:none;">
-      <h2 class="mb-3 text-center">Project Mentor System</h2>
-      <div class="mb-3 text-end">
-          <button class="btn btn-success" onclick="startNewProject()">Start New Project</button>
-      </div>
-      <div id="project-dashboard"></div>
-      <div class="mt-4 text-center">
-          <button class="btn-outline-secondary btn" onclick="showScreen('subject-detail-screen')">Back</button>
-      </div>
-  </div>
-
-  <!-- QuizForge UI (inserted from quizUI.html) -->
-  <div id="quizforge-screen" class="py-5 container" style="display:none;">
-    <h2 class="mb-3 text-center">QuizForge</h2>
-    <div class="mb-3 text-end">
-      <button class="btn btn-success" onclick="startQuizUI()">Start Quiz</button>
-      <button class="btn-outline-primary btn" onclick="startDailyQuiz()">Daily Quiz</button>
-      <button class="btn btn-secondary" onclick="showLeaderboard()">Leaderboard</button>
-    </div>
-    <div id="quiz-progress-bar" class="mb-3 progress" style="height: 24px;">
-      <div class="progress-bar" role="progressbar" style="width: 0%" id="quiz-progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-    </div>
-    <div id="quiz-question-carousel"></div>
-    <div id="quiz-result-modal" class="modal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Quiz Results</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body" id="quiz-result-body"></div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+          <div class="mt-4 text-center">
+            <button class="btn-outline-secondary btn" onclick="showScreen('subject-detail-screen')">Back</button>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="mt-4 text-center">
-      <span id="quiz-xp"></span> | <span id="quiz-streak"></span> | <span id="quiz-badges"></span>
-    </div>
-  </div>
 
-  <!-- Visual Curriculum Map (Roadmap) UI -->
-  <div id="roadmap-screen" class="py-5 transition-fade container" style="display:none;max-width:1200px;">
-    <h2 class="mb-3 text-center fw-bold" style="color:var(--primary)">Your Learning Roadmap</h2>
-    <div class="row">
-      <div class="col-md-9">
-        <div id="roadmap-container" style="min-height:350px;"></div>
-      </div>
-      <div class="col-md-3">
-        <div id="roadmap-sidebar" class="bg-light p-3 border rounded"></div>
-        <div class="mt-3">
-          <b>XP:</b> <span id="roadmap-xp">0</span><br>
-          <b>Streak:</b> <span id="roadmap-streak">0</span><br>
-          <b>Milestones:</b> <span id="roadmap-milestones"></span>
-        </div>
-        <div class="mt-3">
-          <b>Suggested Next Topics:</b>
-          <ul id="roadmap-suggestions"></ul>
-        </div>
-      </div>
-    </div>
-    <div class="mt-4 text-center">
-      <button class="btn-outline-secondary btn" onclick="showScreen('subject-detail-screen')">Back</button>
-    </div>
-  </div>
-
-  <!-- Explore Feed Screen (Pinterest Masonry) -->
-  <div id="feed-screen" class="py-5 transition-fade container" style="display:none;max-width:1200px;">
-    <h2 class="mb-3 text-center fw-bold" style="color:var(--primary)">Explore More Resources</h2>
-    <div id="feed-masonry" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4"></div>
-    <div class="mt-4 text-center">
-      <button class="btn-outline-secondary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
-    </div>
-  </div>
-
-  <!-- Mentor Chat Avatar UI -->
-  <div id="mentor-avatar" class="bottom-0 position-fixed bg-white shadow m-4 rounded mentor-chat end-0" style="width:340px;z-index:1050;display:none;">
-    <div class="bg-primary p-2 rounded-top text-white avatar-header">Aria - Your AI Mentor</div>
-    <div id="chat-body" class="p-3" style="min-height:100px;max-height:220px;overflow-y:auto;">
-      <p>👋 Hey, ready for your next Python quest?</p>
-    </div>
-    <div class="d-flex border-top">
-      <input id="user-input" type="text" class="border-0 form-control" placeholder="Ask me anything..." autocomplete="off" />
-      <button class="btn btn-primary" id="mentor-send-btn"><i class="fa fa-paper-plane"></i></button>
-    </div>
-  </div>
-  <!-- Floating chat icon -->
-  <button id="mentor-fab" class="bottom-0 position-fixed shadow m-4 rounded-circle btn btn-primary end-0" style="width:60px;height:60px;z-index:1040;">
-    <span class="display-6">💬</span>
-  </button>
-
-  <!-- Floating Action Button (Quick Nav) -->
-  <button id="quick-nav-fab" class="bottom-0 position-fixed shadow-lg m-4 rounded-circle btn glow-btn end-0" style="width:64px;height:64px;z-index:1060;">
-    <i class="fa fa-compass fa-lg"></i>
-  </button>
-
-  <!-- Modular Subject Architecture -->
-  <div id="modular-subject-screen" class="py-5 transition-fade container" style="display:none;max-width:1000px;">
-    <h2 class="mb-3 text-center fw-bold" data-aos="fade-down">Subjects</h2>
-    <div id="subject-list" class="d-flex flex-wrap justify-content-center gap-3 mb-4">
-      <!-- Example subject card with icon -->
-      <!--
-      <div class="p-3 text-center card" style="width:140px;" data-aos="fade-up">
-        <div class="mb-2 subject-icon"><i class="fa fa-laptop-code"></i></div>
-        <div class="fw-bold">Computer Science</div>
-      </div>
-      -->
-    </div>
-    <div class="shadow-lg card">
-      <div class="d-flex flex-column flex-md-row align-items-center justify-content-between bg-light card-header">
-        <span id="subject-section-title" class="fw-bold"></span>
-        <nav class="mt-3 mt-md-0 nav nav-tabs" id="subject-tabs"></nav>
-      </div>
-      <div class="card-body" id="subject-section-content"></div>
-    </div>
-    <div class="mt-4 text-center">
-      <button class="btn-outline-primary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
-    </div>
-  </div>
-
-  <!-- Recommendations Dashboard (Home) -->
-  <div id="recommendation-container" class="py-4 transition-fade container" style="display:none;max-width:900px;"></div>
-
-  <!-- My Journey Dashboard (Personalized, Gamified) -->
-  <div id="my-journey-dashboard" class="py-5 transition-fade container" style="display:none;max-width:1100px;">
-    <h2 class="mb-3 text-center fw-bold" style="color:var(--primary)">My Journey</h2>
-    <div class="row">
-      <!-- Roadmap Progress -->
-      <div class="mb-4 col-lg-7">
-        <div class="bg-white shadow-lg p-4 rounded-4">
-          <h4 class="mb-3 fw-bold"><i class="me-2 fa fa-map-signs"></i>Learning Roadmap</h4>
-          <div id="my-journey-roadmap" style="min-height:180px;"></div>
-          <div class="mt-3">
-            <b>XP:</b> <span id="my-journey-xp">0</span> |
-            <b>Streak:</b> <span id="my-journey-streak">0</span> |
-            <b>Level:</b> <span id="my-journey-level">1</span>
-          </div>
-          <div class="mt-2">
-            <b>Recent Topics:</b>
-            <ul id="my-journey-recent-topics" class="mb-0"></ul>
+        <!-- Explore Feed Screen (Pinterest Masonry) -->
+        <div id="feed-screen" class="py-5 transition-fade container" style="display:none;max-width:1200px;">
+          <h2 class="mb-3 text-center fw-bold" style="color:var(--primary)">Explore More Resources</h2>
+          <div id="feed-masonry" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4"></div>
+          <div class="mt-4 text-center">
+            <button class="btn-outline-secondary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
           </div>
         </div>
-      </div>
-      <!-- Badges & Achievements -->
-      <div class="mb-4 col-lg-3">
-        <div class="bg-white shadow-lg p-4 rounded-4">
-          <h4 class="mb-3 fw-bold"><i class="me-2 fa fa-trophy"></i>Badges & Achievements</h4>
-          <div id="my-journey-badges" class="d-flex flex-wrap gap-2"></div>
-          <div class="mt-3">
-            <b>Milestones:</b>
-            <ul id="my-journey-milestones" class="mb-0"></ul>
-          </div>
-        </div>
-      </div>
-      <!-- Daily Spark & Focus Mode -->
-      <div class="mb-4 col-lg-2">
-        <div class="bg-white shadow-lg p-4 rounded-4 text-center">
-          <h4 class="mb-3 fw-bold"><i class="me-2 fa fa-bolt"></i>Daily Spark</h4>
-          <div id="daily-spark-suggestion" class="mb-3"></div>
-          <button class="mb-2 btn-outline-primary btn btn-sm" id="refresh-daily-spark"><i class="fa fa-sync"></i> New Spark</button>
-          <hr>
-          <h5 class="mb-2 fw-bold"><i class="me-1 fa fa-eye"></i>Focus Mode</h5>
-          <button class="mb-2 btn btn-success btn-sm" id="focus-mode-toggle"><i class="fa fa-power-off"></i> Toggle Focus</button>
-          <div id="pomodoro-timer" class="mt-2">
-            <span id="pomodoro-label">Pomodoro:</span>
-            <span id="pomodoro-time">25:00</span>
-            <button class="ms-2 btn-outline-secondary btn btn-sm" id="pomodoro-start"><i class="fa fa-play"></i></button>
-            <button class="ms-1 btn-outline-secondary btn btn-sm" id="pomodoro-reset"><i class="fa fa-undo"></i></button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-4 text-center">
-      <button class="btn-outline-primary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
-    </div>
-  </div>
 
-  <!-- Global loading spinner (hidden by default) -->
-  <div id="global-loading-spinner" style="display:none;"><div class="spinner"></div></div>  <!-- Load core dependencies -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" defer></script>
-  
-  <!-- Initialize module loader -->
-  <script type="module">
-    import loader from './js/loader.js';
+        <!-- Mentor Chat Avatar UI -->
+        <div id="mentor-avatar" class="bottom-0 position-fixed bg-white shadow m-4 rounded mentor-chat end-0" style="width:340px;z-index:1050;display:none;">
+          <div class="bg-primary p-2 rounded-top text-white avatar-header">Aria - Your AI Mentor</div>
+          <div id="chat-body" class="p-3" style="min-height:100px;max-height:220px;overflow-y:auto;">
+            <p>👋 Hey, ready for your next Python quest?</p>
+          </div>
+          <div class="d-flex border-top">
+            <input id="user-input" type="text" class="border-0 form-control" placeholder="Ask me anything..." autocomplete="off" />
+            <button class="btn btn-primary" id="mentor-send-btn"><i class="fa fa-paper-plane"></i></button>
+          </div>
+        </div>
+        <!-- Floating chat icon -->
+        <button id="mentor-fab" class="bottom-0 position-fixed shadow m-4 rounded-circle btn btn-primary end-0" style="width:60px;height:60px;z-index:1040;">
+          <span class="display-6">💬</span>
+        </button>
+
+        <!-- Floating Action Button (Quick Nav) -->
+        <button id="quick-nav-fab" class="bottom-0 position-fixed shadow-lg m-4 rounded-circle btn glow-btn end-0" style="width:64px;height:64px;z-index:1060;">
+          <i class="fa fa-compass fa-lg"></i>
+        </button>
+
+        <!-- Modular Subject Architecture -->
+        <div id="modular-subject-screen" class="py-5 transition-fade container" style="display:none;max-width:1000px;">
+          <h2 class="mb-3 text-center fw-bold" data-aos="fade-down">Subjects</h2>
+          <div id="subject-list" class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+            <!-- Example subject card with icon -->
+            <!--
+            <div class="p-3 text-center card" style="width:140px;" data-aos="fade-up">
+              <div class="mb-2 subject-icon"><i class="fa fa-laptop-code"></i></div>
+              <div class="fw-bold">Computer Science</div>
+            </div>
+            -->
+          </div>
+          <div class="shadow-lg card">
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between bg-light card-header">
+              <span id="subject-section-title" class="fw-bold"></span>
+              <nav class="mt-3 mt-md-0 nav nav-tabs" id="subject-tabs"></nav>
+            </div>
+            <div class="card-body" id="subject-section-content"></div>
+          </div>
+          <div class="mt-4 text-center">
+            <button class="btn-outline-primary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
+          </div>
+        </div>
+
+        <!-- Recommendations Dashboard (Home) -->
+        <div id="recommendation-container" class="py-4 transition-fade container" style="display:none;max-width:900px;"></div>
+
+        <!-- My Journey Dashboard (Personalized, Gamified) -->
+        <div id="my-journey-dashboard" class="py-5 transition-fade container" style="display:none;max-width:1100px;">
+          <h2 class="mb-3 text-center fw-bold" style="color:var(--primary)">My Journey</h2>
+          <div class="row">
+            <!-- Roadmap Progress -->
+            <div class="mb-4 col-lg-7">
+              <div class="bg-white shadow-lg p-4 rounded-4">
+                <h4 class="mb-3 fw-bold"><i class="me-2 fa fa-map-signs"></i>Learning Roadmap</h4>
+                <div id="my-journey-roadmap" style="min-height:180px;"></div>
+                <div class="mt-3">
+                  <b>XP:</b> <span id="my-journey-xp">0</span> |
+                  <b>Streak:</b> <span id="my-journey-streak">0</span> |
+                  <b>Level:</b> <span id="my-journey-level">1</span>
+                </div>
+                <div class="mt-2">
+                  <b>Recent Topics:</b>
+                  <ul id="my-journey-recent-topics" class="mb-0"></ul>
+                </div>
+              </div>
+            </div>
+            <!-- Badges & Achievements -->
+            <div class="mb-4 col-lg-3">
+              <div class="bg-white shadow-lg p-4 rounded-4">
+                <h4 class="mb-3 fw-bold"><i class="me-2 fa fa-trophy"></i>Badges & Achievements</h4>
+                <div id="my-journey-badges" class="d-flex flex-wrap gap-2"></div>
+                <div class="mt-3">
+                  <b>Milestones:</b>
+                  <ul id="my-journey-milestones" class="mb-0"></ul>
+                </div>
+              </div>
+            </div>
+            <!-- Daily Spark & Focus Mode -->
+            <div class="mb-4 col-lg-2">
+              <div class="bg-white shadow-lg p-4 rounded-4 text-center">
+                <h4 class="mb-3 fw-bold"><i class="me-2 fa fa-bolt"></i>Daily Spark</h4>
+                <div id="daily-spark-suggestion" class="mb-3"></div>
+                <button class="mb-2 btn-outline-primary btn btn-sm" id="refresh-daily-spark"><i class="fa fa-sync"></i> New Spark</button>
+                <hr>
+                <h5 class="mb-2 fw-bold"><i class="me-1 fa fa-eye"></i>Focus Mode</h5>
+                <button class="mb-2 btn btn-success btn-sm" id="focus-mode-toggle"><i class="fa fa-power-off"></i> Toggle Focus</button>
+                <div id="pomodoro-timer" class="mt-2">
+                  <span id="pomodoro-label">Pomodoro:</span>
+                  <span id="pomodoro-time">25:00</span>
+                  <button class="ms-2 btn-outline-secondary btn btn-sm" id="pomodoro-start"><i class="fa fa-play"></i></button>
+                  <button class="ms-1 btn-outline-secondary btn btn-sm" id="pomodoro-reset"><i class="fa fa-undo"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <button class="btn-outline-primary btn" onclick="showScreen('welcome-screen')">Back to Home</button>
+          </div>
+        </div>
+
+        <!-- Global loading spinner (hidden by default) -->
+        <div id="global-loading-spinner" style="display:none;"><div class="spinner"></div></div>  <!-- Core Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" defer></script>
     
-    // Initialize app when DOM is ready
-    document.addEventListener('DOMContentLoaded', async () => {
-      try {
-        await loader.initializeApp();
-        // Initialize main app after all modules are loaded
-        const { default: main } = await import('./main.js');
-        if (typeof main === 'function') {
-          main();
-        }
-      } catch (error) {
-        console.error('Failed to initialize application:', error);
-      }
-    });
-  </script>
-  <!-- Load application scripts -->
-  <script type="module" src="js/subjectRouter.js" defer></script>
-  <script type="module" src="js/recommendationEngine.js" defer></script>
-  <script type="module" src="js/chatbotUI.js" defer></script>
-  <script type="module" src="js/searchEngine.js" defer></script>
-  <script type="module" src="js/subjectDetailHub.js" defer></script>
-  <script type="module" src="js/xp.js" defer></script>
-  <script type="module" src="js/shortcuts.js" defer></script>
-  <script type="module" src="js/systemTest.js" defer></script>
-
-  <!-- Initialize AOS -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      AOS.init({
-        duration: 800,
-        offset: 100,
-        once: true
-      });
-    });
-  </script>
-
-  <!-- Search UI (Bootstrap 5) -->
-  <div id="search-container" class="py-3 container" style="display:none;max-width:700px;">
-    <div class="input-group mb-2">
-      <input id="search-input" type="search" class="form-control" placeholder="Search subjects, resources, or sections..." aria-label="Search" autocomplete="off">
-      <button class="btn-outline-primary btn" type="button" id="search-btn" aria-label="Search"><i class="fa fa-search"></i></button>
-    </div>
-    <ul id="search-suggestions" class="list-group position-absolute w-100" style="z-index:1051;display:none;"></ul>
-    <div id="search-results" class="mt-3"></div>
-  </div>
-
-  <!-- Parallax/Particle Background -->
-  <canvas id="bg-particles" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;"></canvas>
-  <script>
-  (function(){
-    const c=document.getElementById('bg-particles');if(!c)return;const ctx=c.getContext('2d');let w=window.innerWidth,h=window.innerHeight;let p=[];function resize(){w=window.innerWidth;h=window.innerHeight;c.width=w;c.height=h;}window.addEventListener('resize',resize);resize();for(let i=0;i<60;i++){p.push({x:Math.random()*w,y:Math.random()*h,r:1+Math.random()*2,s:0.5+Math.random()*1.5,dx:(Math.random()-0.5)*0.5,dy:(Math.random()-0.5)*0.5,c:`hsla(${180+Math.random()*120},100%,70%,0.7)`});}function draw(){ctx.clearRect(0,0,w,h);for(let i=0;i<p.length;i++){let a=p[i];ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,2*Math.PI);ctx.fillStyle=a.c;ctx.shadowColor=a.c;ctx.shadowBlur=12;ctx.fill();a.x+=a.dx;a.y+=a.dy;if(a.x<0||a.x>w)a.dx*=-1;if(a.y<0||a.y>h)a.dy*=-1;}requestAnimationFrame(draw);}draw();
-  })();
-  </script>
-
-  <!-- Global Launch Footer -->
-  <footer class="footer-glass" style="backdrop-filter:blur(12px);background:rgba(10,35,66,0.85);color:#fff;padding:2rem 0 1rem 0;margin-top:4rem;box-shadow:0 -2px 24px #00ff9933;">
-    <div class="text-center container">
-      <div class="mb-2">
-        <b>Knowledge Portal</b> &copy; 2025 | Created by <a href="https://github.com/yourgithub" style="color:#00ff99;">Your Name</a>
-        <span class="mx-2">·</span>
-        <a href="https://github.com/yourgithub/knowledge-portal" style="color:#00cfff;">GitHub Repo</a>
-      </div>
-      <div class="mb-2">
-        <a href="#" style="color:#fff;opacity:0.7;margin:0 0.5rem;"><i class="fab fa-twitter"></i></a>
-        <a href="#" style="color:#fff;opacity:0.7;margin:0 0.5rem;"><i class="fab fa-discord"></i></a>
-        <a href="#" style="color:#fff;opacity:0.7;margin:0 0.5rem;"><i class="fab fa-github"></i></a>
-      </div>
-      <div style="font-size:1rem;opacity:0.7;">Empowering Minds from Jharkhand to the World.</div>
-    </div>
-  </footer>
-
-  <!-- Testimonials Section -->
-  <section id="testimonials" class="py-5 container" style="max-width:900px;">
-    <h2 class="mb-4 text-center fw-bold" style="color:var(--accent);">What Learners Say</h2>
-    <div class="justify-content-center row g-4">
-      <div class="col-md-4">
-        <div class="bg-white shadow-lg p-4 rounded-4 text-center testimonial-card" style="backdrop-filter:blur(8px);">
-          <div class="mb-2" style="font-size:2.5rem;">🌟</div>
-          <div class="mb-2 fw-bold">“This portal changed how I learn.”</div>
-          <div class="text-muted">— Priya, Student</div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="bg-white shadow-lg p-4 rounded-4 text-center testimonial-card" style="backdrop-filter:blur(8px);">
-          <div class="mb-2" style="font-size:2.5rem;">🚀</div>
-          <div class="mb-2 fw-bold">“I feel like I have a mentor in my pocket.”</div>
-          <div class="text-muted">— Arjun, Developer</div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="bg-white shadow-lg p-4 rounded-4 text-center testimonial-card" style="backdrop-filter:blur(8px);">
-          <div class="mb-2" style="font-size:2.5rem;">🧠</div>
-          <div class="mb-2 fw-bold">“The gamified roadmap keeps me coming back.”</div>
-          <div class="text-muted">— Sara, Lifelong Learner</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Daily XP Bar -->
-  <div id="daily-xp-bar" style="position:fixed;bottom:0;left:0;width:100vw;height:12px;z-index:1200;background:linear-gradient(90deg,#00ff99 0%,#00cfff 100%);box-shadow:0 -2px 16px #00ff9933;">
-    <div id="daily-xp-fill" style="height:100%;width:0%;background:rgba(10,35,66,0.9);transition:width 0.5s;"></div>
-  </div>  <!-- Application behavior scripts loaded as modules -->
-  <script type="module" src="js/xp.js" defer></script>
-  <script type="module" src="js/shortcuts.js" defer></script>
-
-  <!-- REMOVE ALL DEBUG/RECOVERY CSS for buttons and icons -->
-  <!-- REMOVE: .fa, .fas, .far, .fal, .fab, .fa-moon, .fa-user, .fa-compass, .fa-map-signs, .fa-trophy, .fa-bolt, .fa-eye, .fa-power-off, .fa-play, .fa-undo, .fa-sync { ... } -->
-  <!-- REMOVE: .btn, .btn-lg, .btn-outline-primary, .btn-success, .btn-link, .btn-outline-secondary { ... } (all forced visibility, pointer-events, z-index, etc) -->
-  <!-- REMOVE: .d-grid, .gap-3, .d-flex { ... } (all forced flex, background, box-shadow, etc) -->
-  <!-- REMOVE: #fa-debug-test, #fa-test-minimal and related styles -->
-  <!-- REMOVE: any other debug/fallback/test bar code -->
-  <!-- RESTORE: Only keep your original, intended theme and layout CSS for buttons and icons. -->
-</body>
+    <!-- App Initialization -->
+    <script type="module" src="js/config.js"></script>
+    <script type="module" src="js/debug.js"></script>
+    <script type="module" src="js/loader.js"></script>
+    
+    <!-- Core Features -->
+    <script type="module" src="js/navigation.js" defer></script>
+    <script type="module" src="js/storage.js" defer></script>
+    <script type="module" src="js/subjectRouter.js" defer></script>
+    <script type="module" src="js/searchEngine.js" defer></script>
+    
+    <!-- UI Components -->
+    <script type="module" src="js/subjectDetailHub.js" defer></script>
+    <script type="module" src="js/recommendationEngine.js" defer></script>
+    <script type="module" src="js/chatbotUI.js" defer></script>
+    
+    <!-- Extra Features -->
+    <script type="module" src="js/xp.js" defer></script>
+    <script type="module" src="js/shortcuts.js" defer></script>
+    
+    <!-- Development Only -->
+    <script type="module" src="js/systemTest.js" defer></script>
+  </body>
 </html>
