@@ -91,24 +91,9 @@ class Debug {
     }
 
     async logToFile(level, ...args) {
-        if (!ENV.isDevelopment) return;
-        
-        const timestamp = new Date().toISOString();
-        const message = args.map(arg => 
-            typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
-        ).join(' ');
-
-        const logEntry = `[${timestamp}] [${level.toUpperCase()}] ${message}\n`;
-        
-        try {
-            await fetch('/api/log', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ entry: logEntry })
-            });
-        } catch (err) {
-            console.error('Failed to write to log file:', err);
-        }
+        // Disabled remote logging to avoid 405 errors
+        // If you want to enable server logging, implement a valid endpoint
+        return;
     }
 
     getStats() {
